@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="a7SqlTools.DbSearch.Views.ValuesDBSearch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dg="clr-namespace:a7SqlTools.Controls.DataGrids"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="700">
+    <TabControl>
+        <TabItem Header="Search">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="0">
+                    <CheckBox IsChecked="True" Margin="3" DockPanel.Dock="Top" x:Name="SelectAllTables" Checked="SelectAllTables_Checked" Unchecked="SelectAllTables_Unchecked">Select/Unselect all</CheckBox>
+                    <DockPanel DockPanel.Dock="Top">
+                        <Label DockPanel.Dock="Left">Filter:</Label>
+                        <TextBox x:Name="tbTableFilter" TextChanged="tbTableFilter_TextChanged"></TextBox>
+                    </DockPanel>
+                    <ListBox x:Name="lbTables"  ItemsSource="{Binding DictTables.Values}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Margin="3" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}" />
+                                    <TextBlock Text="{Binding TableName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+                <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+                <DockPanel Grid.Column="2">
+                    <Grid DockPanel.Dock="Bottom" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="bSearchDB" Grid.Column="1" Click="bSearchDB_Click">Search DB</Button>
+                        <Button x:Name="bAbortSearch" Grid.Column="2" Click="bAbortSearch_Click">Abort</Button>
+                    </Grid>
+                    <ProgressBar x:Name="pbProgress" DockPanel.Dock="Bottom" Height="9"></ProgressBar>
+                    <TextBox x:Name="tbProgress" IsReadOnly="True" DockPanel.Dock="Bottom"></TextBox>
+                    <DockPanel DockPanel.Dock="Bottom">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <Label>Seperator:</Label>
+                            <TextBox x:Name="tbSeperator" Text="{Binding Seperator}"  ToolTip="seperator for values, empty string - no seperator, [enter] - new line as seperator"></TextBox>
+                            <Button x:Name="bSeperatorEnter" Click="bSeperatorEnter_Click">[enter]</Button>
+                            <Label>AND seperator:</Label>
+                            <TextBox x:Name="tbAndSeperator" Text="{Binding AndSeperator}" Width="20" ToolTip="seperator for AND operator, example: test1;test2 will search rows that have both values"></TextBox>
+                            <Label>Values to search:</Label>
+                        </StackPanel>
+                        <TextBox x:Name="tbValuesToSearch" AcceptsReturn="True" TextAlignment="Left" HorizontalScrollBarVisibility="Auto" 
+                                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"  ToolTip="Seperated by ',' or query - value from first column will be searched"></TextBox>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Results" x:Name="tiDBResults">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="lbValuesSearched" SelectionChanged="lbValuesSearched_SelectionChanged" Grid.Column="0"  ItemsSource="{Binding SearchedValues.Values}">
+
+                </ListBox>
+                <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+                <ListBox x:Name="lbTablesWithValueFound" SelectionChanged="lbTablesWithValueFound_SelectionChanged" Grid.Column="2" ItemsSource="{Binding SelectedSearchedValue.OccurencesInTables}">
+
+                </ListBox>
+                <GridSplitter ResizeDirection="Columns" Grid.Column="3" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+                <DockPanel  Grid.Column="4" >
+                    <Button x:Name="bCommit" DockPanel.Dock="Bottom" Click="bCommit_Click">Commit</Button>
+                    <dg:a7DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="dg"
+                              AutoGenerateColumns="True"
+                              ItemsSource="{Binding SelectedTable}"
+                              DisplayMemberPath="Caption"></dg:a7DataGrid>
+                </DockPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Not found items">
+            <TextBox x:Name="tbNotFoundItems"></TextBox>
+        </TabItem>
+    </TabControl>
+</UserControl>

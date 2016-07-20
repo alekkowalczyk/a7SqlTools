@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<exportConfiguration>
+  <DB>
+    Data Source=localhost\a7; Initial Catalog=a7Config; Integrated Security=yes;Persist Security Info=false;
+  </DB>
+ 
+  
+</exportConfiguration>

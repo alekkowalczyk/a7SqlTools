@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "a7SqlTools", "a7SqlTools\a7SqlTools.csproj", "{D9E98355-783F-40E4-85CF-8C13B48EF4DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9E98355-783F-40E4-85CF-8C13B48EF4DE}.Debug|x86.ActiveCfg = Debug|x86
+		{D9E98355-783F-40E4-85CF-8C13B48EF4DE}.Debug|x86.Build.0 = Debug|x86
+		{D9E98355-783F-40E4-85CF-8C13B48EF4DE}.Release|x86.ActiveCfg = Release|x86
+		{D9E98355-783F-40E4-85CF-8C13B48EF4DE}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

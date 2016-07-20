@@ -1,0 +1,21 @@
+﻿<Window x:Class="a7SqlTools.Dialogs.DbSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:a7SqlTools.Converters"
+        x:Name="me"
+        Title="Database Selection" Height="150" Width="300">
+    <Window.Resources>
+        <conv:NullToFalse x:Key="nullToFalse"></conv:NullToFalse>
+    </Window.Resources>
+    <DockPanel>
+        <WrapPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <Button x:Name="bOk" Margin="5" Padding="5" Width="80" 
+                    IsEnabled="{Binding SelectedDatabaseName, ElementName=me, Converter={StaticResource nullToFalse}}"
+                    HorizontalAlignment="Right" Click="bOk_Click">OK</Button>
+        </WrapPanel>
+        <StackPanel Margin="5">
+            <Label Height="25" HorizontalAlignment="Center" HorizontalContentAlignment="Center">Database</Label>
+            <ComboBox Height="25" Width="180" Margin="5" x:Name="cbDb1" SelectedItem="{Binding SelectedDatabaseName, ElementName=me}" ItemsSource="{Binding DbList, ElementName=me}"></ComboBox>
+        </StackPanel>
+    </DockPanel>
+</Window>

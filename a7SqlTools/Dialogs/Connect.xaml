@@ -1,0 +1,81 @@
+﻿<Window x:Class="a7SqlTools.Dialogs.Connect"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:a7SqlTools.Dialogs"
+        xmlns:conv="clr-namespace:a7SqlTools.Converters"
+        mc:Ignorable="d"
+        x:Name="me"
+        Title="Connect" Height="250" Width="480">
+    <Window.Resources>
+        <conv:EqualStringToBool x:Key="eqToBool"></conv:EqualStringToBool>
+        <conv:NegateBool x:Key="negate"></conv:NegateBool>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style x:Key="onlySql" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="IsEnabled">
+                <Setter.Value>
+                    <Binding Path="SelectedAuthenticationType" Converter="{StaticResource eqToBool}" ConverterParameter="sql" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource negate}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0">Server name:</Label>
+        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Name}"></TextBox>
+
+        <Label Grid.Column="0" Grid.Row="1">Authentication:</Label>
+        <ComboBox Grid.Column="1" Grid.Row="1"
+                  DisplayMemberPath="Value"
+                  SelectedValuePath="Key"
+                  ItemsSource="{Binding AuthenticationTypes}"
+                  SelectedValue="{Binding SelectedAuthenticationType}"
+                  ></ComboBox>
+
+        <Label Grid.Column="0" Grid.Row="2"  Margin="18,5,5,5"
+               Style="{StaticResource onlySql}">
+            User name:</Label>
+        <TextBox Grid.Column="1" Grid.Row="2"
+               Style="{StaticResource onlySql}" Text="{Binding UserName}"
+                 ></TextBox>
+
+        <Label Grid.Column="0" Grid.Row="3" Margin="18,5,5,5" Style="{StaticResource onlySql}">Password:</Label>
+        <PasswordBox x:Name="pswd" Grid.Column="1" Grid.Row="3" Style="{StaticResource onlySql}"
+                 ></PasswordBox>
+
+        <DockPanel  Grid.ColumnSpan="2" Grid.Row="5">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="80" x:Name="bCancel" Click="bCancel_Click">Cancel</Button>
+                <Button Width="80" x:Name="bConnect" Click="bConnect_Click">Connect</Button>
+            </StackPanel>
+            <TextBlock Text="{Binding ErrorMessage}" Margin="5" Foreground="Red"></TextBlock>
+        </DockPanel>
+    </Grid>
+</Window>
