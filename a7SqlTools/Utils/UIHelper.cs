@@ -35,8 +35,8 @@ namespace a7SqlTools.Utils
 
         public static void WaitForPriority(this Dispatcher dispatcher, DispatcherPriority priority)
         {
-            DispatcherFrame frame = new DispatcherFrame();
-            DispatcherOperation dispatcherOperation = dispatcher.BeginInvoke(priority, new DispatcherOperationCallback(ExitFrameOperation), frame);
+            var frame = new DispatcherFrame();
+            var dispatcherOperation = dispatcher.BeginInvoke(priority, new DispatcherOperationCallback(ExitFrameOperation), frame);
             Dispatcher.PushFrame(frame);
             if (dispatcherOperation.Status != DispatcherOperationStatus.Completed)
             {
@@ -111,7 +111,7 @@ namespace a7SqlTools.Utils
         {
             if (dispatcher == null)
             {
-                DispatcherObject dispatcherObj = o as DispatcherObject;
+                var dispatcherObj = o as DispatcherObject;
                 if (o != null)
                 {
                     dispatcher = dispatcherObj.Dispatcher;
@@ -126,7 +126,7 @@ namespace a7SqlTools.Utils
                 }
             }
 
-            bool hasAccess = dispatcher.CheckAccess();
+            var hasAccess = dispatcher.CheckAccess();
 
             if (!hasAccess)
             {
@@ -183,7 +183,7 @@ namespace a7SqlTools.Utils
         /// <returns></returns>
         public static DependencyObject FindLogicalAncestor(this DependencyObject startElement, Predicate<DependencyObject> condition)
         {
-            DependencyObject o = startElement;
+            var o = startElement;
             while ((o != null) && !condition(o))
             {
                 o = LogicalTreeHelper.GetParent(o);
@@ -233,9 +233,9 @@ namespace a7SqlTools.Utils
                 {
                     return startElement;
                 }
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(startElement); ++i)
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(startElement); ++i)
                 {
-                    DependencyObject o = FindVisualDescendant(VisualTreeHelper.GetChild(startElement, i), condition);
+                    var o = FindVisualDescendant(VisualTreeHelper.GetChild(startElement, i), condition);
                     if (o != null)
                     {
                         return o;
@@ -265,8 +265,8 @@ namespace a7SqlTools.Utils
         /// <returns></returns>
         public static IEnumerable<Visual> GetVisualChildren(this Visual parent)
         {
-            int count = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < count; ++i)
+            var count = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < count; ++i)
             {
                 yield return (Visual)VisualTreeHelper.GetChild(parent, i);
             }
@@ -335,7 +335,7 @@ namespace a7SqlTools.Utils
         {
             if (_dpiX == 0)
             {
-                using (System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(1, 1))
+                using (var bitmap = new System.Drawing.Bitmap(1, 1))
                 using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bitmap))
                 {
                     _dpiX = g.DpiX;
@@ -361,7 +361,7 @@ namespace a7SqlTools.Utils
         /// <returns></returns>
         public static IEnumerable<DependencyObject> GetItemContainers(this ItemsControl itemsControl)
         {
-            for (int i = 0; i < itemsControl.Items.Count; ++i)
+            for (var i = 0; i < itemsControl.Items.Count; ++i)
             {
                 yield return itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
             }
@@ -415,7 +415,7 @@ namespace a7SqlTools.Utils
         {
             try
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo
+                var startInfo = new ProcessStartInfo
                 {
                     UseShellExecute = true,
                     FileName = ((Uri)state).AbsoluteUri,
@@ -433,7 +433,7 @@ namespace a7SqlTools.Utils
         {
             if (IsAutomaticBrowserLaunchEnabled)
             {
-                Uri uri = ((Hyperlink)e.Source).NavigateUri;
+                var uri = ((Hyperlink)e.Source).NavigateUri;
                 if (uri != null)
                 {
                     LaunchBrowser(uri);

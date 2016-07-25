@@ -26,8 +26,8 @@ namespace a7SqlTools.Utils
         {
             if (!Directory.Exists(dstPath))
                 Directory.CreateDirectory(dstPath);
-            ZipArchive zipArchive = ZipFile.OpenRead(zipPath);
-            foreach (ZipArchiveEntry entry in zipArchive.Entries)
+            var zipArchive = ZipFile.OpenRead(zipPath);
+            foreach (var entry in zipArchive.Entries)
             {
                 var path = Path.Combine(dstPath, entry.FullName);
                 var directory = Path.GetDirectoryName(path);
@@ -48,8 +48,8 @@ namespace a7SqlTools.Utils
         {
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
-            DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
-            DirectorySecurity dirSecurity = dirInfo.GetAccessControl();
+            var dirInfo = new DirectoryInfo(folderPath);
+            var dirSecurity = dirInfo.GetAccessControl();
 
             dirSecurity.AddAccessRule(new FileSystemAccessRule(userName, FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.InheritOnly, AccessControlType.Allow));
 

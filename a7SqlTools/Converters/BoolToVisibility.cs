@@ -16,7 +16,7 @@ namespace a7SqlTools.Converters
         {
             if (value is bool)
             {
-                bool b = (bool)value;
+                var b = (bool)value;
                 if (!b)
                     return Visibility.Collapsed;
                 else

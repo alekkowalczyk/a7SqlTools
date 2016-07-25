@@ -54,32 +54,32 @@ namespace a7SqlTools.Converters
         /// </returns>
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            string source = (string)value;
+            var source = (string)value;
 
             if (string.IsNullOrEmpty(source))
             {
                 return Binding.DoNothing;
             }
 
-            List<Inline> inlines = new List<Inline>();
+            var inlines = new List<Inline>();
 
-            char current = '\0';
+            var current = '\0';
             char? next;
 
-            string[] lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string line in lines)
+            var lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                StringBuilder sb = new StringBuilder();
-                Span parentSpan = new Span();
+                var sb = new StringBuilder();
+                var parentSpan = new Span();
 
-                for (int i = 0; i < line.Length; ++i)
+                for (var i = 0; i < line.Length; ++i)
                 {
                     current = line[i];
                     next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
 
                     if (current == '[' && next != '[')
                     {
-                        string text = sb.ToString();
+                        var text = sb.ToString();
                         sb = new StringBuilder();
 
                         i += (next == '/') ? 2 : 1;
@@ -107,19 +107,19 @@ namespace a7SqlTools.Converters
                         }
                         else
                         {
-                            string[] tag = sb.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            var tag = sb.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             if (tag.Length > 0)
                             {
-                                InlineType inlineType = GetInlineType(tag[0].TrimEnd('/'));
+                                var inlineType = GetInlineType(tag[0].TrimEnd('/'));
                                 if (inlineType == InlineType.LineBreak)
                                 {
                                     parentSpan.Inlines.Add(new LineBreak());
                                 }
                                 else if (inlineType != InlineType.Run)
                                 {
-                                    string tagParam = (tag.Length > 1) ? tag[1] : null;
+                                    var tagParam = (tag.Length > 1) ? tag[1] : null;
 
-                                    Span newParentSpan = CreateSpan(inlineType, tagParam);
+                                    var newParentSpan = CreateSpan(inlineType, tagParam);
                                     parentSpan.Inlines.Add(newParentSpan);
                                     parentSpan = newParentSpan;
                                 }
@@ -176,7 +176,7 @@ namespace a7SqlTools.Converters
             switch (inlineType)
             {
                 case InlineType.Hyperlink:
-                    Hyperlink link = new Hyperlink();
+                    var link = new Hyperlink();
 
                     Uri uri;
                     if (Uri.TryCreate(param, UriKind.Absolute, out uri))

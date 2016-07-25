@@ -124,7 +124,7 @@ namespace a7SqlTools.Controls
                 }
 
                 // Get the element that is currently under the mouse.
-                IInputElement currentPosition = Mouse.DirectlyOver;
+                var currentPosition = Mouse.DirectlyOver;
 
                 // See if the mouse is still over something (any element, not just a tree view item).
                 if (currentPosition != null)
@@ -133,7 +133,7 @@ namespace a7SqlTools.Controls
                     // Raise an event from that point.  If a TreeViewItem is anywhere above this point
                     // in the tree, it will receive this event and update _currentItem.
 
-                    RoutedEventArgs newItemArgs = new RoutedEventArgs(UpdateOverItemEvent);
+                    var newItemArgs = new RoutedEventArgs(UpdateOverItemEvent);
                     currentPosition.RaiseEvent(newItemArgs);
 
                 }
@@ -160,7 +160,7 @@ namespace a7SqlTools.Controls
             //        }
             //    }
             //}
-            TreeViewItem containerThatMightContainItem = (TreeViewItem)treeView.ItemContainerGenerator.ContainerFromItem(item);
+            var containerThatMightContainItem = (TreeViewItem)treeView.ItemContainerGenerator.ContainerFromItem(item);
             if (containerThatMightContainItem != null)
                 return containerThatMightContainItem;
             else
@@ -183,16 +183,16 @@ namespace a7SqlTools.Controls
             //        }
             //    }
             //}
-            foreach (object curChildItem in itemCollection)
+            foreach (var curChildItem in itemCollection)
             {
-                TreeViewItem parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
+                var parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
                 if (parentContainer != null)
                 {
-                    TreeViewItem containerThatMightContainItem = (TreeViewItem)parentContainer.ItemContainerGenerator.ContainerFromItem(item);
+                    var containerThatMightContainItem = (TreeViewItem)parentContainer.ItemContainerGenerator.ContainerFromItem(item);
 
                     if (containerThatMightContainItem != null)
                         return containerThatMightContainItem;
-                    TreeViewItem recursionResult = ContainerFromItem(parentContainer.ItemContainerGenerator, parentContainer.Items, item);
+                    var recursionResult = ContainerFromItem(parentContainer.ItemContainerGenerator, parentContainer.Items, item);
                     if (recursionResult != null)
                         return recursionResult;
                 }
@@ -202,7 +202,7 @@ namespace a7SqlTools.Controls
 
         public static object ItemFromContainer(this TreeView treeView, TreeViewItem container)
         {
-            TreeViewItem itemThatMightBelongToContainer = (TreeViewItem)treeView.ItemContainerGenerator.ItemFromContainer(container);
+            var itemThatMightBelongToContainer = (TreeViewItem)treeView.ItemContainerGenerator.ItemFromContainer(container);
             if (itemThatMightBelongToContainer != null)
                 return itemThatMightBelongToContainer;
             else
@@ -211,13 +211,13 @@ namespace a7SqlTools.Controls
 
         private static object ItemFromContainer(ItemContainerGenerator parentItemContainerGenerator, ItemCollection itemCollection, TreeViewItem container)
         {
-            foreach (object curChildItem in itemCollection)
+            foreach (var curChildItem in itemCollection)
             {
-                TreeViewItem parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
-                TreeViewItem itemThatMightBelongToContainer = (TreeViewItem)parentContainer.ItemContainerGenerator.ItemFromContainer(container);
+                var parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
+                var itemThatMightBelongToContainer = (TreeViewItem)parentContainer.ItemContainerGenerator.ItemFromContainer(container);
                 if (itemThatMightBelongToContainer != null)
                     return itemThatMightBelongToContainer;
-                TreeViewItem recursionResult = ItemFromContainer(parentContainer.ItemContainerGenerator, parentContainer.Items, container) as TreeViewItem;
+                var recursionResult = ItemFromContainer(parentContainer.ItemContainerGenerator, parentContainer.Items, container) as TreeViewItem;
                 if (recursionResult != null)
                     return recursionResult;
             }
@@ -252,9 +252,9 @@ namespace a7SqlTools.Controls
         /// <param name="parentContainer">The TreeView or TreeViewItem containing the children to expand</param>
         internal static void ExpandSubContainers(this ItemsControl parentContainer, bool preserveState)
         {
-            foreach (object item in parentContainer.Items)
+            foreach (var item in parentContainer.Items)
             {
-                TreeViewItem currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                var currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
                 if (currentContainer != null && currentContainer.Items.Count > 0)
                 {
                     //expand the item
@@ -351,11 +351,11 @@ namespace a7SqlTools.Controls
         private static bool ExpandAndSelectItem(ItemsControl parentContainer, object itemToSelect, bool isValue, string valuePath, Action<TreeViewItem> beforeSelection, Action<TreeViewItem> afterSelection)
         {
             //check all items at the current level
-            foreach (object item in parentContainer.Items)
+            foreach (var item in parentContainer.Items)
             {
-                TreeViewItem currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                var currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
 
-                object equalItem = item;
+                var equalItem = item;
                 if (isValue)
                 {
                     equalItem = BindingHelper.Eval<object>(item, valuePath);
@@ -392,15 +392,15 @@ namespace a7SqlTools.Controls
             }
 
             //if we get to this point, the selected item was not found at the current level, so we must check the children
-            foreach (object item in parentContainer.Items)
+            foreach (var item in parentContainer.Items)
             {
-                TreeViewItem currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                var currentContainer = parentContainer.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
 
                 //if children exist
                 if (currentContainer != null && currentContainer.Items.Count > 0)
                 {
                     //keep track of if the TreeViewItem was expanded or not
-                    bool wasExpanded = currentContainer.IsExpanded;
+                    var wasExpanded = currentContainer.IsExpanded;
 
                     //expand the current TreeViewItem so we can check its child TreeViewItems
                     currentContainer.IsExpanded = true;
@@ -450,22 +450,22 @@ namespace a7SqlTools.Controls
 
         public static void ApplyActionToAllTreeViewItems(this ItemsControl itemsControl, Action<TreeViewItem> itemAction)
         {
-            Stack<ItemsControl> itemsControlStack = new Stack<ItemsControl>();
+            var itemsControlStack = new Stack<ItemsControl>();
             itemsControlStack.Push(itemsControl);
 
             while (itemsControlStack.Count != 0)
             {
-                ItemsControl currentItem = itemsControlStack.Pop() as ItemsControl;
-                TreeViewItem currentTreeViewItem = currentItem as TreeViewItem;
+                var currentItem = itemsControlStack.Pop() as ItemsControl;
+                var currentTreeViewItem = currentItem as TreeViewItem;
                 if (currentTreeViewItem != null)
                 {
                     itemAction(currentTreeViewItem);
                 }
                 if (currentItem != null) // this handles the scenario where some TreeViewItems are already collapsed
                 {
-                    foreach (object dataItem in currentItem.Items)
+                    foreach (var dataItem in currentItem.Items)
                     {
-                        ItemsControl childElement = (ItemsControl)currentItem.ItemContainerGenerator.ContainerFromItem(dataItem);
+                        var childElement = (ItemsControl)currentItem.ItemContainerGenerator.ContainerFromItem(dataItem);
 
                         itemsControlStack.Push(childElement);
                     }
@@ -477,7 +477,7 @@ namespace a7SqlTools.Controls
         {
             ApplyActionToAllTreeViewItems(treeView, itemsControl =>
             {
-                object equalItem = itemsControl.Header;
+                var equalItem = itemsControl.Header;
                 if (isValue)
                 {
                     equalItem = BindingHelper.Eval<object>(equalItem, treeView.SelectedValuePath);
@@ -496,7 +496,7 @@ namespace a7SqlTools.Controls
                     itemsControl.IsSelected = false;
                 }
 
-                bool wasExpanded = itemsControl.IsExpanded;
+                var wasExpanded = itemsControl.IsExpanded;
                 itemsControl.IsExpanded = true;
 
                 UIHelper.WaitForPriority(DispatcherPriority.ContextIdle);

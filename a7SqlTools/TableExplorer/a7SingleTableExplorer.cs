@@ -58,10 +58,10 @@ namespace a7SqlTools.TableExplorer
         {
             Filter2Sql();
             Data = new DataTable();
-            SqlCommand columnsSelect = new SqlCommand(this._combinedSql, _sqlConnection);
+            var columnsSelect = new SqlCommand(this._combinedSql, _sqlConnection);
             
             DataAdapter = new SqlDataAdapter(columnsSelect);
-            SqlCommandBuilder sqlBuilder = new SqlCommandBuilder(DataAdapter);
+            var sqlBuilder = new SqlCommandBuilder(DataAdapter);
             DataAdapter.UpdateCommand = sqlBuilder.GetUpdateCommand();
             DataAdapter.InsertCommand = sqlBuilder.GetInsertCommand();
             DataAdapter.DeleteCommand = sqlBuilder.GetDeleteCommand();
@@ -80,9 +80,9 @@ namespace a7SqlTools.TableExplorer
 
             if (FilterFields != null)
             {
-                string where = "";
-                bool isFirst = true;
-                foreach (KeyValuePair<string, string> kv in FilterFields)
+                var where = "";
+                var isFirst = true;
+                foreach (var kv in FilterFields)
                 {
                     if (isFirst)
                         isFirst = false;
@@ -101,10 +101,10 @@ namespace a7SqlTools.TableExplorer
                 }
                 else
                 {
-                    int pos1 = this.SQL.IndexOf("WHERE", StringComparison.CurrentCultureIgnoreCase);
-                    int pos2 = pos1 + "WHERE".Length;
-                    string beforeWhere = this.SQL.Substring(0, pos2 + 1);
-                    string afterWhere = this.SQL.Substring(pos2 + 1);
+                    var pos1 = this.SQL.IndexOf("WHERE", StringComparison.CurrentCultureIgnoreCase);
+                    var pos2 = pos1 + "WHERE".Length;
+                    var beforeWhere = this.SQL.Substring(0, pos2 + 1);
+                    var afterWhere = this.SQL.Substring(pos2 + 1);
                     this._combinedSql = beforeWhere + " ( " + where + " ) AND ( " + afterWhere + " ) ";
                 }
             }
@@ -122,7 +122,7 @@ namespace a7SqlTools.TableExplorer
         // Create the OnPropertyChanged method to raise the event
         protected void OnPropertyChanged(string name)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(name));
@@ -135,7 +135,7 @@ namespace a7SqlTools.TableExplorer
         {
             try
             {
-                int ret = DataAdapter.Update(Data);
+                var ret = DataAdapter.Update(Data);
             //    DataAdapter.Fill(Data);
             }
             catch (Exception ex)

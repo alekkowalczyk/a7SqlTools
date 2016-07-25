@@ -26,7 +26,7 @@ namespace a7SqlTools.Utils
 
             if (type != null)
             {
-                FieldInfo fieldInfo = type.GetField(propertyName + "Property",
+                var fieldInfo = type.GetField(propertyName + "Property",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
 
                 if (fieldInfo != null)
@@ -66,7 +66,7 @@ namespace a7SqlTools.Utils
                 throw new ArgumentException("Type of dependency property is incompatible with value.");
             }
 
-            BaseValueSource source = DependencyPropertyHelper.GetValueSource(o, property).BaseValueSource;
+            var source = DependencyPropertyHelper.GetValueSource(o, property).BaseValueSource;
             if (source != BaseValueSource.Local)
             {
                 o.SetValue(property, value);

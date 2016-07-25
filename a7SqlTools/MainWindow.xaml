@@ -69,6 +69,24 @@
                         LargeIcon="Images/data128.png"
                         Command="{Binding SelectedItem.CompareData}" Header="Compare data"></Fluent:Button>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Table explorer"
+                                       Visibility="{Binding SelectedItem, 
+                                                        Converter={StaticResource typeToVisibility},
+                                                        ConverterParameter={x:Type tableExplorer:a7TableExplorer}}">
+                    <Fluent:Button
+                        Icon="Images/remove128.png"
+                        LargeIcon="Images/remove128.png"
+                        Command="{Binding SelectedItem.Remove}" Header="Remove explorer"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Db Search"
+                                       Visibility="{Binding SelectedItem, 
+                                                        Converter={StaticResource typeToVisibility},
+                                                        ConverterParameter={x:Type dbSearch:a7DbSearchEngine}}">
+                    <Fluent:Button
+                        Icon="Images/remove128.png"
+                        LargeIcon="Images/remove128.png"
+                        Command="{Binding SelectedItem.Remove}" Header="Remove db search"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
         <Grid Grid.Row="1">

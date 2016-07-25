@@ -77,7 +77,7 @@
                 </ListBox>
                 <GridSplitter ResizeDirection="Columns" Grid.Column="3" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
                 <DockPanel  Grid.Column="4" >
-                    <Button x:Name="bCommit" DockPanel.Dock="Bottom" Click="bCommit_Click">Commit</Button>
+                    <Button x:Name="bCommit" DockPanel.Dock="Bottom" Click="bCommit_Click">Commit changes</Button>
                     <dg:a7DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="dg"
                               AutoGenerateColumns="True"
                               ItemsSource="{Binding SelectedTable}"

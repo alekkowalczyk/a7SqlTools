@@ -135,7 +135,7 @@ namespace a7SqlTools.DbSearch.Views
         private void bSeperatorEnter_Click(object sender, RoutedEventArgs e)
         {
             this.tbSeperator.SetCurrentValue(TextBox.TextProperty, "[enter]");
-            BindingExpression be = BindingOperations.GetBindingExpression(tbSeperator, TextBox.TextProperty);
+            var be = BindingOperations.GetBindingExpression(tbSeperator, TextBox.TextProperty);
             if (be != null) be.UpdateSource();
         }
 

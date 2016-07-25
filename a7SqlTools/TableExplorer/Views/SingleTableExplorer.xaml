@@ -26,7 +26,7 @@
         <dg:a7DataGrid Grid.Row="1" AutoGenerateColumns="True" VerticalAlignment="Stretch" TableExplorer="{Binding}"  ItemsSource="{Binding Data}" x:Name="dgDataGrid"></dg:a7DataGrid>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
             <Button x:Name="bFilter" Height="20" Width="50" Click="bFilter_Click">Filter</Button>
-            <Button x:Name="bCommitChanges" Height="20" Width="50" Click="bCommitChanges_Click">Commit</Button>
+            <Button x:Name="bCommitChanges" Height="20" Width="100" Click="bCommitChanges_Click">Commit changes</Button>
         </StackPanel>
     </Grid>
 </UserControl>

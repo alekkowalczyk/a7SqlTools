@@ -51,9 +51,9 @@ namespace a7SqlTools.Utils
         /// <param name="o">The source.</param>
         public static void UpdateSourceDefaultProperty(this DependencyObject o)
         {
-            Type type = o.GetType();
-            DependencyProperty prop = GetDefaultDependencyProperty(type);
-            BindingExpression exp = BindingOperations.GetBindingExpression(o, prop);
+            var type = o.GetType();
+            var prop = GetDefaultDependencyProperty(type);
+            var exp = BindingOperations.GetBindingExpression(o, prop);
             if (exp != null)
             {
                 exp.UpdateSource();
@@ -67,7 +67,7 @@ namespace a7SqlTools.Utils
         /// <param name="prop">The property.</param>
         public static void UpdateSourceProperty(this DependencyObject o, DependencyProperty prop)
         {
-            BindingExpressionBase exp = BindingOperations.GetBindingExpressionBase(o, prop);
+            var exp = BindingOperations.GetBindingExpressionBase(o, prop);
             if (exp != null)
             {
                 exp.UpdateSource();
@@ -81,7 +81,7 @@ namespace a7SqlTools.Utils
         /// <param name="prop">The prop.</param>
         public static void UpdateTarget(this DependencyObject o, DependencyProperty prop)
         {
-            BindingExpressionBase exp = BindingOperations.GetBindingExpressionBase(o, prop);
+            var exp = BindingOperations.GetBindingExpressionBase(o, prop);
             if (exp != null)
             {
                 exp.UpdateTarget();
@@ -97,8 +97,8 @@ namespace a7SqlTools.Utils
         /// </returns>
         public static bool HasError(this DependencyObject o)
         {
-            Type type = o.GetType();
-            DependencyProperty prop = GetDefaultDependencyProperty(type);
+            var type = o.GetType();
+            var prop = GetDefaultDependencyProperty(type);
 
             return HasError(o, prop);
         }
@@ -114,7 +114,7 @@ namespace a7SqlTools.Utils
         /// </returns>
         public static bool HasError(this DependencyObject o, DependencyProperty p)
         {
-            BindingExpression exp = BindingOperations.GetBindingExpression(o, p);
+            var exp = BindingOperations.GetBindingExpression(o, p);
 
             return exp.HasError;
         }
@@ -127,7 +127,7 @@ namespace a7SqlTools.Utils
         /// <returns></returns>
         public static ReadOnlyCollection<ValidationError> GetErrors(this DependencyObject root, bool markInvalid)
         {
-            List<ValidationError> errors = new List<ValidationError>();
+            var errors = new List<ValidationError>();
 
             // this will traverse the entire descendant tree since the predicate always returns false
             UIHelper.FindVisualDescendant(root, delegate (DependencyObject o)
@@ -138,7 +138,7 @@ namespace a7SqlTools.Utils
 
             if (markInvalid)
             {
-                foreach (ValidationError error in errors)
+                foreach (var error in errors)
                 {
                     // causes the Validation.ErrorTemplate to appear
                     System.Windows.Controls.Validation.MarkInvalid(
@@ -159,7 +159,7 @@ namespace a7SqlTools.Utils
         {
             DependencyProperty prop = null;
 
-            foreach (DependencyProperty defaultProp in DefaultProperties)
+            foreach (var defaultProp in DefaultProperties)
             {
                 if (defaultProp.OwnerType.IsAssignableFrom(type))
                 {
@@ -170,7 +170,7 @@ namespace a7SqlTools.Utils
 
             if (prop == null)
             {
-                string propertyName = GetDefaultPropertyName(type);
+                var propertyName = GetDefaultPropertyName(type);
                 if (propertyName != null)
                 {
                     prop = DependencyHelper.GetDependencyProperty(type, GetDefaultPropertyName(type));
@@ -189,9 +189,9 @@ namespace a7SqlTools.Utils
         /// </returns>
         public static string GetDefaultPropertyName(Type type)
         {
-            object[] attrs = type.GetCustomAttributes(false);
+            var attrs = type.GetCustomAttributes(false);
 
-            foreach (object attr in attrs)
+            foreach (var attr in attrs)
             {
                 if (attr is ContentPropertyAttribute)
                 {
@@ -222,7 +222,7 @@ namespace a7SqlTools.Utils
                 return default(T);
             }
 
-            Binding binding = new Binding(path);
+            var binding = new Binding(path);
             binding.Source = source;
 
             return Eval<T>(binding);
@@ -238,11 +238,11 @@ namespace a7SqlTools.Utils
         {
             Contract.Requires(binding != null);
 
-            EvalHelper helper = new EvalHelper();
+            var helper = new EvalHelper();
 
             BindingOperations.SetBinding(helper, EvalHelper.ValueProperty, binding);
 
-            T result = (T)helper.Value;
+            var result = (T)helper.Value;
 
             BindingOperations.ClearBinding(helper, EvalHelper.ValueProperty);
 
@@ -293,7 +293,7 @@ namespace a7SqlTools.Utils
         {
             if (passwordLock) return;
 
-            PasswordBox passwordBox = o as PasswordBox;
+            var passwordBox = o as PasswordBox;
             if (passwordBox != null)
             {
                 passwordLock = true;
@@ -306,7 +306,7 @@ namespace a7SqlTools.Utils
         {
             if (passwordLock) return;
 
-            PasswordBox passwordBox = sender as PasswordBox;
+            var passwordBox = sender as PasswordBox;
             if (passwordBox != null)
             {
                 passwordLock = true;
@@ -355,7 +355,7 @@ namespace a7SqlTools.Utils
         {
             if (e.NewValue != null)
             {
-                TextBlock textBlock = o as TextBlock;
+                var textBlock = o as TextBlock;
                 if (textBlock != null)
                 {
                     textBlock.Inlines.AddRange((IEnumerable<Inline>)e.NewValue);

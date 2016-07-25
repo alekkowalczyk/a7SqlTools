@@ -14,8 +14,8 @@ namespace a7SqlTools.Utils
     {
         public static async Task<List<string>> GetDbNames(ServerConnection connection)
         {
-            Server sqlServer = new Server(connection);
-            List<string> dbList = new List<string>();
+            var sqlServer = new Server(connection);
+            var dbList = new List<string>();
             await Task.Run(() =>
             {
                 foreach (var db in sqlServer.Databases)
@@ -30,12 +30,12 @@ namespace a7SqlTools.Utils
         public static bool BackupDatabase(ServerConnection connection, string dataBaseName, string destinationPath, Action<string> log)
         {
             //ServerConnection connection = new ServerConnection(csb.DataSource, csb.UserID, csb.Password);
-            Server sqlServer = new Server(connection);
+            var sqlServer = new Server(connection);
             log("Backup of file '" + destinationPath + "' as database '" + dataBaseName + "'");
-            Backup bkpDatabase = new Backup();
+            var bkpDatabase = new Backup();
             bkpDatabase.Action = BackupActionType.Database;
             bkpDatabase.Database = dataBaseName;
-            BackupDeviceItem bkpDevice = new BackupDeviceItem(destinationPath, DeviceType.File);
+            var bkpDevice = new BackupDeviceItem(destinationPath, DeviceType.File);
             bkpDatabase.Devices.Add(bkpDevice);
             bkpDatabase.SqlBackup(sqlServer);
             return File.Exists(destinationPath);
@@ -46,14 +46,14 @@ namespace a7SqlTools.Utils
         public static bool RestoreDatabase(ServerConnection connection, string databaseName, string backUpFile, Action<string> log, bool asReadOnly = false)//, String serverName, String userName, String password)
         {
             var path = Path.GetDirectoryName(backUpFile);
-            Server sqlServer = new Server(connection);
-            Restore rstDatabase = new Restore();
+            var sqlServer = new Server(connection);
+            var rstDatabase = new Restore();
             rstDatabase.Action = RestoreActionType.Database;
             rstDatabase.Database = databaseName;
-            BackupDeviceItem bkpDevice = new BackupDeviceItem(backUpFile, DeviceType.File);
+            var bkpDevice = new BackupDeviceItem(backUpFile, DeviceType.File);
             rstDatabase.Devices.Add(bkpDevice);
             rstDatabase.ReplaceDatabase = true;
-            System.Data.DataTable logicalRestoreFiles = rstDatabase.ReadFileList(sqlServer);
+            var logicalRestoreFiles = rstDatabase.ReadFileList(sqlServer);
             var mdfFileName = logicalRestoreFiles.Rows[0][0].ToString();
             var ldfFileName = logicalRestoreFiles.Rows[1][0].ToString();
             var mdfFileFullPath = logicalRestoreFiles.Rows[0][1].ToString();
@@ -108,7 +108,7 @@ namespace a7SqlTools.Utils
 
         public static void SetUserForDataBase(ServerConnection connection, string databaseName, string userName, Action<string> log)
         {
-            Server server = new Server(connection);
+            var server = new Server(connection);
             if (userName.IndexOf(@"\") == -1)
                 userName = System.Environment.MachineName + @"\" + userName;
             var db = server.Databases[databaseName];
@@ -117,7 +117,7 @@ namespace a7SqlTools.Utils
             if (!server.Logins.Contains(userName))
             {
                 log("DB Server doesn't have login for user '" + userName + "' - creating");
-                Login login = new Login(server, userName);
+                var login = new Login(server, userName);
                 login.LoginType = LoginType.WindowsUser;
                 login.Create();
             }
@@ -134,14 +134,14 @@ namespace a7SqlTools.Utils
 
         public static bool CheckDatabaseExists(ServerConnection connection, string databaseName)
         {
-            Server server = new Server(connection);
+            var server = new Server(connection);
             var db = server.Databases[databaseName];
             return db != null;
         }
 
         public static void DeleteDatabase(ServerConnection connection, string databaseName, Action<string> log)
         {
-            Server server = new Server(connection);
+            var server = new Server(connection);
             log("Deleting database:" + databaseName);
             server.KillDatabase(databaseName);
         }

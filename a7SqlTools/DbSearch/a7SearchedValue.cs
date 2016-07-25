@@ -50,7 +50,7 @@ namespace a7SqlTools.DbSearch
         {
             try
             {
-                int ret = adapters[tableName].Update(SearchResultSet, tableName);
+                var ret = adapters[tableName].Update(SearchResultSet, tableName);
              //   adapters[tableName].Fill(SearchResultSet, tableName);
             }
             catch (Exception ex)

@@ -111,10 +111,10 @@ namespace a7SqlTools.Controls.DataGrids
 
         private static void TableExplorerPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            a7DataGrid fdg = o as a7DataGrid;
+            var fdg = o as a7DataGrid;
             if(fdg != null)
             {
-                a7SingleTableExplorer gte = e.NewValue as a7SingleTableExplorer;
+                var gte = e.NewValue as a7SingleTableExplorer;
                 if (gte != null)
                 {
                     gte.FilterFields = fdg.columnFilters;
@@ -130,10 +130,10 @@ namespace a7SqlTools.Controls.DataGrids
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             // Get the textbox
-            TextBox filterTextBox = e.OriginalSource as TextBox;
+            var filterTextBox = e.OriginalSource as TextBox;
 
             // Get the header of the textbox
-            DataGridColumnHeader header = TryFindParent<DataGridColumnHeader>(filterTextBox);
+            var header = TryFindParent<DataGridColumnHeader>(filterTextBox);
             if (header != null)
             {
                 UpdateFilter(filterTextBox, header);
@@ -150,7 +150,7 @@ namespace a7SqlTools.Controls.DataGrids
         {
             // Try to get the property bound to the column.
             // This should be stored as datacontext.
-            string columnBinding = header.DataContext != null ? header.DataContext.ToString() : "";
+            var columnBinding = header.DataContext != null ? header.DataContext.ToString() : "";
 
             // Set the filter 
             if (!String.IsNullOrEmpty(columnBinding))
@@ -167,7 +167,7 @@ namespace a7SqlTools.Controls.DataGrids
         private void ApplyFilters()
         {
             // Get the view
-            ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
+            var view = CollectionViewSource.GetDefaultView(ItemsSource);
             if (view != null)
             {
                 if (this.TableExplorer != null)
@@ -177,12 +177,12 @@ namespace a7SqlTools.Controls.DataGrids
                 }
                 else
                 {
-                    DataView dv = view.SourceCollection as DataView;
+                    var dv = view.SourceCollection as DataView;
                     if (dv != null)
                     {
-                        string rowFilter = "";
-                        bool isFirst = true;
-                        foreach (KeyValuePair<string, string> kv in this.columnFilters)
+                        var rowFilter = "";
+                        var isFirst = true;
+                        foreach (var kv in this.columnFilters)
                         {
                             if(isFirst)
                                 isFirst=false;
@@ -229,7 +229,7 @@ namespace a7SqlTools.Controls.DataGrids
         {
             DataGridColumnHeadersPresenter presenter = null;
 
-            Control sv = this.Template.FindName("DG_ScrollViewer", this) as Control;
+            var sv = this.Template.FindName("DG_ScrollViewer", this) as Control;
             if (sv != null)
             {
                 presenter = sv.Template.FindName("PART_ColumnHeadersPresenter", sv) as DataGridColumnHeadersPresenter;
@@ -238,13 +238,13 @@ namespace a7SqlTools.Controls.DataGrids
             DataGridColumnHeader header = null;
             if (presenter != null)
             {
-                for (int i = 0; i < this.Columns.Count; i++)
+                for (var i = 0; i < this.Columns.Count; i++)
                 {
                     header = (DataGridColumnHeader)presenter.ItemContainerGenerator.ContainerFromIndex(i);
                     if (header != null)
                     {
-                        TextBox tb = FindVisualChildByName<TextBox>(header, "filterTextBox");
-                        string columnName = header.Column.Header.ToString();
+                        var tb = FindVisualChildByName<TextBox>(header, "filterTextBox");
+                        var columnName = header.Column.Header.ToString();
                         if (this.columnFilters.ContainsKey(columnName))
                             tb.Text = this.columnFilters[columnName];
                     }
@@ -263,13 +263,13 @@ namespace a7SqlTools.Controls.DataGrids
           where T : DependencyObject
         {
             //get parent item
-            DependencyObject parentObject = GetParentObject(child);
+            var parentObject = GetParentObject(child);
 
             //we've reached the end of the tree
             if (parentObject == null) return null;
 
             //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
+            var parent = parentObject as T;
             if (parent != null)
             {
                 return parent;
@@ -292,14 +292,14 @@ namespace a7SqlTools.Controls.DataGrids
         public static DependencyObject GetParentObject(DependencyObject child)
         {
             if (child == null) return null;
-            ContentElement contentElement = child as ContentElement;
+            var contentElement = child as ContentElement;
 
             if (contentElement != null)
             {
-                DependencyObject parent = ContentOperations.GetParent(contentElement);
+                var parent = ContentOperations.GetParent(contentElement);
                 if (parent != null) return parent;
 
-                FrameworkContentElement fce = contentElement as FrameworkContentElement;
+                var fce = contentElement as FrameworkContentElement;
                 return fce != null ? fce.Parent : null;
             }
 
@@ -309,17 +309,17 @@ namespace a7SqlTools.Controls.DataGrids
 
         public static T FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-                string controlName = child.GetValue(Control.NameProperty) as string;
+                var controlName = child.GetValue(Control.NameProperty) as string;
                 if (controlName == name)
                 {
                     return child as T;
                 }
                 else
                 {
-                    T result = FindVisualChildByName<T>(child, name);
+                    var result = FindVisualChildByName<T>(child, name);
                     if (result != null)
                         return result;
                 }

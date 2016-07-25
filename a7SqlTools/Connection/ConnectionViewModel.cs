@@ -46,7 +46,7 @@ namespace a7SqlTools.Connection
             if(dlg.ShowDialog() == true)
             {
                 ConnectionData.DbSearches.Add(new DbSearchData { DatabaseName = dlg.SelectedDatabaseName, CreatedAt = DateTime.Now });
-                this.Children.Add(new a7DbSearchEngine(dlg.SelectedDatabaseName, ConnectionData));
+                this.Children.Add(new a7DbSearchEngine(dlg.SelectedDatabaseName, ConnectionData, this));
                 this.IsExpanded = true;
                 Config.ConfigService.Instance.UpdateConnection(this.ToConfigModel());
             }
@@ -68,7 +68,7 @@ namespace a7SqlTools.Connection
             if (dlg.ShowDialog() == true)
             {
                 ConnectionData.TableExplorers.Add(new TableExplorerData { DatabaseName = dlg.SelectedDatabaseName, CreatedAt = DateTime.Now });
-                this.Children.Add(new a7TableExplorer(dlg.SelectedDatabaseName, ConnectionData));
+                this.Children.Add(new a7TableExplorer(dlg.SelectedDatabaseName, ConnectionData, this));
                 this.IsExpanded = true;
                 Config.ConfigService.Instance.UpdateConnection(this.ToConfigModel());
             }
@@ -97,14 +97,31 @@ namespace a7SqlTools.Connection
                 var dbSearchData = childData as DbSearchData;
                 if(dbSearchData != null)
                 {
-                    this.Children.Add(new a7DbSearchEngine(dbSearchData.DatabaseName, ConnectionData));
+                    this.Children.Add(new a7DbSearchEngine(dbSearchData.DatabaseName, ConnectionData, this));
                     continue;
                 }
                 var tblExpData = childData as TableExplorerData;
                 if (tblExpData != null)
                 {
-                    this.Children.Add(new a7TableExplorer(tblExpData.DatabaseName, ConnectionData));
+                    this.Children.Add(new a7TableExplorer(tblExpData.DatabaseName, ConnectionData, this));
                 }
+            }
+        }
+
+        public void RemoveChild(object child)
+        {
+            this.Children.Remove(child);
+            var dbSearch = child as a7DbSearchEngine;
+            if (dbSearch != null)
+            {
+               ConnectionData.DbSearches.RemoveItem(d => d.DatabaseName == dbSearch.Name);
+               Config.ConfigService.Instance.UpdateConnection(this.ToConfigModel());
+            }
+            var tableExplorer = child as a7TableExplorer;
+            if (tableExplorer != null)
+            {
+                ConnectionData.TableExplorers.RemoveItem(d => d.DatabaseName == tableExplorer.DbName);
+                Config.ConfigService.Instance.UpdateConnection(this.ToConfigModel());
             }
         }
 

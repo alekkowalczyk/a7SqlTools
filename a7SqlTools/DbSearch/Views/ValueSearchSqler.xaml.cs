@@ -43,8 +43,8 @@ namespace a7SqlTools.DbSearch.Views
         {
             try
             {
-                string sql = this.tbQueryParsed.Text;
-                string ret = "";
+                var sql = this.tbQueryParsed.Text;
+                var ret = "";
                 if (sql.ToLower().Trim().StartsWith("select"))
                     ret = this.DBSearch.GetValue(sql);
                 else

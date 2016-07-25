@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using a7SqlTools.Connection;
 
 namespace a7SqlTools.TableExplorer
 {
@@ -35,15 +37,39 @@ namespace a7SqlTools.TableExplorer
             }
             set
             {
+                var oldValue = _selectedTableName;
                 _selectedTableName = value;
+                if (oldValue != value)
+                {
+                    SelectedTable = new a7SingleTableExplorer(_selectedTableName, SqlConnection);
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private a7SingleTableExplorer _selectedTable;
+        public a7SingleTableExplorer SelectedTable
+        {
+            get { return _selectedTable; }
+            set
+            {
+                _selectedTable = value;
                 OnPropertyChanged();
             }
         }
 
         public string DbName { get; private set; }
 
-        public a7TableExplorer(string dbName, ConnectionData connectionData)
+        public ICommand Remove => new a7LambdaCommand(o =>
         {
+            _parentVm.RemoveChild(this);
+        });
+
+        private readonly ConnectionViewModel _parentVm;
+
+        public a7TableExplorer(string dbName, ConnectionData connectionData, ConnectionViewModel parentVm)
+        {
+            _parentVm = parentVm;
             DbName = dbName;
             _connectionString = ConnectionStringGenerator.Get(connectionData, dbName);
             RefreshDictTables("");
@@ -52,14 +78,14 @@ namespace a7SqlTools.TableExplorer
         public void RefreshDictTables(string filter)
         {
             var tableNames = new List<string>();
-            DataTable columnNamesWithMacro = new DataTable();
+            var columnNamesWithMacro = new DataTable();
             //SqlCommand columnsSelect = new SqlCommand("select * from INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE ('tbC%')", ExportConfiguration.SqlConnection);
-            string sqlColumns = "select * from INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE ('%" + filter + "%')";
-            SqlCommand columnsSelect = new SqlCommand(sqlColumns, SqlConnection);
-            SqlDataAdapter columnsAdapter = new SqlDataAdapter(columnsSelect);
+            var sqlColumns = "select * from INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME LIKE ('%" + filter + "%')";
+            var columnsSelect = new SqlCommand(sqlColumns, SqlConnection);
+            var columnsAdapter = new SqlDataAdapter(columnsSelect);
             columnsAdapter.Fill(columnNamesWithMacro);
             
-            string lastTableName = "";
+            var lastTableName = "";
             foreach (DataRow dr in columnNamesWithMacro.Rows)
             {
                 if (dr["TABLE_NAME"].ToString() != lastTableName)
