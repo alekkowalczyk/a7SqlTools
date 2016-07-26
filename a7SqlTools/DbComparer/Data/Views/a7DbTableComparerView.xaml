@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="a7SqlTools.DbComparer.Data.Views.a7DbTableComparerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:a7SqlTools.Converters"
+             xmlns:ut="clr-namespace:a7SqlTools.Utils"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+            </ResourceDictionary.MergedDictionaries>
+            <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
+            <conv:NegateBoolToVisibilityConverter x:Key="nb2v"></conv:NegateBoolToVisibilityConverter>
+            <conv:CollectionToStringConverter x:Key="c2s"></conv:CollectionToStringConverter>
+            <conv:CollectionZeroToVisibility x:Key="c2v"></conv:CollectionZeroToVisibility>
+            <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        <DockPanel VerticalAlignment="Stretch">
+            <TextBlock DockPanel.Dock="Top" x:Name="tbError" Visibility="{Binding IsOK, Converter={StaticResource nb2v}}" Margin="3,0,5,0"
+                           Text="{Binding ErrorText}" FontWeight="Bold" Foreground="Red"></TextBlock>
+            <StackPanel DockPanel.Dock="Top" x:Name="spComparison" Visibility="{Binding IsOK, Converter={StaticResource b2v}}" >
+                <StackPanel Orientation="Horizontal">
+                     <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5"></CheckBox>
+                    <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Top"></Label>
+                    <Button Command="{Binding AnalyzeTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                            Visibility="{Binding IsAnalyzedRows, Converter={StaticResource nb2v}}"   
+                            >Analyze Table</Button>
+                <Button Command="{Binding ShowTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                        Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
+                        >Show Table</Button>
+                <Button Command="{Binding HideTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                            Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
+                                >Hide table</Button>
+                    <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"    ></Label>
+                    <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
+                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
+                    </Button>
+                    <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
+                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
+                    <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
+                              ToolTip="Merge with delete of records that don't exist in source">With delete</CheckBox>
+                    <Expander IsExpanded="False" Header="Structure" Visibility="{Binding IsDifferentStructure, Converter={StaticResource b2v}}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal"  Visibility="{Binding ColumnsOnlyInA, Converter={StaticResource c2v}}">
+                                <TextBlock Text="{Binding DbAName, StringFormat=Columns only in db {0}:}"></TextBlock>
+                                <TextBox Text="{Binding ColumnsOnlyInA, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding ColumnsOnlyInB, Converter={StaticResource c2v}}">
+                                <TextBlock Text="{Binding DbBName, StringFormat=Columns only in db {0}:}"></TextBlock>
+                                <TextBox Text="{Binding ColumnsOnlyInB, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander>
+
+            </StackPanel>
+        </StackPanel>
+        <Rectangle DockPanel.Dock="Bottom"  Fill="Black" HorizontalAlignment="Stretch" Height="1"></Rectangle>
+                <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
+                                  ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
+                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                          VirtualizingPanel.IsVirtualizing="False"
+                                  IsReadOnly="True"
+                                  >
+
+                </DataGrid>
+
+            
+    </DockPanel>
+
+</UserControl>

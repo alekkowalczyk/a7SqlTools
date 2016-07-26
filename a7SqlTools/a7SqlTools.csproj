@@ -138,14 +138,78 @@
       <DependentUpon>ConnectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ExTreeViewHelper.cs" />
+    <Compile Include="Converters\a7MergeDirectionToColor.cs" />
     <Compile Include="Converters\BoolToVisibility.cs" />
+    <Compile Include="Converters\CollectionToStringConverter.cs" />
+    <Compile Include="Converters\CollectionZeroToVisibility.cs" />
     <Compile Include="Converters\FormattedTextConverter.cs" />
     <Compile Include="Converters\FormattedTextTypeConverter.cs" />
     <Compile Include="Converters\IsTypeToBool.cs" />
     <Compile Include="Converters\IsTypeToVisibility.cs" />
     <Compile Include="Converters\NegateBool.cs" />
+    <Compile Include="Converters\NegateBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToFalse.cs" />
     <Compile Include="Converters\ValueConverter.cs" />
+    <Compile Include="DbComparer\a7DbComparerEnums.cs" />
+    <Compile Include="DbComparer\a7GeneralDbComparerVM.cs" />
+    <Compile Include="DbComparer\Data\a7ComparisonField.cs" />
+    <Compile Include="DbComparer\Data\a7ComparisonRow.cs" />
+    <Compile Include="DbComparer\Data\a7DbDataComparer.cs" />
+    <Compile Include="DbComparer\Data\a7DbTableComparer.cs" />
+    <Compile Include="DbComparer\Data\Views\a7ComparisonFieldColumn.cs" />
+    <Compile Include="DbComparer\Data\Views\a7ComparisonFieldControl.xaml.cs">
+      <DependentUpon>a7ComparisonFieldControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7ComparisonRowHeaderColumn.cs" />
+    <Compile Include="DbComparer\Data\Views\a7CompMergeButtonsColumn.cs" />
+    <Compile Include="DbComparer\Data\Views\a7CompMergeButtonsControl.xaml.cs">
+      <DependentUpon>a7CompMergeButtonsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7DbDataComparerWindow.xaml.cs">
+      <DependentUpon>a7DbDataComparerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7DbTableComparerView.xaml.cs">
+      <DependentUpon>a7DbTableComparerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7DetailViewWindow.xaml.cs">
+      <DependentUpon>a7DetailViewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7GeneratedQueryWindow.xaml.cs">
+      <DependentUpon>a7GeneratedQueryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Struct\a7DbStructureComparer.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableFieldCopyTo.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableFieldDifferences.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableFieldDifferent.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableFieldRemove.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableOnlyIn.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableOnlyInRemove.cs" />
+    <Compile Include="DbComparer\Struct\a7DbTableUtils.cs" />
+    <Compile Include="DbComparer\Struct\a7IDbTableField.cs" />
+    <Compile Include="DbComparer\Struct\Views\a7DbSelection.xaml.cs">
+      <DependentUpon>a7DbSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Struct\Views\a7DbStructCompResultWnd.xaml.cs">
+      <DependentUpon>a7DbStructCompResultWnd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml.cs">
+      <DependentUpon>a7DbTableFieldDifferencesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Struct\Views\a7DbTableOnlyInView.xaml.cs">
+      <DependentUpon>a7DbTableOnlyInView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Struct\Views\a7TableFieldDifferentView.xaml.cs">
+      <DependentUpon>a7TableFieldDifferentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Views\a7DbDataComprarerView.xaml.cs">
+      <DependentUpon>a7DbDataComprarerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Views\a7DbStructComparerView.xaml.cs">
+      <DependentUpon>a7DbStructComparerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Views\a7GeneralDbComparerView.xaml.cs">
+      <DependentUpon>a7GeneralDbComparerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DbSearch\a7DbSearchEngine.cs" />
     <Compile Include="Dialogs\DbSelector.xaml.cs">
       <DependentUpon>DbSelector.xaml</DependentUpon>
@@ -157,6 +221,7 @@
     <Compile Include="TableExplorer\Views\TableExplorer.xaml.cs">
       <DependentUpon>TableExplorer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\a7BindableColumnsBehaviour.cs" />
     <Compile Include="Utils\a7DbUtils.cs" />
     <Compile Include="Utils\a7LambdaCommand.cs" />
     <Compile Include="DbSearch\a7SearchedValue.cs" />
@@ -193,6 +258,62 @@
     <Compile Include="Utils\UIHelper.cs" />
     <Compile Include="Utils\ViewModelBase.cs" />
     <Page Include="Connection\Views\ConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7ComparisonFieldControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7CompMergeButtonsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7DbDataComparerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7DbTableComparerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7DetailViewWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7GeneratedQueryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Struct\Views\a7DbSelection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Struct\Views\a7DbStructCompResultWnd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Struct\Views\a7DbTableOnlyInView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Struct\Views\a7TableFieldDifferentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Views\a7DbDataComprarerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DbComparer\Views\a7DbStructComparerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DbComparer\Views\a7GeneralDbComparerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,15 @@
+﻿<Window x:Class="a7SqlTools.DbComparer.Data.Views.a7GeneratedQueryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="a7GeneratedQueryWindow" Height="500" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <!--<Button x:Name="bExecuteQuery"  Width="80"
+                    HorizontalAlignment="Right" Margin="2">Execute</Button>-->
+            <Button x:Name="bClose" Click="bClose_Click"  Width="80"
+                    HorizontalAlignment="Right" Margin="2">Close</Button>
+        </StackPanel>
+        <TextBox IsReadOnly="True" x:Name="tb" 
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"></TextBox>
+    </DockPanel>
+</Window>

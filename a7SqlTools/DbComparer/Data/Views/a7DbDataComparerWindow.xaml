@@ -1,0 +1,65 @@
+﻿<Window x:Class="a7SqlTools.DbComparer.Data.Views.a7DbDataComparerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:u="clr-namespace:a7SqlTools.DbComparer.Data.Views"
+        xmlns:conv="clr-namespace:a7SqlTools.Converters"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ut="clr-namespace:a7SqlTools.Utils"
+        x:Name="me"
+        Title="a7DbDataComparerWindow" Height="680" Width="900">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                
+            </ResourceDictionary.MergedDictionaries>
+            <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
+            <conv:CollectionToStringConverter x:Key="c2s"></conv:CollectionToStringConverter>
+            <conv:CollectionZeroToVisibility x:Key="c2v"></conv:CollectionZeroToVisibility>
+            <conv:NegateBoolToVisibilityConverter x:Key="nb2v"></conv:NegateBoolToVisibilityConverter>
+            <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Command="{Binding ShowGeneratedQuery}" Margin="2">Show generated query</Button>
+            <TextBlock Background="LightBlue" Margin="2" FontWeight="Bold">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="A:{0}, B:{1}">
+                        <Binding Path="DbAName"></Binding>
+                        <Binding Path="DbBName"></Binding>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
+                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
+            </Button>
+            <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
+                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
+            <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
+                              ToolTip="Merge with delete of records that don't exist in source">With delete</CheckBox>
+        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}">
+                    <TextBlock Text="{Binding DbAName, StringFormat=Tables only in db {0}:}"></TextBlock>
+                    <TextBox Text="{Binding TableNamesOnlyInA, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding TableNamesOnlyInB, Converter={StaticResource c2v}}">
+                    <TextBlock Text="{Binding DbBName, StringFormat=Tables only in db {0}:}"></TextBlock>
+                    <TextBox Text="{Binding TableNamesOnlyInB, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Tables}" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                     MaxWidth="{Binding ActualWidth, ElementName=me}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <u:a7DbTableComparerView MaxHeight="600" Margin="0" Padding="0"  Visibility="{Binding IsDifferentData, Converter={StaticResource b2v}}" VerticalAlignment="Stretch"
+                                                 VerticalContentAlignment="Stretch"></u:a7DbTableComparerView>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

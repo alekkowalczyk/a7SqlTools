@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="a7SqlTools.DbComparer.Data.Views.a7CompMergeButtonsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:a7SqlTools.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="23" d:DesignWidth="60">
+    <UserControl.Resources>
+        <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
+        <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="{Binding AtoBCaption}"  Width="30"
+                Visibility="{Binding IsDifferent, Converter={StaticResource b2v}}"                
+                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
+        </Button>
+        <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="{Binding BtoACaption}"  Width="30"
+                Visibility="{Binding IsDifferent, Converter={StaticResource b2v}}"
+                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,6 @@
+﻿<Window x:Class="a7SqlTools.DbComparer.Data.Views.a7DetailViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="a7DetailViewWindow" Height="550" Width="800">
+    <TextBox IsReadOnly="True" x:Name="tb" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"></TextBox>
+</Window>
