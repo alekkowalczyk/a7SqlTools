@@ -21,6 +21,8 @@ namespace a7SqlTools.Utils
             progressUp();
         }
 
+        public void UpdateMessage(string str) => _vm.BusyMessage = str;
+
         private async Task progressUp()
         {
             while (_isRunning)

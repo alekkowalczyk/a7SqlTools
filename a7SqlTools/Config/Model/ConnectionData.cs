@@ -29,10 +29,18 @@ namespace a7SqlTools.Config.Model
         [JsonProperty("tableExplorers")]
         public List<TableExplorerData> TableExplorers { get; set; }
 
+        [JsonProperty("structComparers")]
+        public List<StructComparerData> StructComparers { get; set; }
+
+        [JsonProperty("dataComparers")]
+        public List<DataComparerData> DataComparers { get; set; }
+
         public ConnectionData()
         {
             DbSearches = new List<DbSearchData>();
             TableExplorers = new List<TableExplorerData>();
+            StructComparers = new List<StructComparerData>();
+            DataComparers = new List<DataComparerData>();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace a7SqlTools.DbSearch
             }
             set { _dictTables = value;  OnPropertyChanged(); }
         }
-        
+
         //=============
         //search props:
         public string Seperator { get; set;}

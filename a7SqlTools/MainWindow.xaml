@@ -11,10 +11,14 @@
         xmlns:dbSearchViews="clr-namespace:a7SqlTools.DbSearch.Views"
                      xmlns:tableExplorer="clr-namespace:a7SqlTools.TableExplorer"
                      xmlns:tableExViews="clr-namespace:a7SqlTools.TableExplorer.Views"
+                     xmlns:structComparer="clr-namespace:a7SqlTools.DbComparer.Struct"
+                     xmlns:structComparerViews="clr-namespace:a7SqlTools.DbComparer.Struct.Views"
+                     xmlns:dataComparer="clr-namespace:a7SqlTools.DbComparer.Data"
+                     xmlns:dataComparerViews="clr-namespace:a7SqlTools.DbComparer.Data.Views"
         xmlns:main="clr-namespace:a7SqlTools.MainViews"
         Icon="logo32.ico"
         x:Name="me"
-        Title="A7 SqlTools" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="508" Width="964">
+        Title="A7 SqlTools (beta)" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="508" Width="964">
     <Fluent:RibbonWindow.Resources>
         <conv:NegateBool x:Key="negate"></conv:NegateBool>
         <conv:NullToCollapsedVisibility x:Key="nullToCollapsed" />
@@ -87,6 +91,32 @@
                         LargeIcon="Images/remove128.png"
                         Command="{Binding SelectedItem.Remove}" Header="Remove db search"></Fluent:Button>
                 </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Structure comparer"
+                                       Visibility="{Binding SelectedItem, 
+                                                        Converter={StaticResource typeToVisibility},
+                                                        ConverterParameter={x:Type structComparer:a7DbStructureComparerVM}}">
+                    <Fluent:Button
+                        Icon="Images/remove128.png"
+                        LargeIcon="Images/remove128.png"
+                        Command="{Binding SelectedItem.Remove}" Header="Remove comparison"></Fluent:Button>
+                    <Fluent:Button
+                        Icon="Images/structure128.png"
+                        LargeIcon="Images/structure128.png"
+                        Command="{Binding SelectedItem.CompareCommand}" Header="Compare structure again"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Data comparer"
+                                       Visibility="{Binding SelectedItem, 
+                                                        Converter={StaticResource typeToVisibility},
+                                                        ConverterParameter={x:Type dataComparer:a7DbDataComparerVM}}">
+                    <Fluent:Button
+                        Icon="Images/remove128.png"
+                        LargeIcon="Images/remove128.png"
+                        Command="{Binding SelectedItem.Remove}" Header="Remove comparison"></Fluent:Button>
+                    <Fluent:Button
+                        Icon="Images/data128.png"
+                        LargeIcon="Images/data128.png"
+                        Command="{Binding SelectedItem.CompareCommand}" Header="Compare data again"></Fluent:Button>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
         <Grid Grid.Row="1">
@@ -125,11 +155,23 @@
                             <TextBlock Text="{Binding DbName}" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type structComparer:a7DbStructureComparerVM}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/structure128.png" Height="22" Width="22"  VerticalAlignment="Center"></Image>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type dataComparer:a7DbDataComparerVM}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Image Source="Images/data128.png" Height="22" Width="22"  VerticalAlignment="Center"></Image>
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
                 </c:ExTreeView.Resources>
             </c:ExTreeView>
             <GridSplitter VerticalAlignment="Stretch" HorizontalAlignment="Center" 
                             Grid.Column="1" Width="5"></GridSplitter>
-            <ContentControl Grid.Column="2" Content="{Binding SelectedItem}">
+            <ContentControl Grid.Column="2" Content="{Binding SelectedItem}" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type connection:ConnectionViewModel}">
                         <connView:ConnectionView></connView:ConnectionView>
@@ -139,6 +181,12 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type tableExplorer:a7TableExplorer}">
                         <tableExViews:TableExplorer></tableExViews:TableExplorer>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type structComparer:a7DbStructureComparerVM}">
+                        <structComparerViews:a7DbStructCompView></structComparerViews:a7DbStructCompView>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dataComparer:a7DbDataComparerVM}">
+                        <dataComparerViews:a7DbDataComparerView></dataComparerViews:a7DbDataComparerView>
                     </DataTemplate>
                 </ContentControl.Resources>
                 <ContentControl.Style>

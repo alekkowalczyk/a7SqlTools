@@ -30,5 +30,14 @@ namespace a7SqlTools.Controls
             set { SetValue(SelectedItem_Property, value); }
         }
         public static readonly DependencyProperty SelectedItem_Property = DependencyProperty.Register("SelectedItem_", typeof(object), typeof(ExTreeView), new UIPropertyMetadata(null));
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property == SelectedItem_Property)
+            {
+                this.SelectItem(e.NewValue);
+            }
+        }
     }
 }

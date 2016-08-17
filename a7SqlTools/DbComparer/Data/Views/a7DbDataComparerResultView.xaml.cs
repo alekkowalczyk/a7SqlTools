@@ -17,9 +17,9 @@ namespace a7SqlTools.DbComparer.Data.Views
     /// <summary>
     /// Interaction logic for a7DbDataComparerWindow.xaml
     /// </summary>
-    public partial class a7DbDataComparerWindow : Window
+    public partial class a7DbDataComparerResultView : UserControl
     {
-        public a7DbDataComparerWindow()
+        public a7DbDataComparerResultView()
         {
             InitializeComponent();
         }

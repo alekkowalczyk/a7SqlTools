@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace a7SqlTools.TableExplorer
@@ -62,9 +63,16 @@ namespace a7SqlTools.TableExplorer
             
             DataAdapter = new SqlDataAdapter(columnsSelect);
             var sqlBuilder = new SqlCommandBuilder(DataAdapter);
-            DataAdapter.UpdateCommand = sqlBuilder.GetUpdateCommand();
-            DataAdapter.InsertCommand = sqlBuilder.GetInsertCommand();
-            DataAdapter.DeleteCommand = sqlBuilder.GetDeleteCommand();
+            try
+            {
+                DataAdapter.UpdateCommand = sqlBuilder.GetUpdateCommand();
+                DataAdapter.InsertCommand = sqlBuilder.GetInsertCommand();
+                DataAdapter.DeleteCommand = sqlBuilder.GetDeleteCommand();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             DataAdapter.Fill(Data);
             OnPropertyChanged("Data");
         }

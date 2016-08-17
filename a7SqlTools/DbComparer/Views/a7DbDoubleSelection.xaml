@@ -1,8 +1,8 @@
-﻿<Window x:Class="a7SqlTools.DbComparer.Struct.Views.a7DbSelection"
+﻿<Window x:Class="a7SqlTools.DbComparer.Views.a7DbDoubleSelection"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Name="me"
-        Title="a7DbSelection" Height="150" Width="300">
+        Title="a7DbDoubleSelection" Height="150" Width="300">
   <DockPanel>
     <WrapPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
       <Button x:Name="bOk" Margin="5" Padding="5" Width="80" HorizontalAlignment="Right" Click="bOk_Click">OK</Button>

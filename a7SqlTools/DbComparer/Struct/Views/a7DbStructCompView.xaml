@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="a7SqlTools.DbComparer.Struct.Views.a7DbStructCompView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:a7SqlTools.DbComparer.Struct.Views"
+             xmlns:cv="clr-namespace:a7SqlTools.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <cv:NullToCollapsedVisibility x:Key="NullToCollapsedVisibility"></cv:NullToCollapsedVisibility>
+        <cv:BoolToVisibility x:Key="BoolToVisibility"></cv:BoolToVisibility>
+    </UserControl.Resources>
+    <Grid>
+        <local:a7DbStructCompResultView
+            DataContext="{Binding Comparer}"
+            Visibility="{Binding Converter={StaticResource NullToCollapsedVisibility}}"
+            ></local:a7DbStructCompResultView>
+        <TextBox IsReadOnly="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                 Visibility="{Binding Comparer, Converter={StaticResource NullToCollapsedVisibility}, ConverterParameter=NEGATE}"
+                 Text="{Binding Log}" VerticalScrollBarVisibility="Auto"></TextBox>
+        <Grid Background="White" Visibility="{Binding PleaseClickCompare, Converter={StaticResource BoolToVisibility}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">No comparison performed, please click "Compare structure" in the menu.</Label>
+        </Grid>
+    </Grid>
+</UserControl>
