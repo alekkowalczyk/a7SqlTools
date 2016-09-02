@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace a7SqlTools.TableExplorer

@@ -18,6 +18,7 @@ namespace a7SqlTools
 {
     public class AppViewModel : ViewModelBase
     {
+        public static AppViewModel Instance { get; private set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
 
         private ViewModelBase _selectedItem;
@@ -95,6 +96,7 @@ namespace a7SqlTools
                 if(connItem.ConnectionData!= null)
                     Connections.Add(new ConnectionViewModel(connItem, this));
             }
+            Instance = this; //ugly bad singleton, additionally in an ugly way
         }
         
     }

@@ -58,40 +58,34 @@
       <HintPath>..\packages\Fluent.Ribbon.4.0.3.394\lib\net45\Fluent.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Office.Tools.Excel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfoExtended, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Dmf, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.Dmf.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.RegSvrEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.RegSvrEnum.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.SmoExtended.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.ServiceBrokerEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.SqlClrProvider, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.SqlClrProvider.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Smo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.Smo.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.SmoExtended, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.SmoExtended.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\a7DbCompare\a7DbCompare\bin\Debug\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SQLServer.SMO.12.0.2000.8\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -129,6 +123,8 @@
     <Compile Include="Config\ConfigService.cs" />
     <Compile Include="Config\Model\ConnectionData.cs" />
     <Compile Include="Config\Model\ConnectionItem.cs" />
+    <Compile Include="Config\Model\DataComparerData.cs" />
+    <Compile Include="Config\Model\StructComparerData.cs" />
     <Compile Include="Config\Model\TableExplorerData.cs" />
     <Compile Include="Config\Model\DbSearchData.cs" />
     <Compile Include="Config\Model\IWithCreatedAt.cs" />
@@ -151,10 +147,10 @@
     <Compile Include="Converters\NullToFalse.cs" />
     <Compile Include="Converters\ValueConverter.cs" />
     <Compile Include="DbComparer\a7DbComparerEnums.cs" />
-    <Compile Include="DbComparer\a7GeneralDbComparerVM.cs" />
     <Compile Include="DbComparer\Data\a7ComparisonField.cs" />
     <Compile Include="DbComparer\Data\a7ComparisonRow.cs" />
     <Compile Include="DbComparer\Data\a7DbDataComparer.cs" />
+    <Compile Include="DbComparer\Data\a7DbDataComparerVM.cs" />
     <Compile Include="DbComparer\Data\a7DbTableComparer.cs" />
     <Compile Include="DbComparer\Data\Views\a7ComparisonFieldColumn.cs" />
     <Compile Include="DbComparer\Data\Views\a7ComparisonFieldControl.xaml.cs">
@@ -165,8 +161,11 @@
     <Compile Include="DbComparer\Data\Views\a7CompMergeButtonsControl.xaml.cs">
       <DependentUpon>a7CompMergeButtonsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbComparer\Data\Views\a7DbDataComparerWindow.xaml.cs">
-      <DependentUpon>a7DbDataComparerWindow.xaml</DependentUpon>
+    <Compile Include="DbComparer\Data\Views\a7DbDataComparerResultView.xaml.cs">
+      <DependentUpon>a7DbDataComparerResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DbComparer\Data\Views\a7DbDataComparerView.xaml.cs">
+      <DependentUpon>a7DbDataComparerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbComparer\Data\Views\a7DbTableComparerView.xaml.cs">
       <DependentUpon>a7DbTableComparerView.xaml</DependentUpon>
@@ -178,6 +177,7 @@
       <DependentUpon>a7GeneratedQueryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbComparer\Struct\a7DbStructureComparer.cs" />
+    <Compile Include="DbComparer\Struct\a7DbStructureComparerVM.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableFieldCopyTo.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableFieldDifferences.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableFieldDifferent.cs" />
@@ -186,11 +186,11 @@
     <Compile Include="DbComparer\Struct\a7DbTableOnlyInRemove.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableUtils.cs" />
     <Compile Include="DbComparer\Struct\a7IDbTableField.cs" />
-    <Compile Include="DbComparer\Struct\Views\a7DbSelection.xaml.cs">
-      <DependentUpon>a7DbSelection.xaml</DependentUpon>
+    <Compile Include="DbComparer\Struct\Views\a7DbStructCompResultView.xaml.cs">
+      <DependentUpon>a7DbStructCompResultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbComparer\Struct\Views\a7DbStructCompResultWnd.xaml.cs">
-      <DependentUpon>a7DbStructCompResultWnd.xaml</DependentUpon>
+    <Compile Include="DbComparer\Struct\Views\a7DbStructCompView.xaml.cs">
+      <DependentUpon>a7DbStructCompView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml.cs">
       <DependentUpon>a7DbTableFieldDifferencesView.xaml</DependentUpon>
@@ -201,14 +201,8 @@
     <Compile Include="DbComparer\Struct\Views\a7TableFieldDifferentView.xaml.cs">
       <DependentUpon>a7TableFieldDifferentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbComparer\Views\a7DbDataComprarerView.xaml.cs">
-      <DependentUpon>a7DbDataComprarerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DbComparer\Views\a7DbStructComparerView.xaml.cs">
-      <DependentUpon>a7DbStructComparerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DbComparer\Views\a7GeneralDbComparerView.xaml.cs">
-      <DependentUpon>a7GeneralDbComparerView.xaml</DependentUpon>
+    <Compile Include="DbComparer\Views\a7DbDoubleSelection.xaml.cs">
+      <DependentUpon>a7DbDoubleSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbSearch\a7DbSearchEngine.cs" />
     <Compile Include="Dialogs\DbSelector.xaml.cs">
@@ -217,6 +211,7 @@
     <Compile Include="MainViews\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TableExplorer\a7TableExplorer.cs" />
     <Compile Include="TableExplorer\Views\TableExplorer.xaml.cs">
       <DependentUpon>TableExplorer.xaml</DependentUpon>
@@ -269,9 +264,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DbComparer\Data\Views\a7DbDataComparerWindow.xaml">
+    <Page Include="DbComparer\Data\Views\a7DbDataComparerResultView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7DbDataComparerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DbComparer\Data\Views\a7DbTableComparerView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -285,13 +284,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DbComparer\Struct\Views\a7DbSelection.xaml">
+    <Page Include="DbComparer\Struct\Views\a7DbStructCompResultView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DbComparer\Struct\Views\a7DbStructCompResultWnd.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="DbComparer\Struct\Views\a7DbStructCompView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -305,17 +304,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DbComparer\Views\a7DbDataComprarerView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="DbComparer\Views\a7DbDoubleSelection.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DbComparer\Views\a7DbStructComparerView.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DbComparer\Views\a7GeneralDbComparerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\Connect.xaml">
       <SubType>Designer</SubType>
@@ -453,6 +444,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\remove128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.ConnectionInfoExtended.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.Smo.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.SmoExtended.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll" />
+    <Content Include="bin\Debug\Microsoft.SqlServer.SqlEnum.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

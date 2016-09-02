@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace a7SqlTools.DbComparer
 {
-    public enum a7DbCompareType
-    {
-        Data, Struct    
-    }
-
     public enum a7DbComparedDataBases
     {
         A, B

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace a7SqlTools.DbComparer.Views
+namespace a7SqlTools.DbComparer.Data.Views
 {
     /// <summary>
-    /// Interaction logic for a7GeneralDbComparerView.xaml
+    /// Interaction logic for a7DbDataComparerView.xaml
     /// </summary>
-    public partial class a7GeneralDbComparerView : UserControl
+    public partial class a7DbDataComparerView : UserControl
     {
-        public a7GeneralDbComparerView()
+        public a7DbDataComparerView()
         {
             InitializeComponent();
         }
