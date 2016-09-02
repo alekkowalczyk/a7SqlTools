@@ -170,7 +170,7 @@ namespace a7SqlTools.Connection
             //ichildrenToOrder = ichildrenToOrder.Concat(this.ConnectionData.StructComparers).ToList();
             //ichildrenToOrder = ichildrenToOrder.OrderByDescending(i => i.CreatedAt).ToList();
 
-            var ichildrenToOrder = (this.ConnectionData.DbSearches as IEnumerable<IWithCreatedAt>)
+            var ichildrenToOrder = (this.ConnectionData.TableExplorers as IEnumerable<IWithCreatedAt>)
                 .Union(ConnectionData.DbSearches as IEnumerable<IWithCreatedAt>)
                 .Union(ConnectionData.StructComparers as IEnumerable<IWithCreatedAt>)
                 .Union(ConnectionData.DataComparers as IEnumerable<IWithCreatedAt>)

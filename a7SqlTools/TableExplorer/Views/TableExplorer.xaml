@@ -16,7 +16,7 @@
         <DockPanel Grid.Column="0">
             <DockPanel DockPanel.Dock="Top">
                 <Label DockPanel.Dock="Left">Filter:</Label>
-                <TextBox x:Name="tbTableFilter" TextChanged="tbTableFilter_TextChanged"></TextBox>
+                <TextBox x:Name="tbTableFilter" Margin="5" TextChanged="tbTableFilter_TextChanged"></TextBox>
             </DockPanel>
             <ListBox x:Name="lbTables"  ItemsSource="{Binding TableNames}" SelectedItem="{Binding SelectedTableName}" 
                      >

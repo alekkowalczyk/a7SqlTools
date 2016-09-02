@@ -15,18 +15,19 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="110"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbValuesToSearch" Margin="3,3,3,3" Grid.Row="0" AcceptsReturn="True" TextWrapping="Wrap" 
+        <WrapPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
+            <Button x:Name="bFilter" Height="20" Width="50" Margin="3" Click="bFilter_Click">Filter</Button>
+            <Button x:Name="bCommitChanges" Height="20" Width="100" Margin="3" Click="bCommitChanges_Click">Commit changes</Button>
+        </WrapPanel>
+        <TextBox x:Name="tbValuesToSearch" Margin="3,3,3,3" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" 
                                      HorizontalScrollBarVisibility="Auto"
                                      VerticalScrollBarVisibility="Auto"
                  Text="{Binding SQL}"
                  ></TextBox>
-        <dg:a7DataGrid Grid.Row="1" AutoGenerateColumns="True" VerticalAlignment="Stretch" TableExplorer="{Binding}"  ItemsSource="{Binding Data}" x:Name="dgDataGrid"></dg:a7DataGrid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
-            <Button x:Name="bFilter" Height="20" Width="50" Click="bFilter_Click">Filter</Button>
-            <Button x:Name="bCommitChanges" Height="20" Width="100" Click="bCommitChanges_Click">Commit changes</Button>
-        </StackPanel>
+        <dg:a7DataGrid Grid.Row="2" AutoGenerateColumns="True" VerticalAlignment="Stretch" TableExplorer="{Binding}"  ItemsSource="{Binding Data}" x:Name="dgDataGrid"></dg:a7DataGrid>
     </Grid>
 </UserControl>
