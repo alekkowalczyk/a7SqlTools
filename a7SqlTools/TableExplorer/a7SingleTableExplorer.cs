@@ -62,9 +62,30 @@ namespace a7SqlTools.TableExplorer
             
             DataAdapter = new SqlDataAdapter(columnsSelect);
             var sqlBuilder = new SqlCommandBuilder(DataAdapter);
-            DataAdapter.UpdateCommand = sqlBuilder.GetUpdateCommand();
-            DataAdapter.InsertCommand = sqlBuilder.GetInsertCommand();
-            DataAdapter.DeleteCommand = sqlBuilder.GetDeleteCommand();
+            try
+            {
+                DataAdapter.UpdateCommand = sqlBuilder.GetUpdateCommand();
+            }
+            catch (InvalidOperationException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            try
+            {
+                DataAdapter.InsertCommand = sqlBuilder.GetInsertCommand();
+            }
+            catch (InvalidOperationException e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            try
+            {
+                DataAdapter.DeleteCommand = sqlBuilder.GetDeleteCommand();
+            }
+            catch (InvalidOperationException e)
+            {
+                MessageBox.Show(e.Message);
+            }
             DataAdapter.Fill(Data);
             OnPropertyChanged("Data");
         }
