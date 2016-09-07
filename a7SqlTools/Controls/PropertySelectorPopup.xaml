@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="a7SqlTools.Controls.PropertySelectorPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:a7SqlTools.Controls"
+             mc:Ignorable="d" 
+             x:Name="me"
+             d:DesignHeight="100" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/CommonBrushes.xaml"/>
+                <ResourceDictionary Source="../Themes/Templates/ButtonsTemplates.xaml"/>
+                <ResourceDictionary Source="../Themes/Templates/ComboBoxTemplates.xaml"/>
+                <ResourceDictionary Source="../Themes/Templates/ListBoxTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border  BorderBrush="{StaticResource ShadowBorderBrush}" Background="White" BorderThickness="1"  x:Name="border">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
+            </Grid.RowDefinitions>
+            <controls:PropertySelector Grid.Row="1" 
+                                x:Name="propSelector"
+                                Properties="{Binding Properties, ElementName=me, Mode=TwoWay}"
+                                SelectedProperty="{Binding SelectedProperty, ElementName=me, Mode=TwoWay}"
+                                >
+            </controls:PropertySelector>
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="bOk" Click="bOk_Click" Width="70" Margin="5" Background="White">Select</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

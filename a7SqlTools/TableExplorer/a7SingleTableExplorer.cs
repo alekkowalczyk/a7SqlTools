@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -19,7 +20,22 @@ namespace a7SqlTools.TableExplorer
         public string SQL { get; set; }
         private string _columnWhere;
         public Dictionary<string, string> FilterFields;
-        private SqlConnection _sqlConnection;
+
+        private ObservableCollection<PropertyDefinitionModel> _availableProperties;
+        // TODO: rename to AvailableColumns
+        public ObservableCollection<PropertyDefinitionModel> AvailableProperties
+        {
+            get { return _availableProperties; }
+            private set
+            {
+                _availableProperties = value;
+                OnPropertyChanged(nameof(AvailableProperties));
+                // should contain definition of columns
+                throw new NotImplementedException();
+            }
+        }
+
+        private readonly SqlConnection _sqlConnection;
 
         public a7SingleTableExplorer(string name, SqlConnection sqlConnection)
         {
