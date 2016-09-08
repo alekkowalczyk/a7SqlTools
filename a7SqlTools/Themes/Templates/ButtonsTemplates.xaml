@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:conv="clr-namespace:a7DocumentDbStudio.Converters"
+    xmlns:conv="clr-namespace:a7SqlTools.Converters"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>

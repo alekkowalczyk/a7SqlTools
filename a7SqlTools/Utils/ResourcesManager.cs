@@ -18,7 +18,7 @@ namespace a7SqlTools.Utils
             get
             {
                 if (_instance == null)
-                    _instance = new ResourcesManager(@"pack://application:,,,/a7SqlTools;component/Themes");
+                    _instance = new ResourcesManager(@"pack://application:,,,/a7SqlTools;component/Themes/Templates");
                 return _instance;
             }
         }

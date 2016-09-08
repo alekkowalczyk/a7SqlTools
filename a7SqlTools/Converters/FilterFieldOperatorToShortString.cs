@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using a7SqlTools.TableExplorer.Enums;
 
-namespace a7DocumentDbStudio.Converters
+namespace a7SqlTools.Converters
 {
     class FilterFieldOperatorToShortString : IValueConverter
     {

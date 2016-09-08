@@ -33,17 +33,34 @@ namespace a7SqlTools.TableExplorer.Views
         public SingleTableExplorer()
         {
             InitializeComponent();
+            this.Loaded += OnLoaded;
         }
 
-        private void bFilter_Click(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            if (ViewModel != null)
-                ViewModel.Refresh();
+            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("a7SqlTools.Resources.avalonEditSql.xshd"))
+            {
+                using (var reader = new System.Xml.XmlTextReader(stream))
+                {
+                    this.sqlEditor.SyntaxHighlighting =
+                        ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(reader,
+                        ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
+                }
+            }
         }
+
+        private void bFilter_Click(object sender, RoutedEventArgs e) => 
+            ViewModel?.Refresh();
 
         private void bCommitChanges_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.CommitChanges();
+        }
+
+        private void BEditSql_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.IsSqlEditMode = true;
+            this.sqlEditor.Focus();
         }
     }
 }

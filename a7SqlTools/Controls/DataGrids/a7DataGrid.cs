@@ -118,6 +118,13 @@ namespace a7SqlTools.Controls.DataGrids
                 if (gte != null)
                 {
                     gte.FilterFields = fdg.columnFilters;
+                    gte.PleaseClearColumnFilters += (sender, args) =>
+                    {
+                        fdg.RemoveHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(fdg.OnTextChanged));
+                        fdg.columnFilters.Clear();
+                        fdg.SynchronizeHeaderTextBoxes();
+                        fdg.AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(fdg.OnTextChanged), true);
+                    };
                 }
             }
         }
@@ -173,7 +180,6 @@ namespace a7SqlTools.Controls.DataGrids
                 if (this.TableExplorer != null)
                 {
                     this.TableExplorer.FilterFields = this.columnFilters;
-      //              this.TableExplorer.Filter2Sql();
                 }
                 else
                 {
@@ -245,8 +251,7 @@ namespace a7SqlTools.Controls.DataGrids
                     {
                         var tb = FindVisualChildByName<TextBox>(header, "filterTextBox");
                         var columnName = header.Column.Header.ToString();
-                        if (this.columnFilters.ContainsKey(columnName))
-                            tb.Text = this.columnFilters[columnName];
+                        tb.Text = this.columnFilters.ContainsKey(columnName) ? this.columnFilters[columnName] : "";
                     }
                 }
             }

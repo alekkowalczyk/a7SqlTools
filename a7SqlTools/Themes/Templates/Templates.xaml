@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ButtonsTemplates.xaml"/>
+        <ResourceDictionary Source="../CommonBrushes.xaml"/>
+        <ResourceDictionary Source="DatePickerStyle.xaml"/>
+        <ResourceDictionary Source="DateTimePickerStyle.xaml"/>
+        <ResourceDictionary Source="FilterButtonTemplate.xaml"/>
+        <ResourceDictionary Source="FilterDatePickerTemplate.xaml"/>
+        <ResourceDictionary Source="FilterTextBoxTemplate.xaml"/>
+        <ResourceDictionary Source="ListBoxTemplates.xaml"/>
+        <ResourceDictionary Source="WaitSpinner.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

@@ -21,7 +21,7 @@
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:Chromes="clr-namespace:Xceed.Wpf.Toolkit.Chromes;assembly=Xceed.Wpf.Toolkit"
                     xmlns:Converters="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=Xceed.Wpf.Toolkit"
-                    xmlns:Converters1="clr-namespace:a7DocumentDbStudio.Converters"
+                    xmlns:Converters1="clr-namespace:a7SqlTools.Converters"
                     xmlns:converters="clr-namespace:a7SqlTools.Converters"
                     xmlns:controls="clr-namespace:a7SqlTools.Controls">
     <ResourceDictionary.MergedDictionaries>

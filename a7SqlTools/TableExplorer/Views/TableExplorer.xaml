@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:a7SqlTools.TableExplorer.Views"
              xmlns:v="clr-namespace:a7SqlTools.TableExplorer.Views"
              xmlns:tableExplorer="clr-namespace:a7SqlTools.TableExplorer"
+             xmlns:controls="clr-namespace:a7SqlTools.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance tableExplorer:a7TableExplorer}">
     <Grid>
@@ -29,12 +30,27 @@
             </ListBox>
         </DockPanel>
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
-        <ContentControl Grid.Column="2" Content="{Binding SelectedTable}">
-            <ContentControl.ContentTemplate>
+        <TabControl Grid.Column="2"  ItemsSource="{Binding OpenedTables}" SelectedIndex="{Binding SelectedTableIndex}">
+            <TabControl.ItemTemplate>
+                <!-- this is the header template-->
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                        Text="{Binding TableName}" />
+                        <Button Margin="5,0,0,0" Command="{Binding Remove}" Template="{StaticResource BasicButtonTemplate}">
+                            <Image Source="../../Images/small_cancel.png" Height="16" Width="16"
+                               VerticalAlignment="Center" Margin="0,0,0,0"></Image>
+                        </Button>
+                       
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <!-- this is the body of the TabItem template-->
                 <DataTemplate>
                     <v:SingleTableExplorer></v:SingleTableExplorer>
                 </DataTemplate>
-            </ContentControl.ContentTemplate>
-        </ContentControl>
+            </TabControl.ContentTemplate>
+        </TabControl>
     </Grid>
 </UserControl>

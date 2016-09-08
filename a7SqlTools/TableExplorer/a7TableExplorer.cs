@@ -41,19 +41,31 @@ namespace a7SqlTools.TableExplorer
                 _selectedTableName = value;
                 if (oldValue != value)
                 {
-                    SelectedTable = new a7SingleTableExplorer(_selectedTableName, SqlConnection);
+                    var existing = OpenedTables.FirstOrDefault(tb => tb.TableName == value);
+                    if (existing != null)
+                    {
+                        SelectedTableIndex = OpenedTables.IndexOf(existing);
+                    }
+                    else
+                    {
+                        var newTable = new a7SingleTableExplorer(this, _selectedTableName, SqlConnection);
+                        OpenedTables.Add(newTable);
+                        SelectedTableIndex = OpenedTables.Count - 1;
+                        newTable.Refresh();
+                    }
+                    OnPropertyChanged(nameof(SelectedTableIndex));
                 }
                 OnPropertyChanged();
             }
         }
-
-        private a7SingleTableExplorer _selectedTable;
-        public a7SingleTableExplorer SelectedTable
+        public int SelectedTableIndex { get; set; }
+        private ObservableCollection<a7SingleTableExplorer> _openedTables;
+        public ObservableCollection<a7SingleTableExplorer> OpenedTables
         {
-            get { return _selectedTable; }
+            get { return _openedTables; }
             set
             {
-                _selectedTable = value;
+                _openedTables = value;
                 OnPropertyChanged();
             }
         }
@@ -71,6 +83,7 @@ namespace a7SqlTools.TableExplorer
         {
             _parentVm = parentVm;
             DbName = dbName;
+            OpenedTables = new ObservableCollection<a7SingleTableExplorer>();
             _connectionString = ConnectionStringGenerator.Get(connectionData, dbName);
             RefreshDictTables("");
         }
