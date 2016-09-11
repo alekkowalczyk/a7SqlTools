@@ -52,7 +52,6 @@ namespace a7SqlTools.DbSearch.Views
         {
             this.tbProgress.Dispatcher.Invoke(new Action(() =>
             {
-                this.tbNotFoundItems.Text = e.NotUsedValuesList;
                 tiDBResults.IsSelected = true;
             }
             ));

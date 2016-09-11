@@ -85,8 +85,5 @@
                 </DockPanel>
             </Grid>
         </TabItem>
-        <TabItem Header="Not found items">
-            <TextBox x:Name="tbNotFoundItems"></TextBox>
-        </TabItem>
     </TabControl>
 </UserControl>
