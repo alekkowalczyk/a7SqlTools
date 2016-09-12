@@ -12,6 +12,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
+    <conv:BoolToVisibilityReverse x:Key="b2vr"></conv:BoolToVisibilityReverse>
 
     <Style x:Key="TreeViewItemFocusVisual">
         <Setter Property="Control.Template">

@@ -5,22 +5,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dg="clr-namespace:a7SqlTools.Controls.DataGrids"
              mc:Ignorable="d" 
+             Background="White"
              d:DesignHeight="300" d:DesignWidth="700">
-    <TabControl>
-        <TabItem Header="Search">
-            <Grid>
+    <Grid>
+        <Grid Visibility="{Binding IsResultsView, Converter={StaticResource b2vr}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <WrapPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                <WrapPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Padding" Value="8,5,8,5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button Template="{StaticResource BasicButtonTemplate}" Height="25"  Margin="3" 
+                        Visibility="{Binding IsSearching, Converter={StaticResource b2vr}}"
+                        x:Name="bSearchDB" Click="bSearchDB_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/search_small.png" Height="14" Width="14"
+                                       VerticalAlignment="Center" Margin="0,0,5,0"></Image>
+                        <TextBlock VerticalAlignment="Center">Search database</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Template="{StaticResource BasicButtonTemplate}" Height="25" Margin="3"
+                        Visibility="{Binding IsSearching, Converter={StaticResource b2v}}"
+                        x:Name="bAbortSearch" Click="bAbortSearch_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/small_cancel.png" Height="16" Width="16"
+                                       VerticalAlignment="Center" Margin="0,0,5,0"></Image>
+                        <TextBlock VerticalAlignment="Center">Abort</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Template="{StaticResource BasicButtonTemplate}" Height="25" Margin="3"
+                       x:Name="bSetSeperators" Click="BSetSeperators_OnClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/edit.png" Height="12" Width="12"
+                                       VerticalAlignment="Center" Margin="0,0,5,0"></Image>
+                        <TextBlock VerticalAlignment="Center">Change seperators</TextBlock>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <DockPanel Grid.Column="0">
+                <DockPanel Grid.Column="0" Margin="3">
+                    <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Tables to search:</TextBlock>
                     <CheckBox IsChecked="True" Margin="3" DockPanel.Dock="Top" x:Name="SelectAllTables" Checked="SelectAllTables_Checked" Unchecked="SelectAllTables_Unchecked">Select/Unselect all</CheckBox>
                     <DockPanel DockPanel.Dock="Top">
                         <Label DockPanel.Dock="Left">Filter:</Label>
-                        <TextBox x:Name="tbTableFilter" TextChanged="tbTableFilter_TextChanged"></TextBox>
+                        <TextBox x:Name="tbTableFilter" Margin="3" TextChanged="tbTableFilter_TextChanged"></TextBox>
                     </DockPanel>
-                    <ListBox x:Name="lbTables"  ItemsSource="{Binding DictTables.Values}">
+                    <ListBox x:Name="lbTables" Margin="3" ItemsSource="{Binding DictTables.Values}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -32,58 +71,85 @@
                     </ListBox>
                 </DockPanel>
                 <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
-                <DockPanel Grid.Column="2">
-                    <Grid DockPanel.Dock="Bottom" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="bSearchDB" Grid.Column="1" Click="bSearchDB_Click">Search DB</Button>
-                        <Button x:Name="bAbortSearch" Grid.Column="2" Click="bAbortSearch_Click">Abort</Button>
+                <DockPanel Grid.Column="2" Margin="3">
+                    <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Value(s) to search:</TextBlock>
+                    <Grid DockPanel.Dock="Bottom" Visibility="{Binding IsSearching, Converter={StaticResource b2v}}">
+                        <ProgressBar x:Name="pbProgress" Height="18"></ProgressBar>
+                        <TextBlock x:Name="tbProgress"></TextBlock>
                     </Grid>
-                    <ProgressBar x:Name="pbProgress" DockPanel.Dock="Bottom" Height="9"></ProgressBar>
-                    <TextBox x:Name="tbProgress" IsReadOnly="True" DockPanel.Dock="Bottom"></TextBox>
-                    <DockPanel DockPanel.Dock="Bottom">
-                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                            <Label>Seperator:</Label>
-                            <TextBox x:Name="tbSeperator" Text="{Binding Seperator}"  ToolTip="seperator for values, empty string - no seperator, [enter] - new line as seperator"></TextBox>
-                            <Button x:Name="bSeperatorEnter" Click="bSeperatorEnter_Click">[enter]</Button>
-                            <Label>AND seperator:</Label>
-                            <TextBox x:Name="tbAndSeperator" Text="{Binding AndSeperator}" Width="20" ToolTip="seperator for AND operator, example: test1;test2 will search rows that have both values"></TextBox>
-                            <Label>Values to search:</Label>
-                        </StackPanel>
-                        <TextBox x:Name="tbValuesToSearch" AcceptsReturn="True" TextAlignment="Left" HorizontalScrollBarVisibility="Auto" 
-                                     VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"  ToolTip="Seperated by ',' or query - value from first column will be searched"></TextBox>
-                    </DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom">
+                        <TextBlock Margin="3,3,3,0" TextWrapping="Wrap">
+                            If you want to search for more value at once, please use the 
+                            <TextBlock FontWeight="Black" Background="LightGray" MinWidth="10" TextAlignment="Center" Text="{Binding Seperator}"></TextBlock>
+                            char as a seperator.
+                        </TextBlock>
+                        <TextBlock Margin="3,0,3,3" TextWrapping="Wrap" Visibility="{Binding AndSeperator, Converter={StaticResource es2v}}">
+                            To search for rows which contain more than one specified value, please use the "and" seperator which is the
+                            <TextBlock FontWeight="Black"  Background="LightGray" MinWidth="10" TextAlignment="Center" Text="{Binding AndSeperator}"></TextBlock> character.
+                        </TextBlock>
+                        <TextBlock Margin="3,0,3,3" TextWrapping="Wrap" FontSize="10" Foreground="Gray" Visibility="{Binding AndSeperator, Converter={StaticResource es2v}, ConverterParameter=NEGATE}">
+                            No "and" seperator specified, if you want to search for rows which contain more than one specified value, please
+                            set the "and" seperator using the "Change seperator" option in menu above.
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBox AcceptsReturn="True" Margin="3" HorizontalAlignment="Stretch" x:Name="tbValuesToSearch"></TextBox>
                 </DockPanel>
             </Grid>
-        </TabItem>
-        <TabItem Header="Results" x:Name="tiDBResults">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <ListBox x:Name="lbValuesSearched" SelectionChanged="lbValuesSearched_SelectionChanged" Grid.Column="0"  ItemsSource="{Binding SearchedValues.Values}">
+        </Grid>
+        <Grid Visibility="{Binding IsResultsView, Converter={StaticResource b2v}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
+            <WrapPanel Grid.Row="0" Grid.ColumnSpan="5" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+                <WrapPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Padding" Value="8,5,8,5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button Template="{StaticResource BasicButtonTemplate}" Height="25"  Margin="3" 
+                        x:Name="bBack" Click="BBack_OnClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/small_left.png" Height="14" Width="14"
+                                       VerticalAlignment="Center" Margin="0,0,5,0"></Image>
+                        <TextBlock VerticalAlignment="Center">Back</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Template="{StaticResource BasicButtonTemplate}" Height="25"  Margin="3" 
+                        x:Name="bCommit" Click="bCommit_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../../Images/save.png" Height="14" Width="14"
+                                       VerticalAlignment="Center" Margin="0,0,5,0"></Image>
+                        <TextBlock VerticalAlignment="Center">Commit changes</TextBlock>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+            <DockPanel Grid.Column="0" Grid.Row="1" Margin="2">
+                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Searched value(s):</TextBlock>
+                <ListBox x:Name="lbValuesSearched" SelectionChanged="lbValuesSearched_SelectionChanged"  ItemsSource="{Binding SearchedValues.Values}"></ListBox>
+            </DockPanel>
+            <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.Row="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+            <DockPanel Grid.Column="2" Grid.Row="1" Margin="2">
+                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Found in:</TextBlock>
+                <ListBox x:Name="lbTablesWithValueFound" SelectionChanged="lbTablesWithValueFound_SelectionChanged" ItemsSource="{Binding SelectedSearchedValue.OccurencesInTables}">
                 </ListBox>
-                <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
-                <ListBox x:Name="lbTablesWithValueFound" SelectionChanged="lbTablesWithValueFound_SelectionChanged" Grid.Column="2" ItemsSource="{Binding SelectedSearchedValue.OccurencesInTables}">
-
-                </ListBox>
-                <GridSplitter ResizeDirection="Columns" Grid.Column="3" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
-                <DockPanel  Grid.Column="4" >
-                    <Button x:Name="bCommit" DockPanel.Dock="Bottom" Click="bCommit_Click">Commit changes</Button>
-                    <dg:a7DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="dg"
-                              AutoGenerateColumns="True"
-                              ItemsSource="{Binding SelectedTable}"
-                              DisplayMemberPath="Caption"></dg:a7DataGrid>
-                </DockPanel>
-            </Grid>
-        </TabItem>
-    </TabControl>
+            </DockPanel>
+            <GridSplitter ResizeDirection="Columns" Grid.Column="3" Grid.Row="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
+            <DockPanel  Grid.Column="4" Grid.Row="1" Margin="2">
+                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Rows with found value:</TextBlock>
+                <dg:a7DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="dg"
+                                  AutoGenerateColumns="True"
+                                  ItemsSource="{Binding SelectedTable}"
+                                  DisplayMemberPath="Caption"></dg:a7DataGrid>
+            </DockPanel>
+        </Grid>
+    </Grid>
 </UserControl>

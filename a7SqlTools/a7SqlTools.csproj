@@ -207,6 +207,7 @@
     <Compile Include="Converters\BoolToVisibilityReverse.cs" />
     <Compile Include="Converters\CollectionToStringConverter.cs" />
     <Compile Include="Converters\CollectionZeroToVisibility.cs" />
+    <Compile Include="Converters\EmptyStringToVisibility.cs" />
     <Compile Include="Converters\FilterFieldOperatorToShortString.cs" />
     <Compile Include="Converters\FilterFieldOperatorToString.cs" />
     <Compile Include="Converters\FormattedTextConverter.cs" />
@@ -276,6 +277,9 @@
       <DependentUpon>a7DbDoubleSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbSearch\a7DbSearchEngine.cs" />
+    <Compile Include="DbSearch\Views\SeperatorSelector.xaml.cs">
+      <DependentUpon>SeperatorSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\DbSelector.xaml.cs">
       <DependentUpon>DbSelector.xaml</DependentUpon>
     </Compile>
@@ -330,12 +334,6 @@
     <Compile Include="Controls\DataGrids\HeaderFilterConverter.cs" />
     <Compile Include="DbSearch\Views\ValuesDBSearch.xaml.cs">
       <DependentUpon>ValuesDBSearch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DbSearch\Views\ValueSearchSqler.xaml.cs">
-      <DependentUpon>ValueSearchSqler.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DbSearch\Views\ValuesSearch.xaml.cs">
-      <DependentUpon>ValuesSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\ResourcesManager.cs" />
     <Compile Include="Utils\UIHelper.cs" />
@@ -416,6 +414,10 @@
     <Page Include="DbComparer\Views\a7DbDoubleSelection.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DbSearch\Views\SeperatorSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\Connect.xaml">
       <SubType>Designer</SubType>
@@ -510,14 +512,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DbSearch\Views\ValueSearchSqler.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DbSearch\Views\ValuesSearch.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -603,6 +597,8 @@
     <Content Include="bin\Debug\Microsoft.SqlServer.SmoExtended.dll" />
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll" />
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlEnum.dll" />
+    <Resource Include="Images\small_left.png" />
+    <Resource Include="Images\search_small.png" />
     <Resource Include="Images\edit.png" />
     <Resource Include="Images\save.png" />
     <Resource Include="Images\small_right.png" />

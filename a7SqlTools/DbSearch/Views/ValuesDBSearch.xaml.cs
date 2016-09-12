@@ -19,15 +19,7 @@ namespace a7SqlTools.DbSearch.Views
     /// </summary>
     public partial class ValuesDBSearch : UserControl
     {
-        public a7DbSearchEngine DBSearch
-        {
-            get
-            {
-                if (DataContext is a7DbSearchEngine)
-                    return DataContext as a7DbSearchEngine;
-                else return null;
-            }
-        }
+        public a7DbSearchEngine DBSearch => DataContext as a7DbSearchEngine;
 
         public ValuesDBSearch()
         {
@@ -38,35 +30,29 @@ namespace a7SqlTools.DbSearch.Views
 
         void UserControl1_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (DBSearch != null)
-            {
-                DBSearch.ActualizedWork += new EventHandler<a7DbSearchEngine.DBSearchEventArgs>(dbSearch_AcutalizedWork);
-                DBSearch.FinishedSearch += new EventHandler<a7DbSearchEngine.DBSearchFinishedEventArgs>(dbSearch_Finished);
-                if (DBSearch != null)
-                    DBSearch.RefreshDictTables(this.tbTableFilter.Text);
-            }
+            if (DBSearch == null) return;
+            DBSearch.ActualizedWork += new EventHandler<a7DbSearchEngine.DBSearchEventArgs>(dbSearch_AcutalizedWork);
+            DBSearch?.RefreshDictTables(this.tbTableFilter.Text);
         }
 
 
-        void dbSearch_Finished(object sender, a7DbSearchEngine.DBSearchFinishedEventArgs e)
-        {
-            this.tbProgress.Dispatcher.Invoke(new Action(() =>
-            {
-                tiDBResults.IsSelected = true;
-            }
-            ));
-        }
-
-
-
-        void dbSearch_AcutalizedWork(object sender, a7DbSearchEngine.DBSearchEventArgs e)
+        private void dbSearch_AcutalizedWork(object sender, a7DbSearchEngine.DBSearchEventArgs e)
         {
             this.tbProgress.Dispatcher.Invoke(
                 new Action(
                     () =>
                     {
-                        this.tbProgress.Text = "Table:" + e.ActualAnalizedTable + "(" + e.ActualTable + "/" + e.TableCount + ")" +
-                            ",  Value:" + "(" + e.ActualTableValue + "/" + e.ValuesCount + ")" + e.ActualAnalizedValue;
+                        if (e != null)
+                        {
+                            this.tbProgress.Text = "Table:" + e.ActualAnalizedTable + "(" + e.ActualTable + "/" +
+                                                   e.TableCount + ")" +
+                                                   ",  Value:" + "(" + e.ActualTableValue + "/" + e.ValuesCount + ")" +
+                                                   e.ActualAnalizedValue;
+                        }
+                        else
+                        {
+                            this.tbProgress.Text = "";
+                        }
                     }
                     )
                 );
@@ -74,7 +60,17 @@ namespace a7SqlTools.DbSearch.Views
                 new Action(
                     () =>
                     {
-                        this.pbProgress.Value = ((double)(((double)e.ValuesCount * e.ActualTable) - (e.ValuesCount - e.ActualTableValue)) / ((double)e.TableCount * e.ValuesCount)) * 100;
+                        if (e != null)
+                        {
+                            this.pbProgress.Value =
+                            ((double)
+                             (((double) e.ValuesCount*e.ActualTable) - (e.ValuesCount - e.ActualTableValue))/
+                             ((double) e.TableCount*e.ValuesCount))*100;
+                        }
+                        else
+                        {
+                            this.pbProgress.Value = 0;
+                        }
                     }
                     )
                 );
@@ -129,18 +125,20 @@ namespace a7SqlTools.DbSearch.Views
             if(DBSearch!=null)
                 DBSearch.RefreshDictTables(this.tbTableFilter.Text);
         }
-
-
-        private void bSeperatorEnter_Click(object sender, RoutedEventArgs e)
-        {
-            this.tbSeperator.SetCurrentValue(TextBox.TextProperty, "[enter]");
-            var be = BindingOperations.GetBindingExpression(tbSeperator, TextBox.TextProperty);
-            if (be != null) be.UpdateSource();
-        }
-
+        
         private void bCommit_Click(object sender, RoutedEventArgs e)
         {
             DBSearch.CommitSelectedTable();
+        }
+
+        private void BBack_OnClick(object sender, RoutedEventArgs e)
+        {
+            DBSearch.IsResultsView = false;
+        }
+
+        private void BSetSeperators_OnClick(object sender, RoutedEventArgs e)
+        {
+            DBSearch.SetSeperators();
         }
     }
 }

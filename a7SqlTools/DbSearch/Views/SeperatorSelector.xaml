@@ -1,0 +1,28 @@
+﻿<Window x:Class="a7SqlTools.DbSearch.Views.SeperatorSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:a7SqlTools.DbSearch.Views"
+        mc:Ignorable="d"
+        Title="Please set value seperators" Height="200" Width="300">
+    <DockPanel Margin="5">
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Width="60" Padding="8,5" Margin="3" Click="Cancel_OnClick">Cancel</Button>
+            <Button Width="60" Padding="8,5" Margin="3" Click="Ok_OnClick">Ok</Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label>Seperator used to split values:</Label>
+                <TextBox Width="30" Margin="5" x:Name="tbSeperator"></TextBox>
+            </StackPanel>
+            <TextBlock FontSize="8" HorizontalAlignment="Center">(empty string - no seperator, [enter] - new line as seperator)</TextBlock>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label>"And" Seperator:</Label>
+                <TextBox x:Name="tbAndSeperator" Text="{Binding AndSeperator}" Width="30" Margin="5"></TextBox>
+            </StackPanel>
+            <TextBlock FontSize="8" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">(seperator for AND operator, example: if <Run FontWeight="Black"  Background="LightGray" FontStretch="ExtraExpanded" FontSize="8" >&#160;&#160;;&#160;&#160; </Run> set - "test1;test2" value will search rows that have both, test1 and test2 values)</TextBlock>
+        </StackPanel>
+    </DockPanel>
+</Window>

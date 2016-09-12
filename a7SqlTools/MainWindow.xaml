@@ -18,7 +18,8 @@
         xmlns:main="clr-namespace:a7SqlTools.MainViews"
         Icon="logo32.ico"
         x:Name="me"
-        Title="A7 SqlTools (beta)" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="508" Width="964">
+        Title="A7 SqlTools (beta)" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                     Height="708" Width="1064">
     <Fluent:RibbonWindow.Resources>
         <conv:NegateBool x:Key="negate"></conv:NegateBool>
         <conv:NullToCollapsedVisibility x:Key="nullToCollapsed" />

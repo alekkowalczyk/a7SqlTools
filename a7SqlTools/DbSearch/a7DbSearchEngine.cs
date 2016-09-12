@@ -10,11 +10,33 @@ using System.Windows.Input;
 using a7SqlTools.Utils;
 using a7SqlTools.Config.Model;
 using a7SqlTools.Connection;
+using a7SqlTools.DbSearch.Views;
 
 namespace a7SqlTools.DbSearch
 {
     public class a7DbSearchEngine : ViewModelBase
     {
+
+        private bool _isResultsView;
+        public bool IsResultsView
+        {
+            get { return _isResultsView; }
+            set
+            {
+                _isResultsView = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isSearching;
+
+        public bool IsSearching
+        {
+            get { return _isSearching;}
+            set { _isSearching = value; OnPropertyChanged(); }
+        }
+
+
         Dictionary<string, List<a7TableColumn>> dictTable_ColumnNames;
 
         private Dictionary<string, a7TableSelection> _dictTables;
@@ -29,15 +51,24 @@ namespace a7SqlTools.DbSearch
 
         //=============
         //search props:
-        public string Seperator { get; set;}
-        public string AndSeperator { get; set; }
+        public string Seperator
+        {
+            get { return _seperator; }
+            set { _seperator = value; OnPropertyChanged(); }
+        }
+
+        public string AndSeperator
+        {
+            get { return _andSeperator; }
+            set { _andSeperator = value; OnPropertyChanged(); }
+        }
+
         public Dictionary<string, a7SearchedValue> SearchedValues { get; set; }
         public a7SearchedValue SelectedSearchedValue { get; set; }
         public DataTable SelectedTable { get; set; }
         public string NotFoundItems { get; set; }
         //=============
         public event EventHandler<DBSearchEventArgs> ActualizedWork;
-        public event EventHandler<DBSearchFinishedEventArgs> FinishedSearch;
         private bool abortSearch = false;
 
         private string _connectionString;
@@ -69,16 +100,6 @@ namespace a7SqlTools.DbSearch
                 TableCount = tableCount;
                 ActualTableValue = actualTableValue;
                 ValuesCount = tableValueCount;
-            }
-        }
-
-        public class DBSearchFinishedEventArgs : EventArgs
-        {
-            public string NotUsedValuesList { get; private set; }
-
-            public DBSearchFinishedEventArgs(string notUsedValues)
-            {
-                NotUsedValuesList = notUsedValues;
             }
         }
 
@@ -119,9 +140,13 @@ namespace a7SqlTools.DbSearch
         });
 
         private readonly ConnectionViewModel _parentVm;
+        private string _seperator;
+        private string _andSeperator;
 
         public a7DbSearchEngine(string name, ConnectionData connectionData, ConnectionViewModel parentVm)
         {
+            IsSearching = false;
+            IsResultsView = false;
             _parentVm = parentVm;
             this.Name = name;
             _connectionString = ConnectionStringGenerator.Get(connectionData, name);
@@ -161,25 +186,13 @@ namespace a7SqlTools.DbSearch
             OnPropertyChanged(nameof(DictTables));
         }
 
-        public int ExecuteSQL(string sql)
-        {
-            var sqlComm = new SqlCommand(sql, SqlConnection);
-            return sqlComm.ExecuteNonQuery();
-        }
-
-        public string GetValue(string sql)
-        {
-            var sqlComm = new SqlCommand(sql, SqlConnection);
-            return sqlComm.ExecuteScalar().ToString();
-        }
-
         public void SelectAllTables(bool select)
         {
             foreach (var kv in DictTables)
             {
                 kv.Value.IsSelected = select;
             }
-            OnPropertyChanged("DictTables");
+            OnPropertyChanged(nameof(DictTables));
         }
 
         public void BeginSearchValues(string values)
@@ -193,10 +206,24 @@ namespace a7SqlTools.DbSearch
         public void AbortSearch()
         {
             abortSearch = true;
+            IsSearching = false;
+            ActualizedWork?.Invoke(this, null);
         }
+
+        public void SetSeperators()
+        {
+            var dlg = new SeperatorSelector(Seperator, AndSeperator);
+            if (dlg.ShowDialog() == true)
+            {
+                Seperator = dlg.Seperator;
+                AndSeperator = dlg.AndSeperator;
+            }
+        }
+
 
         private void SearchValues(object values)
         {
+            IsSearching = true;
             var sRet = "";
             values = values.ToString().Replace("'", "");
             
@@ -316,15 +343,15 @@ namespace a7SqlTools.DbSearch
                 if (kv.Value == 0)
                     sRet += "'" + kv.Key + "',";
             }
-            if (FinishedSearch != null)
-                FinishedSearch(this, new DBSearchFinishedEventArgs(sRet));
-            OnPropertyChanged("SearchedValues");
+            IsResultsView = true;
+            IsSearching = false;
+            ActualizedWork?.Invoke(this, null);
+            OnPropertyChanged(nameof(SearchedValues));
         }
 
-        public void OnActualizedWork(string table, string value, int actualTable, int tableCount, int actualTableValue, int tableValueCount)
+        private void OnActualizedWork(string table, string value, int actualTable, int tableCount, int actualTableValue, int tableValueCount)
         {
-            if (this.ActualizedWork != null)
-                ActualizedWork(this, new DBSearchEventArgs(table, value,  actualTable,  tableCount,  actualTableValue,  tableValueCount));
+            ActualizedWork?.Invoke(this, new DBSearchEventArgs(table, value,  actualTable,  tableCount,  actualTableValue,  tableValueCount));
         }
 
         #region INotifyPropertyChanged Members

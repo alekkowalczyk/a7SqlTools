@@ -73,7 +73,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="BasicButtonTemplate" TargetType="{x:Type Button}">
-        <Border x:Name="border"  BorderThickness="0,0,0,0" Background="Transparent">
+        <Border x:Name="border"  BorderThickness="0,0,0,0" Background="Transparent" Padding="{TemplateBinding Padding}">
             <Grid>
                 <ContentPresenter Margin="0" Content="{TemplateBinding Content}"></ContentPresenter>
                 <Rectangle x:Name="dim" Fill="White" Opacity="0.5" Visibility="Collapsed"></Rectangle>

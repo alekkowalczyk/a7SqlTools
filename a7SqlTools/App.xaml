@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Themes/Templates/ButtonsTemplates.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <cv:NegateBool x:Key="nb"></cv:NegateBool>
+            <cv:EmptyStringToVisibility x:Key="es2v"></cv:EmptyStringToVisibility>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
