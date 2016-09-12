@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <DockPanel Grid.Column="0" Margin="3">
-                    <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Tables to search:</TextBlock>
+                    <TextBlock DockPanel.Dock="Top" Margin="3" FontWeight="Bold">Tables to search:</TextBlock>
                     <CheckBox IsChecked="True" Margin="3" DockPanel.Dock="Top" x:Name="SelectAllTables" Checked="SelectAllTables_Checked" Unchecked="SelectAllTables_Unchecked">Select/Unselect all</CheckBox>
                     <DockPanel DockPanel.Dock="Top">
                         <Label DockPanel.Dock="Left">Filter:</Label>
@@ -72,7 +72,7 @@
                 </DockPanel>
                 <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
                 <DockPanel Grid.Column="2" Margin="3">
-                    <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Value(s) to search:</TextBlock>
+                    <TextBlock DockPanel.Dock="Top" Margin="3" FontWeight="Bold">Value(s) to search:</TextBlock>
                     <Grid DockPanel.Dock="Bottom" Visibility="{Binding IsSearching, Converter={StaticResource b2v}}">
                         <ProgressBar x:Name="pbProgress" Height="18"></ProgressBar>
                         <TextBlock x:Name="tbProgress"></TextBlock>
@@ -133,18 +133,18 @@
                 </Button>
             </WrapPanel>
             <DockPanel Grid.Column="0" Grid.Row="1" Margin="2">
-                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Searched value(s):</TextBlock>
+                <TextBlock DockPanel.Dock="Top"  Margin="3" FontWeight="Bold">Searched value(s):</TextBlock>
                 <ListBox x:Name="lbValuesSearched" SelectionChanged="lbValuesSearched_SelectionChanged"  ItemsSource="{Binding SearchedValues.Values}"></ListBox>
             </DockPanel>
             <GridSplitter ResizeDirection="Columns" Grid.Column="1" Grid.Row="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
             <DockPanel Grid.Column="2" Grid.Row="1" Margin="2">
-                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Found in:</TextBlock>
+                <TextBlock DockPanel.Dock="Top"  Margin="3" FontWeight="Bold">Found in:</TextBlock>
                 <ListBox x:Name="lbTablesWithValueFound" SelectionChanged="lbTablesWithValueFound_SelectionChanged" ItemsSource="{Binding SelectedSearchedValue.OccurencesInTables}">
                 </ListBox>
             </DockPanel>
             <GridSplitter ResizeDirection="Columns" Grid.Column="3" Grid.Row="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
             <DockPanel  Grid.Column="4" Grid.Row="1" Margin="2">
-                <TextBlock DockPanel.Dock="Top" FontWeight="Bold">Rows with found value:</TextBlock>
+                <TextBlock DockPanel.Dock="Top"  Margin="3" FontWeight="Bold">Rows with found value:</TextBlock>
                 <dg:a7DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="dg"
                                   AutoGenerateColumns="True"
                                   ItemsSource="{Binding SelectedTable}"
