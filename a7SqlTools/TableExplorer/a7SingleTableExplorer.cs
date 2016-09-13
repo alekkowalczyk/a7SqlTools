@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
+using a7SqlTools.TableExplorer.Enums;
 using a7SqlTools.Utils;
 
 namespace a7SqlTools.TableExplorer
@@ -54,17 +55,14 @@ namespace a7SqlTools.TableExplorer
             set { _isBusy = value; OnPropertyChanged(nameof(IsBusy)); }
         }
 
-        private ObservableCollection<PropertyDefinitionModel> _availableProperties;
-        // TODO: rename to AvailableColumns
-        public ObservableCollection<PropertyDefinitionModel> AvailableProperties
+        private ObservableCollection<ColumnDefinition> _availableColumns;
+        public ObservableCollection<ColumnDefinition> AvailableColumns
         {
-            get { return _availableProperties; }
+            get { return _availableColumns; }
             private set
             {
-                _availableProperties = value;
-                OnPropertyChanged(nameof(AvailableProperties));
-                // should contain definition of columns
-                throw new NotImplementedException();
+                _availableColumns = value;
+                OnPropertyChanged(nameof(AvailableColumns));
             }
         }
 
@@ -102,6 +100,35 @@ namespace a7SqlTools.TableExplorer
             this.SQL = _sqlBase;
             this._combinedSql = this.SQL;
             this._columnWhere = "";
+            SetAvailableColumns();
+        }
+
+        public void SetAvailableColumns()
+        {
+            var tmpData = new DataTable();
+            Dispatcher.CurrentDispatcher.Invoke(() => IsBusy = true);
+            var columnsSelect = new SqlCommand($"SELECT * FROM {TableName} WHERE 1=2", _sqlConnection);
+            DataAdapter = new SqlDataAdapter(columnsSelect);
+            var sqlBuilder = new SqlCommandBuilder(DataAdapter);
+            DataAdapter.Fill(tmpData);
+            this.AvailableColumns = new ObservableCollection<ColumnDefinition>(
+                tmpData.Columns.Cast<DataColumn>().Select(col => 
+                            new ColumnDefinition
+                            {
+                                Name = col.ColumnName,
+                                Type = col.DataType == typeof(int)
+                                        ? PropertyType.Integer 
+                                        : col.DataType == typeof(float)
+                                        ? PropertyType.Float  
+                                        : col.DataType == typeof(bool)
+                                        ? PropertyType.Bool 
+                                        : col.DataType == typeof(DateTime)
+                                        ? PropertyType.DateTime 
+                                        : PropertyType.String
+                            })
+                );
+   
+            Dispatcher.CurrentDispatcher.Invoke(() => IsBusy = false);
         }
 
         public void Refresh()

@@ -22,7 +22,6 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="150"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -31,20 +30,16 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Margin="5,0,5,0" Grid.Row="1" Grid.Column="0">Property name</TextBlock>
-        <TextBlock Margin="5,0,5,0" Grid.Row="1" Grid.Column="1">Property type</TextBlock>
         <controls:AutoCompleteBox   Grid.Row="2" Grid.Column="0"
-            Margin="5,0,5,0" x:Name="acbProperty"
+            Margin="5,0,5,0" x:Name="acbProperty"  IsTextCompletionEnabled="True"  
             ItemsSource="{Binding Properties, ElementName=me}" 
+                                    GotFocus="AcbProperty_OnGotFocus"
+                                    TextChanged="AcbProperty_OnTextChanged"
+                                    PreviewKeyDown="AcbProperty_OnPreviewKeyDown"
+                                    FilterMode="Contains"
                               SelectionChanged="AutoCompleteBox_SelectionChanged"
-                              TextChanged="AutoCompleteBox_TextChanged"
+                              LostFocus="AcbProperty_OnLostFocus"
             ></controls:AutoCompleteBox>
-        <ComboBox Margin="5,0,5,0" x:Name="cbType"
-                   ItemsSource="{Binding Source={utils:Enumeration {x:Type en:PropertyType}}}" 
-                   SelectionChanged="ComboBox_SelectionChanged"
-                    DisplayMemberPath="Description" 
-                    SelectedValuePath="Value"
-                   Grid.Row="2" Grid.Column="1"
-                  ></ComboBox>
     </Grid>
 </UserControl>
 

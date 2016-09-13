@@ -9,16 +9,16 @@ namespace a7SqlTools.Controls.FilterEditor
 {
     public class FilterElementDefinition
     {
-        public PropertyDefinitionModel FieldData { get; private set; }
+        public ColumnDefinition FieldData { get; private set; }
 
-        public string Caption => FieldData?.Path;
+        public string Caption => FieldData?.Name;
 
-        private FilterElementDefinition(PropertyDefinitionModel fieldData)
+        private FilterElementDefinition(ColumnDefinition fieldData)
         {
             FieldData = fieldData;
         }
 
-        public static FilterElementDefinition GetFieldFilterElement(PropertyDefinitionModel fieldData)
+        public static FilterElementDefinition GetFieldFilterElement(ColumnDefinition fieldData)
         {
             return new FilterElementDefinition(fieldData);
         }

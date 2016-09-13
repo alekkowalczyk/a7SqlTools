@@ -62,20 +62,20 @@ namespace a7SqlTools.Controls.FilterEditor
         public bool IsWithcollectionIdFilter { get; private set; }
         private FrameworkElement _frameworkElement;
 
-        public FilterElementEditor(a7SingleTableExplorer collection, PropertyDefinitionModel elementDef, bool isPopupMode)
+        public FilterElementEditor(a7SingleTableExplorer collection, TableExplorer.ColumnDefinition elementDef, bool isPopupMode)
         {
             this.IsPopupMode = isPopupMode;
             InitializeComponent();
             this.propSelector.SelectedPropertyChanged += PropSelector_SelectedPropertyChanged;
             IsWithcollectionIdFilter = false;
             var field = elementDef;
-            this.propSelector.Properties = collection.AvailableProperties;
+            this.propSelector.Properties = collection.AvailableColumns;
             this.propSelector.SelectedProperty = elementDef;
             Filter = new FltAtomExprData()
             {
                 Operator = FilterFieldOperator.Equal,
                 PropertyType = field.Type,
-                Field = field.Path
+                Field = field.Name
             };
             setField(field);
         }
@@ -86,10 +86,9 @@ namespace a7SqlTools.Controls.FilterEditor
             InitializeComponent();
             this.propSelector.SelectedPropertyChanged += PropSelector_SelectedPropertyChanged;
             Filter = filter;
-            this.propSelector.Properties = collection.AvailableProperties;
-            this.propSelector.SelectedProperty = new PropertyDefinitionModel
+            this.propSelector.Properties = collection.AvailableColumns;
+            this.propSelector.SelectedProperty = new TableExplorer.ColumnDefinition
             {
-                Path = filter.Field,
                 Name = filter.Field,
                 Type = filter.PropertyType
             };
@@ -102,7 +101,7 @@ namespace a7SqlTools.Controls.FilterEditor
             if(this.Filter!=null && this.Filter is FltAtomExprData && this.propSelector.SelectedProperty != null)
             {
                 var fa = this.Filter as FltAtomExprData;
-                fa.Field = this.propSelector.SelectedProperty.Path;
+                fa.Field = this.propSelector.SelectedProperty.Name;
                 fa.PropertyType = this.propSelector.SelectedProperty.Type;
             }
         }
@@ -123,11 +122,11 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private void setField(PropertyDefinitionModel field)
+        private void setField(TableExplorer.ColumnDefinition field)
         {
             if (this.IsPopupMode)
             {
-                this.lCaption.Content = field.Path;
+                this.lCaption.Content = field.Name;
                 this.firstColumn.Width = new GridLength(0);
             }
             else
@@ -147,7 +146,7 @@ namespace a7SqlTools.Controls.FilterEditor
             _frameworkElement = fe;
         }
 
-        private FilterTextBox getTextBox(PropertyDefinitionModel field)
+        private FilterTextBox getTextBox(TableExplorer.ColumnDefinition field)
         {
             var ftb = new FilterTextBox(field, !this.IsPopupMode) { Padding = new Thickness(0), Width = 120 };
             if (this.IsPopupMode)
@@ -187,7 +186,7 @@ namespace a7SqlTools.Controls.FilterEditor
         }
 
 
-        private FilterDatePicker getDatePicker(PropertyDefinitionModel field)
+        private FilterDatePicker getDatePicker(TableExplorer.ColumnDefinition field)
         {
             FilterDatePicker ftb = new FilterDatePicker();
             ftb.HasTime = false;
@@ -231,7 +230,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private a7ComboBox getBoolFilter(PropertyDefinitionModel field)
+        private a7ComboBox getBoolFilter(TableExplorer.ColumnDefinition field)
         {
             a7ComboBox cb = new a7ComboBox();
             cb.SelectedValuePath = "Value";

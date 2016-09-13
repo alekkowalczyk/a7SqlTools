@@ -7,27 +7,25 @@ using a7SqlTools.TableExplorer.Enums;
 
 namespace a7SqlTools.TableExplorer
 {
-    public class PropertyDefinitionModel
+    public class ColumnDefinition
     {
         public string Name { get; set; }
-        public string Path { get; set; }
         public PropertyType Type { get; set; }
 
         public override string ToString()
         {
-            return this.Path;
+            return this.Name;
         }
 
-        public PropertyDefinitionModel()
+        public ColumnDefinition()
         {
 
         }
 
-        public static PropertyDefinitionModel GetEmpty()
-            => new PropertyDefinitionModel
+        public static ColumnDefinition GetEmpty()
+            => new ColumnDefinition
             {
                 Name = "",
-                Path = "",
                 Type = PropertyType.String
             };
     }

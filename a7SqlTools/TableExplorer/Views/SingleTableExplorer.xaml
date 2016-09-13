@@ -6,6 +6,7 @@
              xmlns:dg="clr-namespace:a7SqlTools.Controls.DataGrids"
              xmlns:controls="clr-namespace:a7SqlTools.Controls"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:flt="clr-namespace:a7SqlTools.Controls.FilterEditor"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:utils="clr-namespace:a7SqlTools.Utils"
              mc:Ignorable="d" 
@@ -51,6 +52,7 @@
                     <TextBlock VerticalAlignment="Center">Commit changes</TextBlock>
                 </StackPanel>
             </Button>
+            <flt:FilterEditorButton Collection="{Binding}"></flt:FilterEditorButton>
         </WrapPanel>
         <avalonedit:TextEditor Grid.Row="1" Margin="3" BorderBrush="#CCC" BorderThickness="1" x:Name="sqlEditor" WordWrap="True"  
                                IsEnabled="{Binding IsSqlEditMode}" >

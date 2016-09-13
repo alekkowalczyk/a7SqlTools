@@ -13,7 +13,8 @@
     <converters:NegateBool x:Key="nb"></converters:NegateBool>
 	<ControlTemplate x:Key="a7FilterEditorButtonTemplate" TargetType="{x:Type a7c:FilterEditorButton}">
         <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"  BorderThickness="{TemplateBinding BorderThickness}"
-                Background="{Binding Path=ActiveBackground,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Margin="0">
+                Padding="8,5,8,5"
+                Background="{Binding Path=ActiveBackground,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" Margin="3">
             <DockPanel Margin="0,0,0,0" VerticalAlignment="Center"  >
                 <Grid x:Name="grid">
                     <ToggleButton x:Name="bDots" 
@@ -30,8 +31,8 @@
                         <Border HorizontalAlignment="Right" x:Name="arrowBorder" Background="Transparent"  BorderBrush="{TemplateBinding BorderBrush}" 
                              BorderThickness="2,0,0,0" Margin="0,-1,-1,-1">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="../Images/filter.png" HorizontalAlignment="Center" Width="12" Height="12"></Image>
-                                <TextBlock Foreground="Black">Filter</TextBlock>
+                                <Image Source="../../Images/filter.png" HorizontalAlignment="Center" Width="12" Height="12"></Image>
+                                <TextBlock Foreground="Black">Filter wizard</TextBlock>
                             </StackPanel>
                         </Border>
                     </ToggleButton>

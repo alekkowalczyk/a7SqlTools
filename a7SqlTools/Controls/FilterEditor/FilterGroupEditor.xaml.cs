@@ -54,8 +54,8 @@ namespace a7SqlTools.Controls.FilterEditor
         public Orientation Orientation { get { return _orientation; } set { _orientation = value; OnPropertyChanged("Orientation"); OnPropertyChanged("OrientationNegate"); } }
         public Orientation OrientationNegate { get { return (_orientation== Orientation.Vertical)?Orientation.Horizontal : Orientation.Vertical; } }
 
-        private IEnumerable<PropertyDefinitionModel> _elements;
-        public IEnumerable<PropertyDefinitionModel> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
+        private IEnumerable<TableExplorer.ColumnDefinition> _elements;
+        public IEnumerable<TableExplorer.ColumnDefinition> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
 
         private FilterGroupEditor _parent;
 
@@ -121,9 +121,9 @@ namespace a7SqlTools.Controls.FilterEditor
             EditorContext = editorContext;
             _collection = collection;
             if (collection != null)
-                Elements = collection.AvailableProperties;
+                Elements = collection.AvailableColumns;
             else
-                Elements = new List<PropertyDefinitionModel>();
+                Elements = new List<TableExplorer.ColumnDefinition>();
             SubGroups = new List<FilterGroupEditor>();
             _vertical = vertical;
             this.VerticalAlignment = VerticalAlignment.Center;
@@ -152,7 +152,7 @@ namespace a7SqlTools.Controls.FilterEditor
                     if (filter.HasActiveFilter)
                     {
                         this.Filter = filter;
-                        if(_collection != null)// why was this here?: && _collection.AvailableProperties.Any(ap => ap.Path ==(filter as FltAtomExprData).Field))
+                        if(_collection != null)// why was this here?: && _collection.AvailableColumns.Any(ap => ap.Path ==(filter as FltAtomExprData).Field))
                             this.SetAtomFilter(new FilterElementEditor(_collection, filter as FltAtomExprData, this.IsPopupMode) { 
                                 IsReadOnly = this.IsReadOnly,
                                 EditorContext = this.EditorContext
@@ -417,7 +417,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
             else
             {
-                this.setProperty(PropertyDefinitionModel.GetEmpty());
+                this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
             }
         }
 
@@ -430,7 +430,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
             else
             {
-                this.setProperty(PropertyDefinitionModel.GetEmpty());
+                this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
             }
         }
 
@@ -443,7 +443,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
             else
             {
-                this.setProperty(PropertyDefinitionModel.GetEmpty());
+                this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
             }
         }
 
@@ -471,7 +471,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private void setProperty(PropertyDefinitionModel selectedField)
+        private void setProperty(TableExplorer.ColumnDefinition selectedField)
         {
             var fae = new FilterElementEditor(_collection, selectedField, this.IsPopupMode) { Margin = new Thickness(0, 0, 0, 0), IsReadOnly = this.IsReadOnly };
             fae.EditorContext = this.EditorContext;

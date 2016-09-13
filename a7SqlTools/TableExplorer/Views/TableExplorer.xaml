@@ -20,7 +20,7 @@
                 <Label DockPanel.Dock="Left">Filter:</Label>
                 <TextBox x:Name="tbTableFilter" Margin="5" TextChanged="tbTableFilter_TextChanged"></TextBox>
             </DockPanel>
-            <ListBox x:Name="lbTables"  ItemsSource="{Binding TableNames}" SelectedItem="{Binding SelectedTableName}" 
+            <ListBox x:Name="lbTables" Margin="3" ItemsSource="{Binding TableNames}" SelectedItem="{Binding SelectedTableName}" 
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -30,7 +30,7 @@
             </ListBox>
         </DockPanel>
         <GridSplitter ResizeDirection="Columns" Grid.Column="1" Height="Auto" Width="3" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></GridSplitter>
-        <TabControl Grid.Column="2"  ItemsSource="{Binding OpenedTables}" SelectedIndex="{Binding SelectedTableIndex}">
+        <TabControl Grid.Column="2" Margin="3" ItemsSource="{Binding OpenedTables}" SelectedIndex="{Binding SelectedTableIndex}">
             <TabControl.ItemTemplate>
                 <!-- this is the header template-->
                 <DataTemplate>

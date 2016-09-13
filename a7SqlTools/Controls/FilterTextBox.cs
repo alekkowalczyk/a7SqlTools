@@ -49,7 +49,7 @@ namespace a7SqlTools.Controls
 
         private ToggleButton _toggleButton;
 
-        public FilterTextBox(PropertyDefinitionModel prop, bool isInlineMode) : base()
+        public FilterTextBox(TableExplorer.ColumnDefinition prop, bool isInlineMode) : base()
         {
             if(isInlineMode)
                 this.Template = ResourcesManager.Instance.GetControlTemplate("FilterTextBoxInlineTemplate");

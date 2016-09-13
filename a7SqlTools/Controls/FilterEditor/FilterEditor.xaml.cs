@@ -61,8 +61,8 @@ namespace a7SqlTools.Controls.FilterEditor
 
 
 
-        private IEnumerable<PropertyDefinitionModel> _elements;
-        public IEnumerable<PropertyDefinitionModel> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
+        private IEnumerable<TableExplorer.ColumnDefinition> _elements;
+        public IEnumerable<TableExplorer.ColumnDefinition> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
         
         private a7SingleTableExplorer _collection;
         private int _backgroundIndex;
@@ -80,7 +80,7 @@ namespace a7SqlTools.Controls.FilterEditor
             if (collection != null)
             {
                 _collection = collection;
-                Elements = collection.AvailableProperties;
+                Elements = collection.AvailableColumns;
             }
             Reset();
         }
@@ -88,7 +88,7 @@ namespace a7SqlTools.Controls.FilterEditor
         public void SetFilter(a7SingleTableExplorer collection, FilterExpressionData filter)
         {
             _collection = collection;
-            Elements = collection.AvailableProperties;
+            Elements = collection.AvailableColumns;
             if (filter != null)
             {
                 var fge = new FilterGroupEditor(collection, false, this.IsReadOnly, this);
@@ -105,7 +105,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
             else
             {
-                this.setProperty(PropertyDefinitionModel.GetEmpty());
+                this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
             }
         }
 
@@ -126,7 +126,7 @@ namespace a7SqlTools.Controls.FilterEditor
                 }
                 else
                 {
-                    this.setProperty(PropertyDefinitionModel.GetEmpty());
+                    this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
                 }
             }
          //   spButtons.Visibility = Visibility.Collapsed;
@@ -243,7 +243,7 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private void setProperty(PropertyDefinitionModel selectedProperty)
+        private void setProperty(TableExplorer.ColumnDefinition selectedProperty)
         {
             gStartPanel.Visibility = Visibility.Collapsed;
             MyBorder.Visibility = System.Windows.Visibility.Visible;

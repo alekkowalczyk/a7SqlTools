@@ -296,7 +296,7 @@
     <Compile Include="TableExplorer\Filter\FltAtomExprData.cs" />
     <Compile Include="TableExplorer\Filter\FltFlatGroupExprData.cs" />
     <Compile Include="TableExplorer\Filter\FltGroupExprData.cs" />
-    <Compile Include="TableExplorer\PropertyDefinitionModel.cs" />
+    <Compile Include="TableExplorer\ColumnDefinition.cs" />
     <Compile Include="TableExplorer\Views\TableExplorer.xaml.cs">
       <DependentUpon>TableExplorer.xaml</DependentUpon>
     </Compile>
@@ -597,6 +597,7 @@
     <Content Include="bin\Debug\Microsoft.SqlServer.SmoExtended.dll" />
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlClrProvider.dll" />
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlEnum.dll" />
+    <Resource Include="Images\small_ok.png" />
     <Resource Include="Images\small_left.png" />
     <Resource Include="Images\search_small.png" />
     <Resource Include="Images\edit.png" />

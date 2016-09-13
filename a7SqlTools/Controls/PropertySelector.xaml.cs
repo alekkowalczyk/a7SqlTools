@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using a7SqlTools.TableExplorer;
 using a7SqlTools.TableExplorer.Enums;
+using ColumnDefinition = System.Windows.Controls.ColumnDefinition;
 
 namespace a7SqlTools.Controls
 {
@@ -25,32 +26,32 @@ namespace a7SqlTools.Controls
     {
         public event EventHandler SelectedPropertyChanged;
 
-        public ObservableCollection<PropertyDefinitionModel> Properties
+        public ObservableCollection<TableExplorer.ColumnDefinition> Properties
         {
-            get { return (ObservableCollection<PropertyDefinitionModel>)GetValue(PropertiesProperty); }
+            get { return (ObservableCollection<TableExplorer.ColumnDefinition>)GetValue(PropertiesProperty); }
             set { SetValue(PropertiesProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Properties.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PropertiesProperty =
-            DependencyProperty.Register("Properties", typeof(ObservableCollection<PropertyDefinitionModel>), typeof(PropertySelector), new PropertyMetadata(null, (s, e) =>
+            DependencyProperty.Register("Properties", typeof(ObservableCollection<TableExplorer.ColumnDefinition>), typeof(PropertySelector), new PropertyMetadata(null, (s, e) =>
             {
             }));
 
-        public PropertyDefinitionModel SelectedProperty
+        public TableExplorer.ColumnDefinition SelectedProperty
         {
-            get { return (PropertyDefinitionModel)GetValue(SelectedPropertyProperty); }
+            get { return (TableExplorer.ColumnDefinition)GetValue(SelectedPropertyProperty); }
             set { SetValue(SelectedPropertyProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedPropertyProperty =
-            DependencyProperty.Register("SelectedProperty", typeof(PropertyDefinitionModel), typeof(PropertySelector), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedProperty", typeof(TableExplorer.ColumnDefinition), typeof(PropertySelector), new PropertyMetadata(null));
 
         public PropertySelector()
         {
             InitializeComponent();
-            this.cbType.SelectedValue = PropertyType.String;
+            acbProperty.ItemFilter = (t, obj) => string.IsNullOrWhiteSpace(t) || obj?.ToString().IndexOf(t?.Trim(), StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -58,57 +59,81 @@ namespace a7SqlTools.Controls
             base.OnPropertyChanged(e);
             if(e.Property == SelectedPropertyProperty)
             {
-                this.cbType.SelectedValue = this.SelectedProperty.Type;
-                this.acbProperty.Text = this.SelectedProperty.Path;
+                this.acbProperty.Text = this.SelectedProperty.Name;
             }
         }
 
         public void Clear()
         {
-            this.cbType.SelectedValue = PropertyType.String;
             this.acbProperty.Text = "";
             this.acbProperty.SelectedItem = null;
         }
 
-        private void selectedPropertychanged()
-        {
-            if (this.SelectedPropertyChanged != null)
-                this.SelectedPropertyChanged(this, null);
-        }
+        private void selectedPropertychanged() => SelectedPropertyChanged?.Invoke(this, null);
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (this.SelectedProperty != null && e.AddedItems.Count > 0 && e.AddedItems[0] is PropertyType)
-            {
-                this.SelectedProperty.Type = (PropertyType)e.AddedItems[0];
-                selectedPropertychanged();
-            }
-        }
 
         private void AutoCompleteBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is PropertyDefinitionModel)
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is TableExplorer.ColumnDefinition)
             {
-                this.SelectedProperty = e.AddedItems[0] as PropertyDefinitionModel;
-                this.cbType.SelectedValue = this.SelectedProperty.Type;
+                this.SelectedProperty = e.AddedItems[0] as TableExplorer.ColumnDefinition;
                 selectedPropertychanged();
             }
         }
 
-        private void AutoCompleteBox_TextChanged(object sender, RoutedEventArgs e)
+        private void AcbProperty_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            var type = PropertyType.String;
-            if (cbType.SelectedValue is PropertyType)
-                type = (PropertyType)cbType.SelectedValue;
-            else
-                cbType.SelectedValue = type;
-            this.SelectedProperty = new PropertyDefinitionModel
+            var abc = sender as AutoCompleteBox;
+            if (string.IsNullOrEmpty(abc.Text))
             {
-                Name = acbProperty.Text,
-                Path = acbProperty.Text,
-                Type = type
-            };
-            selectedPropertychanged();
+                abc.Text = " "; // when empty, we put a space in the box to make the dropdown appear
+            }
+            abc.Dispatcher.BeginInvoke(new Action(() => abc.IsDropDownOpen = true));
+        }
+
+        private void AcbProperty_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var abc = sender as AutoCompleteBox;
+            abc.Text = abc.Text.Trim();
+            var matching =
+                Properties.FirstOrDefault(
+                    prop => prop.Name.IndexOf(abc.Text, StringComparison.InvariantCultureIgnoreCase) > -1);
+            if (matching != null)
+                abc.SelectedItem = matching;
+            else
+            {
+                abc.Text = "";
+                abc.SelectedItem = null;
+            }
+        }
+
+        private void AcbProperty_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var abc = sender as AutoCompleteBox;
+            abc.IsDropDownOpen = true;
+        }
+
+        private void AcbProperty_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            var abc = sender as AutoCompleteBox;
+            if (!string.IsNullOrWhiteSpace(abc.Text) &&
+              abc.FilterMode != AutoCompleteFilterMode.Custom)
+            {
+                abc.FilterMode = AutoCompleteFilterMode.Custom;
+            }
+
+            if (string.IsNullOrWhiteSpace(abc.Text) &&
+                abc.FilterMode != AutoCompleteFilterMode.None)
+            {
+                abc.FilterMode = AutoCompleteFilterMode.None;
+            }
+        }
+
+        private void AcbProperty_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var abc = sender as AutoCompleteBox;
+            //if (abc.Text != " ")
+            //    abc.Text = abc.Text.Trim();
         }
     }
 }

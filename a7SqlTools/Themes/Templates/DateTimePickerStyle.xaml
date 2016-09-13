@@ -234,7 +234,7 @@
                                                     Command="{TemplateBinding SelectValuesCommand}"
                                                     Visibility="{TemplateBinding IsTextReadOnly, Converter={StaticResource b2v}}" >
                                                 <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <Image Source="../Images/small_ok.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
+                                                    <Image Source="../../Images/small_ok.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
                                                     <Label FontSize="11" Padding="0" Foreground="Gray" Content="Select"></Label>
                                                 </StackPanel>
                                             </Button>
@@ -243,7 +243,7 @@
                                                     Command="{TemplateBinding ClearValuesCommand}"
                                                     Visibility="{TemplateBinding IsTextReadOnly, Converter={StaticResource b2v}}" >
                                                 <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <Image Source="../Images/small_cancel.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
+                                                    <Image Source="../../Images/small_cancel.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
                                                     <Label FontSize="11" Padding="0" Foreground="Gray" Content="Clear"></Label>
                                                 </StackPanel>
                                             </Button>

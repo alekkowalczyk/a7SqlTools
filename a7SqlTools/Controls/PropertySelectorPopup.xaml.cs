@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using a7SqlTools.TableExplorer;
+using ColumnDefinition = System.Windows.Controls.ColumnDefinition;
 
 namespace a7SqlTools.Controls
 {
@@ -24,29 +25,29 @@ namespace a7SqlTools.Controls
     {
         public event EventHandler SelectClicked;
 
-        public ObservableCollection<PropertyDefinitionModel> Properties
+        public ObservableCollection<TableExplorer.ColumnDefinition> Properties
         {
-            get { return (ObservableCollection<PropertyDefinitionModel>)GetValue(PropertiesProperty); }
+            get { return (ObservableCollection<TableExplorer.ColumnDefinition>)GetValue(PropertiesProperty); }
             set { SetValue(PropertiesProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Properties.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PropertiesProperty =
-            DependencyProperty.Register("Properties", typeof(ObservableCollection<PropertyDefinitionModel>), typeof(PropertySelectorPopup), new PropertyMetadata(null, (s, e) =>
+            DependencyProperty.Register("Properties", typeof(ObservableCollection<TableExplorer.ColumnDefinition>), typeof(PropertySelectorPopup), new PropertyMetadata(null, (s, e) =>
             {
             }));
 
 
 
-        public PropertyDefinitionModel SelectedProperty
+        public TableExplorer.ColumnDefinition SelectedProperty
         {
-            get { return (PropertyDefinitionModel)GetValue(SelectedPropertyProperty); }
+            get { return (TableExplorer.ColumnDefinition)GetValue(SelectedPropertyProperty); }
             set { SetValue(SelectedPropertyProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedPropertyProperty =
-            DependencyProperty.Register("SelectedProperty", typeof(PropertyDefinitionModel), typeof(PropertySelectorPopup), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedProperty", typeof(TableExplorer.ColumnDefinition), typeof(PropertySelectorPopup), new PropertyMetadata(null));
 
 
 

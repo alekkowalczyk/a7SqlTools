@@ -14,7 +14,7 @@ namespace a7SqlTools.Controls.FilterEditor
             if (collection != null)
             {
                 var retList = new List<FilterElementDefinition>();
-                foreach(var prop in collection.AvailableProperties)
+                foreach(var prop in collection.AvailableColumns)
                 {
                     retList.Add(FilterElementDefinition.GetFieldFilterElement(prop));
                 }

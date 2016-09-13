@@ -18,46 +18,49 @@ namespace a7SqlTools.Utils
             get
             {
                 if (_instance == null)
-                    _instance = new ResourcesManager(@"pack://application:,,,/a7SqlTools;component/Themes/Templates");
+                    _instance = new ResourcesManager(@"pack://application:,,,/a7SqlTools;component/Themes");
                 return _instance;
             }
         }
-        private Dictionary<string, ResourceDictionary> cachedResourceDictionaries;
+
+        private readonly Dictionary<string, ResourceDictionary> _cachedResourceDictionaries;
         private string _uri;
+        private string _templatesUri;
 
         private ResourcesManager(string uri)
         {
-            cachedResourceDictionaries = new Dictionary<string, ResourceDictionary>();
+            _cachedResourceDictionaries = new Dictionary<string, ResourceDictionary>();
             _uri = uri;
+            _templatesUri = uri + @"/Templates";
         }
 
         public void ClearCache()
         {
-            cachedResourceDictionaries.Clear();
+            _cachedResourceDictionaries.Clear();
         }
 
-        private ResourceDictionary GetResourceDictionary(string name)
+        private ResourceDictionary GetResourceDictionary(string name, bool fromTemplates = true)
         {
-            if (!cachedResourceDictionaries.ContainsKey(name))
+            if (!_cachedResourceDictionaries.ContainsKey(name))
             {
                 ResourceDictionary rd = new ResourceDictionary();
                 Uri uri;
                 try
                 {
                     uri = new Uri(
-                        string.Format("{0}/{1}.xaml", _uri, name),
+                        string.Format("{0}/{1}.xaml", fromTemplates ? _templatesUri : _uri, name),
                         UriKind.Absolute);
                     rd.Source = uri;
                     //WalkDictionary(rd);
                     //return rd;
-                    cachedResourceDictionaries[name] = rd;
+                    _cachedResourceDictionaries[name] = rd;
                 }
                 catch (System.IO.IOException ex)
                 {
                     return null;
                 }
             }
-            return cachedResourceDictionaries[name];
+            return _cachedResourceDictionaries[name];
         }
 
         private void WalkDictionary(ResourceDictionary resources)
@@ -100,7 +103,7 @@ namespace a7SqlTools.Utils
 
         public Brush GetBrush(string resourceKey)
         {
-            return GetResourceDictionary("CommonBrushes")[resourceKey] as Brush;
+            return GetResourceDictionary("CommonBrushes", false)[resourceKey] as Brush;
         }
     }
 }

@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CommonBrushes.xaml"/>
+        <ResourceDictionary Source="../CommonBrushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
         <Grid>
