@@ -39,7 +39,7 @@
                     Margin="0,0,0,0">
                     
                 </ToggleButton>
-                <controls:a7Popup  x:Name="filterTypePopup" PopupAnimation="Slide" AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}"
+                <controls:a7Popup IsTopmost="True" x:Name="filterTypePopup" PopupAnimation="Slide" AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}"
                         Placement="Relative" HorizontalOffset="-60" VerticalOffset="15" >
                     <Border BorderBrush="{StaticResource ShadowBorderBrush}" Effect="{StaticResource ShadowEffect}" >
                     <ListBox Background="White" Foreground="Black" FontFamily="Segoe UI" 

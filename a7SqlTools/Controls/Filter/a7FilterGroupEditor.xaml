@@ -63,7 +63,7 @@
                                         Template="{StaticResource ButtonTemplate}" BorderThickness="2,1,2,1" 
                                         Margin="1">x</Button>-->
                     </StackPanel>
-                    <controls:a7Popup x:Name="popupFieldSelect" IsOpen="False" StaysOpen="False" Placement="Mouse" VerticalOffset="-10" PopupAnimation="Slide">
+                    <controls:a7Popup x:Name="popupFieldSelect" IsTopmost="True" IsOpen="False" StaysOpen="False" Placement="Mouse" VerticalOffset="-10" PopupAnimation="Slide">
                         <ListBox x:Name="lbFields" ItemsSource="{Binding Elements, ElementName=me}" 
                                     DisplayMemberPath="Caption" Template="{StaticResource ListBoxTemplate}"
                                     MouseUp="lbFields_MouseUp"

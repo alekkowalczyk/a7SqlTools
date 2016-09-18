@@ -28,6 +28,8 @@ namespace a7SqlTools.Controls
         public a7ComboBox()
             : base()
         {
+            this.Style = ResourcesManager.Instance.GetStyle("CustomComboBoxStyle");
+            this.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
             this.ItemContainerStyle = ResourcesManager.Instance.GetStyle("CustomComboItemStyle");
         }
 

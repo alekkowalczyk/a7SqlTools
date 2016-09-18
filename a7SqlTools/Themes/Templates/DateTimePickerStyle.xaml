@@ -197,7 +197,7 @@
 
                                 </ToggleButton>
                             </Grid>
-                            <controls:a7Popup IsOpen="{Binding IsChecked, ElementName=_calendarToggleButton}" StaysOpen="False">
+                            <controls:a7Popup IsTopmost="True" IsOpen="{Binding IsChecked, ElementName=_calendarToggleButton}" StaysOpen="False">
                                 <Border BorderThickness="1" Background="{StaticResource PopupBackgroundBrush}" BorderBrush="{StaticResource PopupDarkBorderBrush}" Padding="3">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
@@ -381,7 +381,7 @@
 
                                 </ToggleButton>
                             </Grid>
-                            <controls:a7Popup IsOpen="{Binding IsChecked, ElementName=_calendarToggleButton}" StaysOpen="False">
+                            <controls:a7Popup IsTopmost="True" IsOpen="{Binding IsChecked, ElementName=_calendarToggleButton}" StaysOpen="False">
                                 <Border BorderThickness="1" Background="{StaticResource PopupBackgroundBrush}" BorderBrush="{StaticResource PopupDarkBorderBrush}" Padding="3">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">

@@ -24,15 +24,19 @@
                         Height="{TemplateBinding Height}"
                         HorizontalAlignment="Stretch"
                         Foreground="Gray"
-                        Margin="0,0,0,0"
+                        Margin="{TemplateBinding Margin}"
                         >
-                        <Border Width="16" HorizontalAlignment="Right" x:Name="arrowBorder" Background="Transparent"  BorderBrush="{TemplateBinding BorderBrush}" 
-                             BorderThickness="2,0,0,0" Margin="0,-1,-1,-1">
-                            <Image Source="../../../Images/filter.png" HorizontalAlignment="Center" Width="12" Height="12"></Image>
+                        <Border HorizontalAlignment="Right" x:Name="arrowBorder" Background="Transparent"  BorderBrush="{TemplateBinding BorderBrush}" 
+                             BorderThickness="2,0,0,0" Padding="8,2,8,2" Margin="0,3,-1,3">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="../../../Images/filter.png" HorizontalAlignment="Center" Width="12" Height="12"></Image>
+                                <TextBlock>Filter wizard</TextBlock>
+                            </StackPanel>
                         </Border>
                     </ToggleButton>
 
                     <controls:a7Popup x:Name="fePopup"  IsOpen="{Binding Path=IsChecked,Mode=TwoWay,ElementName=bDots}" AllowsTransparency="True" 
+                           IsTopmost="True"
                            HorizontalAlignment="Left"  StaysOpen="True" IsHitTestVisible="True"
                            Tag="{Binding ElementName=bDots}"
                            PopupAnimation="Slide"  Placement="Left">
@@ -44,10 +48,6 @@
             </DockPanel>
         </Border>
         <ControlTemplate.Triggers>
-            <!--<Trigger Property="my:a7DataPicker.IsReadOnly" Value="true">
-                <Setter TargetName="bDots" Property="Visibility" Value="Collapsed"></Setter>
-                <Setter TargetName="lDots" Property="Visibility" Value="Visible"></Setter>
-            </Trigger>-->
             <Trigger Property="filter:a7FilterEditorButton.IsMouseOver" Value="true">
                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource IsOverBorderBrush}"></Setter>
                 <Setter TargetName="border" Property="Background" Value="{StaticResource IsOverBackgroundBrush}"></Setter>

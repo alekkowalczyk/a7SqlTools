@@ -116,7 +116,7 @@ namespace a7SqlTools.TableExplorer
                             new ColumnDefinition
                             {
                                 Name = col.ColumnName,
-                                Type = col.DataType == typeof(int)
+                                Type = col.DataType == typeof(int) || col.DataType == typeof(long)
                                         ? PropertyType.Integer 
                                         : col.DataType == typeof(float)
                                         ? PropertyType.Float  

@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ButtonsTemplates.xaml"/>
         <ResourceDictionary Source="../CommonBrushes.xaml"/>
+        <ResourceDictionary Source="ComboBoxTemplates.xaml"/>
         <ResourceDictionary Source="DatePickerStyle.xaml"/>
         <ResourceDictionary Source="DateTimePickerStyle.xaml"/>
         <ResourceDictionary Source="FilterButtonTemplate.xaml"/>

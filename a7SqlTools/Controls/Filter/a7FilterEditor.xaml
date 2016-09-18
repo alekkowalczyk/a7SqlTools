@@ -29,7 +29,7 @@
                      Background="Transparent" BorderThickness="1,1,1,0"
                         Click="bOk_Click" ToolTip="Select" Margin="3,0,1,1" Padding="0,0,3,0"  >
                 <StackPanel Orientation="Horizontal" Margin="0">
-                    <Image Source="../Images/small_ok.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
+                    <Image Source="../../Images/small_ok.png" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Center" ></Image>
                     <Label FontSize="10" Padding="0" Foreground="Gray" Margin="0,0,3,0">Select</Label>
                 </StackPanel>
             </Button>
@@ -56,25 +56,6 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-
-            <!--<Label x:Name="lRelationsLabel"
-                   Background="White" Margin="3,3,3,5" Height="20" Padding="2" Content="{a7u:a7T tRelationsColon}" 
-                   BorderBrush="{StaticResource DarkBorderBrush}" Grid.Row="0" Grid.Column="1"
-                   BorderThickness="1"></Label>
-            <ListBox x:Name="lbRelations"
-                                    Grid.Row="1" Grid.Column="1"
-                                    BorderBrush="{StaticResource DarkBorderBrush}"
-                                    ItemsSource="{Binding Relations, ElementName=me}" 
-                                    Margin="3"
-                                    SelectedValuePath="Id" DisplayMemberPath="Caption" Template="{StaticResource ListBoxTemplate}"
-                                    MouseUp="lbRelations_MouseUp"
-                                    >
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Setter Property="Template" Value="{StaticResource ListBoxItemTemplate}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>-->
         </Grid>
     </Grid>
 </UserControl>

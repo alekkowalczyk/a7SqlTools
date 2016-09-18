@@ -182,8 +182,9 @@ namespace a7SqlTools.Controls.Filter
             items.Add(new comboItem("1", "True"));
             items.Add(new comboItem("0", "False"));
             cb.ItemsSource = items;
-            cb.Background = Brushes.White;
-            cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            cb.Background = Brushes.Red;
+            var template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            //cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
             cb.Padding = new Thickness(0.0);
             cb.Margin = new Thickness(0.0);
             cb.HorizontalAlignment = HorizontalAlignment.Stretch;
