@@ -141,7 +141,7 @@
         </Style.Triggers>
     </Style>
 
-    <ControlTemplate x:Key="CustomComboBox" TargetType="controls:a7ComboBox">
+    <ControlTemplate x:Key="CustomComboBox" TargetType="ComboBox">
 
         <Grid>
             <Grid.ColumnDefinitions>

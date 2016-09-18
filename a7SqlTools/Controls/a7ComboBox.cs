@@ -24,12 +24,18 @@ namespace a7SqlTools.Controls
         public static readonly DependencyProperty AddEmptyItemProperty =
             DependencyProperty.Register("AddEmptyItem", typeof(bool), typeof(a7ComboBox), new PropertyMetadata(true));
 
-        
+
+        static a7ComboBox()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(a7ComboBox), new FrameworkPropertyMetadata(typeof(a7ComboBox)));
+        }
+
         public a7ComboBox()
             : base()
         {
             this.Style = ResourcesManager.Instance.GetStyle("CustomComboBoxStyle");
-            this.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            var template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            this.Template = template;
             this.ItemContainerStyle = ResourcesManager.Instance.GetStyle("CustomComboItemStyle");
         }
 

@@ -4,13 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:a7SqlTools.MainViews"
+             xmlns:controls="clr-namespace:a7SqlTools.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
+        <StackPanel>
         <Image
             Width="350"
             Height="85"
             Source="../Images/logo350.png" 
             Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+            <controls:a7ComboBox Height="20">
+                <controls:a7ComboBox.Items>
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>12</ComboBoxItem>
+                </controls:a7ComboBox.Items>
+            </controls:a7ComboBox>
+            <TextBlock>-------</TextBlock>
+            <ComboBox>
+                <ComboBox.Items>
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>12</ComboBoxItem>
+                </ComboBox.Items>
+            </ComboBox>
+        </StackPanel>
     </Grid>
 </UserControl>

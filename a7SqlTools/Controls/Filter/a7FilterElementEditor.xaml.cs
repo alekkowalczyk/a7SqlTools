@@ -135,6 +135,7 @@ namespace a7SqlTools.Controls.Filter
             ftb.Padding = new Thickness(0.0);
             ftb.Margin = new Thickness(0.0);
             ftb.Width = 120;
+            ftb.Background = Brushes.White;
             ftb.HorizontalAlignment = HorizontalAlignment.Stretch;
             ftb.BorderBrush = ResourcesManager.Instance.GetBrush("IsReadOnlyBorderBrush");
             var fa = this.Filter as FltAtomExprData;
@@ -172,19 +173,20 @@ namespace a7SqlTools.Controls.Filter
             }
         }
 
-        private a7ComboBox getBoolFilter(ColumnDefinition field)
+        private ComboBox getBoolFilter(ColumnDefinition field)
         {
-            a7ComboBox cb = new a7ComboBox();
+            var cb = new ComboBox();
             cb.SelectedValuePath = "Value";
             cb.DisplayMemberPath = "Name";
             cb.Width = 120;
             var items = new ObservableCollection<comboItem>();
+            items.Add(new comboItem("", ""));
             items.Add(new comboItem("1", "True"));
             items.Add(new comboItem("0", "False"));
             cb.ItemsSource = items;
-            cb.Background = Brushes.Red;
-            var template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
-            //cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            cb.Background = Brushes.White;
+            cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
+            // = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
             cb.Padding = new Thickness(0.0);
             cb.Margin = new Thickness(0.0);
             cb.HorizontalAlignment = HorizontalAlignment.Stretch;
