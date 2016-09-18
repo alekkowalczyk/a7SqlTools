@@ -178,29 +178,23 @@
     <Compile Include="Controls\a7ComboBox.cs" />
     <Compile Include="Controls\a7DateTimePicker.cs" />
     <Compile Include="Controls\a7DateTimeUpDown.cs" />
+    <Compile Include="Controls\a7FilterDatePicker.cs" />
+    <Compile Include="Controls\a7FilterTextBox.cs" />
     <Compile Include="Controls\a7Popup.cs" />
     <Compile Include="Controls\a7WaitSpinner.cs" />
     <Compile Include="Controls\a7WaitSpinnerDirection.cs" />
     <Compile Include="Controls\ExTreeViewHelper.cs" />
-    <Compile Include="Controls\FilterDatePicker.cs" />
-    <Compile Include="Controls\FilterEditor\FilterEditor.xaml.cs">
-      <DependentUpon>FilterEditor.xaml</DependentUpon>
+    <Compile Include="Controls\Filter\a7FilterEditor.xaml.cs">
+      <DependentUpon>a7FilterEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FilterEditor\FilterEditorButton.cs" />
-    <Compile Include="Controls\FilterEditor\FilterEditorUtils.cs" />
-    <Compile Include="Controls\FilterEditor\FilterElementDefinition.cs" />
-    <Compile Include="Controls\FilterEditor\FilterElementEditor.xaml.cs">
-      <DependentUpon>FilterElementEditor.xaml</DependentUpon>
+    <Compile Include="Controls\Filter\a7FilterEditorButton.cs" />
+    <Compile Include="Controls\Filter\a7FilterEditorUtils.cs" />
+    <Compile Include="Controls\Filter\a7FilterElementDefinition.cs" />
+    <Compile Include="Controls\Filter\a7FilterElementEditor.xaml.cs">
+      <DependentUpon>a7FilterElementEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FilterEditor\FilterGroupEditor.xaml.cs">
-      <DependentUpon>FilterGroupEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\FilterTextBox.cs" />
-    <Compile Include="Controls\PropertySelector.xaml.cs">
-      <DependentUpon>PropertySelector.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PropertySelectorPopup.xaml.cs">
-      <DependentUpon>PropertySelectorPopup.xaml</DependentUpon>
+    <Compile Include="Controls\Filter\a7FilterGroupEditor.xaml.cs">
+      <DependentUpon>a7FilterGroupEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\a7MergeDirectionToColor.cs" />
     <Compile Include="Converters\BoolToVisibility.cs" />
@@ -343,23 +337,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FilterEditor\FilterEditor.xaml">
+    <Page Include="Controls\Filter\a7FilterEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\FilterEditor\FilterElementEditor.xaml">
+    <Page Include="Controls\Filter\a7FilterElementEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\FilterEditor\FilterGroupEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\PropertySelector.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\PropertySelectorPopup.xaml">
+    <Page Include="Controls\Filter\a7FilterGroupEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

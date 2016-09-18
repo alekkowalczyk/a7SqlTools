@@ -1,30 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using a7SqlTools.TableExplorer;
 using a7SqlTools.TableExplorer.Enums;
 using a7SqlTools.TableExplorer.Filter;
 using a7SqlTools.Utils;
+using ColumnDefinition = a7SqlTools.TableExplorer.ColumnDefinition;
 
-namespace a7SqlTools.Controls.FilterEditor
+namespace a7SqlTools.Controls.Filter
 {
     /// <summary>
     /// Interaction logic for a7FilterAtomEditor.xaml
     /// </summary>
-    //TODO: is it used at all????
-    public partial class FilterAtomEditor : UserControl
+    public partial class a7FilterElementEditor : UserControl
     {
         public bool IsReadOnly
         {
@@ -34,43 +28,43 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(FilterAtomEditor), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(a7FilterElementEditor), new UIPropertyMetadata(false));
 
 
         public static readonly DependencyProperty FilterProperty =
-            DependencyProperty.Register("Filter", typeof(FilterExpressionData), typeof(FilterAtomEditor), new PropertyMetadata(default(FltAtomExprData)));
+            DependencyProperty.Register("Filter", typeof(FilterExpressionData), typeof(a7FilterElementEditor), new PropertyMetadata(default(FltAtomExprData)));
 
         public FilterExpressionData Filter
         {
             get { return (FilterExpressionData)GetValue(FilterProperty); }
             set { SetValue(FilterProperty, value); }
         }
-        public FilterEditor EditorContext { get; set; }
+        public a7SqlTools.Controls.Filter.a7FilterEditor EditorContext { get; set; }
         public bool IsWithEntityIdFilter { get; private set; }
         private FrameworkElement _frameworkElement;
 
-        public FilterAtomEditor(PropertyDefinitionModel field)
+        public a7FilterElementEditor(a7FilterElementDefinition elementDef)
         {
             InitializeComponent();
             IsWithEntityIdFilter = false;
+
+            var field = elementDef.FieldData;
             Filter = new FltAtomExprData()
             {
                 Operator = FilterFieldOperator.Equal,
-                PropertyType = field.Type,
-                Field = field.Path
+                Field = field.Name
             };
             setField(field);
         }
 
-        public FilterAtomEditor(a7SingleTableExplorer collection, FltAtomExprData filter)
+        public a7FilterElementEditor(a7SingleTableExplorer entity, FltAtomExprData filter)
         {
             InitializeComponent();
-            var field = collection.AvailableProperties.FirstOrDefault(p => p.Path == filter.Field);
+            var field = entity.AvailableColumns.FirstOrDefault(c => c.Name == filter.Field);
             Filter = filter;
             IsWithEntityIdFilter = false;
             setField(field);
         }
-
 
         public void FocusControl()
         {
@@ -88,13 +82,11 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private void setField(PropertyDefinitionModel field)
+        private void setField(ColumnDefinition field)
         {
-            this.lCaption.Content = field.Path;
-
+            this.lCaption.Content = field.Name;
             FrameworkElement fe;
-
-            if (field.Type == PropertyType.Float)
+            if (field.Type == PropertyType.Bool)
                 fe = getBoolFilter(field);
             else if (field.Type == PropertyType.DateTime)
                 fe = getDatePicker(field);
@@ -105,11 +97,11 @@ namespace a7SqlTools.Controls.FilterEditor
             _frameworkElement = fe;
         }
 
-        private FilterTextBox getTextBox(PropertyDefinitionModel field)
+        private a7FilterTextBox getTextBox(ColumnDefinition field)
         {
-            var ftb = new FilterTextBox(field, true) { Height = 28, Padding = new Thickness(0), Width = 120 };
-      //      ftb.FilterType = (this.Filter as FltAtomExprData).Operator;
-            ftb.SetBinding(FilterTextBox.TextProperty, getFilterValueBinding());
+            var ftb = new a7FilterTextBox(field) { Height = 18, Padding = new Thickness(0), Width = 120 };
+      //      ftb.FilterType = (this.Filter as a7FltAtomExprData).Operator;
+            ftb.SetBinding(a7FilterTextBox.TextProperty, getFilterValueBinding());
             var faExpr = this.Filter as FltAtomExprData;
             if (faExpr != null && faExpr.Value.IsEmpty())
             {
@@ -124,14 +116,8 @@ namespace a7SqlTools.Controls.FilterEditor
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 Mode = BindingMode.TwoWay
             };
-            ftb.SetBinding(FilterTextBox.FilterTypeProperty, operatorBinding);
-            ftb.SetBinding(FilterTextBox.PropertyTypeProperty, new Binding("PropertyType")
-            {
-                Source = this.Filter,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.TwoWay
-            });
-            ftb.SetBinding(FilterTextBox.IsEnabledProperty, this.getIsEnabledBinding());
+            ftb.SetBinding(a7FilterTextBox.FilterTypeProperty, operatorBinding);
+            ftb.SetBinding(a7FilterTextBox.IsEnabledProperty, this.getIsEnabledBinding());
             ftb.BorderBrush = ResourcesManager.Instance.GetBrush("IsReadOnlyBorderBrush");
             ftb.KeyUp += (s, e) =>
             {
@@ -141,32 +127,10 @@ namespace a7SqlTools.Controls.FilterEditor
             return ftb;
         }
 
-        private a7ComboBox getCombo(PropertyDefinitionModel field)
+     
+        private a7FilterDatePicker getDatePicker(ColumnDefinition field)
         {
-            a7ComboBox cb = new a7ComboBox();
-            (Filter as FltAtomExprData).Operator = FilterFieldOperator.Equal;
-            cb.Width = 120;
-            cb.Height = 18;
-            cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
-            cb.Padding = new Thickness(0.0);
-            cb.Margin = new Thickness(0.0);
-            cb.HorizontalAlignment = HorizontalAlignment.Stretch;
-            cb.Background = Brushes.White; //todo: ugly hardcode! :D
-            cb.BorderBrush = ResourcesManager.Instance.GetBrush("IsReadOnlyBorderBrush"); //and here 
-            cb.Height = 18; //yup, hardcode
-            //cb.DisplayMemberPath = "DisplayName";
-            cb.ItemTemplate = a7ComboBox.CustomItemTemplate;
-            cb.SelectedValuePath = "Id";
-            cb.SetBinding(a7ComboBox.SelectedValueProperty, getFilterValueBinding());
-            cb.SetBinding(a7ComboBox.IsEnabledProperty, getIsEnabledBinding());
-            //cb.ItemsSource = a7Core.Instance.DataSourceManager.GetDataSourceItems(field.DataSourceId, bx).Collection;
-            cb.SelectionChanged += (s, e) => activateFilter();
-            return cb;
-        }
-
-        private FilterDatePicker getDatePicker(PropertyDefinitionModel field)
-        {
-            FilterDatePicker ftb = new FilterDatePicker();
+            a7FilterDatePicker ftb = new a7FilterDatePicker();
             ftb.HasTime = false;
             ftb.Padding = new Thickness(0.0);
             ftb.Margin = new Thickness(0.0);
@@ -174,9 +138,10 @@ namespace a7SqlTools.Controls.FilterEditor
             ftb.HorizontalAlignment = HorizontalAlignment.Stretch;
             ftb.BorderBrush = ResourcesManager.Instance.GetBrush("IsReadOnlyBorderBrush");
             var fa = this.Filter as FltAtomExprData;
+            fa.Operator = FilterFieldOperator.Between;
             //if(fa!=null)
-            //    fa.Operator = FilterFieldOperator.Equal;
-            ftb.SetBinding(FilterDatePicker.TextProperty, getFilterValueBinding());
+            //    fa.Operator = a7FilterFieldOperator.Equal;
+            ftb.SetBinding(a7FilterDatePicker.TextProperty, getFilterValueBinding());
 
             ftb.Height = 18;
             ftb.FontSize = 12;
@@ -186,8 +151,8 @@ namespace a7SqlTools.Controls.FilterEditor
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 Mode = BindingMode.TwoWay
             };
-            ftb.SetBinding(FilterDatePicker.FilterTypeProperty, operatorBinding);
-            ftb.SetBinding(FilterDatePicker.IsEnabledProperty, getIsEnabledBinding());
+            ftb.SetBinding(a7FilterDatePicker.FilterTypeProperty, operatorBinding);
+            ftb.SetBinding(a7FilterDatePicker.IsEnabledProperty, getIsEnabledBinding());
             ftb.KeyUp += (s, e) =>
                 {
                     if (e.Key == Key.Enter)
@@ -207,15 +172,15 @@ namespace a7SqlTools.Controls.FilterEditor
             }
         }
 
-        private a7ComboBox getBoolFilter(PropertyDefinitionModel field)
+        private a7ComboBox getBoolFilter(ColumnDefinition field)
         {
             a7ComboBox cb = new a7ComboBox();
             cb.SelectedValuePath = "Value";
             cb.DisplayMemberPath = "Name";
             cb.Width = 120;
             var items = new ObservableCollection<comboItem>();
-            items.Add(new comboItem("1", "Yes"));
-            items.Add(new comboItem("0", "No"));
+            items.Add(new comboItem("1", "True"));
+            items.Add(new comboItem("0", "False"));
             cb.ItemsSource = items;
             cb.Background = Brushes.White;
             cb.Template = ResourcesManager.Instance.GetControlTemplate("CustomComboBox");
@@ -230,7 +195,7 @@ namespace a7SqlTools.Controls.FilterEditor
             cb.SelectionChanged += (s, e) => activateFilter();
             return cb;
         }
-
+        
         private Binding getFilterValueBinding()
         {
             return new Binding("Value")

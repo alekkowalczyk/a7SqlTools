@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:a7c="clr-namespace:a7.Std.CModule.Controls"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:utils="clr-namespace:a7SqlTools.Utils"
     xmlns:ctrl="clr-namespace:a7SqlTools.Controls"

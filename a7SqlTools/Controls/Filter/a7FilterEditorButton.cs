@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using a7SqlTools.TableExplorer;
 using a7SqlTools.TableExplorer.Filter;
 using a7SqlTools.Utils;
 
-namespace a7SqlTools.Controls.FilterEditor
+namespace a7SqlTools.Controls.Filter
 {
-    public class FilterEditorButton : Control
+    public class a7FilterEditorButton : Control
     {
-        public static readonly DependencyProperty CollectionProperty =
-            DependencyProperty.Register("Collection", typeof (a7SingleTableExplorer), typeof (FilterEditorButton), new PropertyMetadata(null));
+        public static readonly DependencyProperty TableProperty =
+            DependencyProperty.Register("Table", typeof (a7SingleTableExplorer), typeof (a7FilterEditorButton), new PropertyMetadata(default(a7SingleTableExplorer)));
 
-        public a7SingleTableExplorer Collection
+        public a7SingleTableExplorer Table
         {
-            get { return (a7SingleTableExplorer) GetValue(CollectionProperty); }
-            set { SetValue(CollectionProperty, value); }
+            get { return (a7SingleTableExplorer) GetValue(TableProperty); }
+            set { SetValue(TableProperty, value); }
         }
 
         public bool IsReadOnly
@@ -33,7 +30,7 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(FilterEditorButton), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(a7FilterEditorButton), new UIPropertyMetadata(false));
 
 
         public Brush ActiveBackground
@@ -44,7 +41,7 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for ActiveBackground.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ActiveBackgroundProperty =
-            DependencyProperty.Register("ActiveBackground", typeof(Brush), typeof(FilterEditorButton), new UIPropertyMetadata(Brushes.Transparent));
+            DependencyProperty.Register("ActiveBackground", typeof(Brush), typeof(a7FilterEditorButton), new UIPropertyMetadata(Brushes.Transparent));
 
         
 
@@ -56,7 +53,7 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for RefreshFunction.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UpdateFilterFunctionProperty =
-            DependencyProperty.Register("UpdateFilterFunction", typeof(Action<FilterExpressionData>), typeof(FilterEditorButton));
+            DependencyProperty.Register("UpdateFilterFunction", typeof(Action<FilterExpressionData>), typeof(a7FilterEditorButton));
 
 
         public FilterExpressionData FilterExpr
@@ -67,30 +64,17 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for FilterExpr.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterExprProperty =
-            DependencyProperty.Register("FilterExpr", typeof(FilterExpressionData), typeof(FilterEditorButton), new UIPropertyMetadata(null));
+            DependencyProperty.Register("FilterExpr", typeof(FilterExpressionData), typeof(a7FilterEditorButton), new UIPropertyMetadata(null));
+        
 
-
-
-        public bool IsPopupMode
-        {
-            get { return (bool)GetValue(IsPopupModeProperty); }
-            set { SetValue(IsPopupModeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for IsPopupMode.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsPopupModeProperty =
-            DependencyProperty.Register("IsPopupMode", typeof(bool), typeof(FilterEditorButton), new PropertyMetadata(false));
-
-
-
-        public FilterEditorButton()
+        public a7FilterEditorButton()
         {
             Template = ResourcesManager.Instance.GetControlTemplate("a7FilterEditorButtonTemplate");
         }
 
         private Popup _fePopup;
-        private FilterEditor _fePopupControl;
-        private a7SingleTableExplorer _collection = null;
+        private a7FilterEditor _fePopupControl;
+        private a7SingleTableExplorer _table = null;
         private Window myWindow;
         public override void OnApplyTemplate()
         {
@@ -104,11 +88,11 @@ namespace a7SqlTools.Controls.FilterEditor
             var fePopupControl = GetTemplateChild("fePopupControl");
             if (fePopupControl != null)
             {
-                _fePopupControl = fePopupControl as FilterEditor;
-                if(_collection != null)
-                    _fePopupControl.SetCollection(_collection);
+                _fePopupControl = fePopupControl as a7FilterEditor;
+                if(_table!=null)
+                    _fePopupControl.SetTable(_table);
                 if (FilterExpr != null)
-                    _fePopupControl.SetFilter(_collection, FilterExpr);
+                    _fePopupControl.SetFilter(_table, FilterExpr);
             }
             this.myWindow = Window.GetWindow(this);
             if(myWindow!=null)
@@ -118,13 +102,12 @@ namespace a7SqlTools.Controls.FilterEditor
             {
                 _fePopupControl.UpdateFilterFunction = UpdateFilter;
             }
-            _fePopupControl.SetBinding(FilterEditor.IsReadOnlyProperty, new Binding("IsReadOnly") { Source = this });
+            _fePopupControl.SetBinding(a7FilterEditor.IsReadOnlyProperty, new Binding("IsReadOnly") { Source = this });
         }
 
         void UpdateFilter(FilterExpressionData filter)
         {
-            if (UpdateFilterFunction != null)
-                UpdateFilterFunction(filter);
+            UpdateFilterFunction?.Invoke(filter);
             if (filter != null && filter.HasActiveFilter)
             {
                 this.ActiveBackground = Brushes.Red;
@@ -179,37 +162,29 @@ namespace a7SqlTools.Controls.FilterEditor
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
-            if (e.Property ==  CollectionProperty && _collection != e.NewValue as a7SingleTableExplorer)
+            if (e.Property == TableProperty && _table != e.NewValue as a7SingleTableExplorer)
             {
                 if (_fePopupControl != null)
                 {
-                    _fePopupControl.SetCollection(e.NewValue as a7SingleTableExplorer);
-                    _collection = e.NewValue as a7SingleTableExplorer;
+                    _fePopupControl.SetTable(e.NewValue as a7SingleTableExplorer);
+                    _table = e.NewValue as a7SingleTableExplorer;
                     if(this.FilterExpr !=null)
-                        _fePopupControl.SetFilter(_collection, FilterExpr);
+                        _fePopupControl.SetFilter(_table, FilterExpr);
                 }
                 else
                 {
-                    _collection = e.NewValue as a7SingleTableExplorer;
+                    _table = e.NewValue as a7SingleTableExplorer;
                 }
             }
-            else if (e.Property == FilterExprProperty)
+            else if (e.Property == FilterExprProperty && this.FilterExpr != e.NewValue as FilterExpressionData)
             {
-                if (_fePopupControl != null && this._collection != null)
+                if (_fePopupControl != null && this._table !=null)
                 {
-                    _fePopupControl.SetFilter(this._collection, e.NewValue as FilterExpressionData);
+                    _fePopupControl.SetFilter(this._table, e.NewValue as FilterExpressionData);
                 }
                 else
                 {
                     this.FilterExpr = e.NewValue as FilterExpressionData;
-                }
-                if (this.FilterExpr != null && FilterExpr.HasActiveFilter)
-                {
-                    this.ActiveBackground = Brushes.Red;
-                }
-                else
-                {
-                    this.ActiveBackground = Brushes.Transparent;
                 }
             }
             else if (e.Property == UpdateFilterFunctionProperty && this._fePopupControl != null)

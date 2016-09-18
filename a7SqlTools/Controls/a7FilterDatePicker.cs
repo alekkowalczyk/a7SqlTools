@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using System.Windows;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 using a7SqlTools.TableExplorer.Enums;
 using a7SqlTools.Utils;
 
 namespace a7SqlTools.Controls
 {
-    class FilterDatePicker : ComboBox, INotifyPropertyChanged
+    class a7FilterDatePicker : ComboBox, INotifyPropertyChanged
     {
         public static DependencyProperty FilterTypeProperty = 
-            DependencyProperty.Register("FilterType", typeof(FilterFieldOperator), typeof(FilterDatePicker)
+            DependencyProperty.Register("FilterType", typeof(FilterFieldOperator), typeof(a7FilterDatePicker)
             , new PropertyMetadata(FilterFieldOperator.Equal, new PropertyChangedCallback(changed)) );
         public FilterFieldOperator FilterType
         {
@@ -22,7 +20,7 @@ namespace a7SqlTools.Controls
         }
 
         public static DependencyProperty AvailableFilterTypesProperty =
-            DependencyProperty.Register("AvailableFilterTypes", typeof(List<FilterFieldOperator>), typeof(FilterDatePicker));
+            DependencyProperty.Register("AvailableFilterTypes", typeof(List<FilterFieldOperator>), typeof(a7FilterDatePicker));
         public List<FilterFieldOperator> AvailableFilterTypes
         {
             get { return (List<FilterFieldOperator>)GetValue(AvailableFilterTypesProperty); }
@@ -30,7 +28,7 @@ namespace a7SqlTools.Controls
         }
 
         public static readonly DependencyProperty HasTimeProperty =
-            DependencyProperty.Register("HasTime", typeof (bool), typeof (FilterDatePicker), new PropertyMetadata(true));
+            DependencyProperty.Register("HasTime", typeof (bool), typeof (a7FilterDatePicker), new PropertyMetadata(true));
 
         public bool HasTime
         {
@@ -47,19 +45,10 @@ namespace a7SqlTools.Controls
 
         // Using a DependencyProperty as the backing store for TwoDatesSelectable.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TwoDatesSelectableProperty =
-            DependencyProperty.Register("TwoDatesSelectable", typeof(bool), typeof(FilterDatePicker), new PropertyMetadata(false));
+            DependencyProperty.Register("TwoDatesSelectable", typeof(bool), typeof(a7FilterDatePicker), new PropertyMetadata(false));
 
-        public PropertyType PropertyType
-        {
-            get { return (PropertyType)GetValue(PropertyTypeProperty); }
-            set { SetValue(PropertyTypeProperty, value); }
-        }
 
-        // Using a DependencyProperty as the backing store for PropertyType.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PropertyTypeProperty =
-            DependencyProperty.Register("PropertyType", typeof(PropertyType), typeof(FilterDatePicker), new PropertyMetadata(PropertyType.DateTime));
-
-        public FilterDatePicker() : base()
+        public a7FilterDatePicker() : base()
         {
             this.Template = ResourcesManager.Instance.GetControlTemplate("a7FilterDatePickerTemplate"); 
             FilterType = FilterFieldOperator.Contains;
@@ -101,7 +90,7 @@ namespace a7SqlTools.Controls
 
         static void changed(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            FilterDatePicker cb = o as FilterDatePicker;
+            a7FilterDatePicker cb = o as a7FilterDatePicker;
             cb.IsDropDownOpen = false;
             if (cb.FilterType == FilterFieldOperator.Between)
                 cb.TwoDatesSelectable = true;
@@ -109,8 +98,7 @@ namespace a7SqlTools.Controls
             {
                 cb.TwoDatesSelectable = false;
             }
-            if (cb.FilterTypeChanged != null)
-                cb.FilterTypeChanged(cb, new EventArgs());
+            cb.FilterTypeChanged?.Invoke(cb, new EventArgs());
         }
 
 

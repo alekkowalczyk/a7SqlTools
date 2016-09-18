@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Controls.Primitives;
-using System.ComponentModel;
 using a7SqlTools.TableExplorer;
 using a7SqlTools.TableExplorer.Filter;
+using a7SqlTools.Utils;
 
-namespace a7SqlTools.Controls.FilterEditor
+namespace a7SqlTools.Controls.Filter
 {
     /// <summary>
     /// Interaction logic for a7FilterEditor.xaml
     /// </summary>
-    public partial class FilterEditor : UserControl, INotifyPropertyChanged
+    public partial class a7FilterEditor : UserControl, INotifyPropertyChanged
     {
         public static int BackgroundIndexStep = 18;
+
+
 
         public bool IsReadOnly
         {
@@ -26,7 +29,9 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(FilterEditor), new UIPropertyMetadata(false));      
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(a7FilterEditor), new UIPropertyMetadata(false));
+
+        
 
         public FilterExpressionData FilterExpr
         {
@@ -36,7 +41,9 @@ namespace a7SqlTools.Controls.FilterEditor
 
         // Using a DependencyProperty as the backing store for FilterExpr.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FilterExprProperty =
-            DependencyProperty.Register("FilterExpr", typeof(FilterExpressionData), typeof(FilterEditor), new UIPropertyMetadata(null));       
+            DependencyProperty.Register("FilterExpr", typeof(FilterExpressionData), typeof(a7FilterEditor), new UIPropertyMetadata(null));
+
+        
 
         public Action<FilterExpressionData> UpdateFilterFunction
         {
@@ -45,67 +52,51 @@ namespace a7SqlTools.Controls.FilterEditor
         }
         // Using a DependencyProperty as the backing store for RefreshFunction.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty UpdateFilterFunctionProperty =
-            DependencyProperty.Register("UpdateFilterFunction", typeof(Action<FilterExpressionData>), typeof(FilterEditor));
+            DependencyProperty.Register("UpdateFilterFunction", typeof(Action<FilterExpressionData>), typeof(a7FilterEditor));
 
 
-
-        public bool IsPopupMode
-        {
-            get { return (bool)GetValue(IsPopupModeProperty); }
-            set { SetValue(IsPopupModeProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for IsPopupMode.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IsPopupModeProperty =
-            DependencyProperty.Register("IsPopupMode", typeof(bool), typeof(FilterEditor), new PropertyMetadata(false));
-
-
-
-        private IEnumerable<TableExplorer.ColumnDefinition> _elements;
-        public IEnumerable<TableExplorer.ColumnDefinition> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
+        private IEnumerable<a7FilterElementDefinition> _elements;
+        public IEnumerable<a7FilterElementDefinition> Elements { get { return _elements; } set { _elements = value; OnPropertyChanged("Elements"); } }
         
-        private a7SingleTableExplorer _collection;
+        private a7SingleTableExplorer _entity;
         private int _backgroundIndex;
-        private FilterGroupEditor _rootGroup;
+        private a7FilterGroupEditor _rootGroup;
         public List<Popup> EntityFieldsPopups { get; private set; }
 
-        public FilterEditor()
+        public a7FilterEditor()
         {
             EntityFieldsPopups = new List<Popup>();
             InitializeComponent();
         }
 
-        public void SetCollection(a7SingleTableExplorer collection)
+        public void SetTable(a7SingleTableExplorer table)
         {
-            if (collection != null)
+            if (table.IsNotEmpty())
             {
-                _collection = collection;
-                Elements = collection.AvailableColumns;
+                _entity = table;
+                Elements = a7FilterEditorUtils.GetFilterEditorElements(table);
             }
             Reset();
         }
 
-        public void SetFilter(a7SingleTableExplorer collection, FilterExpressionData filter)
+        public void SetFilter(a7SingleTableExplorer entity, FilterExpressionData filter)
         {
-            _collection = collection;
-            Elements = collection.AvailableColumns;
+            if (entity == null)
+            {
+                Reset();
+                return;
+            }
+            Elements = a7FilterEditorUtils.GetFilterEditorElements(entity);
+            var fge = new a7FilterGroupEditor(entity, false, this.IsReadOnly, this);
+            fge.SetFilter(filter);
+            this.FilterExpr = filter;
+            SetRootGroup(fge);
             if (filter != null)
             {
-                var fge = new FilterGroupEditor(collection, false, this.IsReadOnly, this);
-                fge.SetFilter(filter);
-                this.FilterExpr = filter;
-                SetRootGroup(fge);
-                if (filter != null)
-                {
-                    gStartPanel.Visibility = Visibility.Collapsed;
-                    MyBorder.Visibility = System.Windows.Visibility.Visible;
-                    if (!IsReadOnly)
-                        spButtons.Visibility = System.Windows.Visibility.Visible;
-                }
-            }
-            else
-            {
-                this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
+                gStartPanel.Visibility = Visibility.Collapsed;
+                MyBorder.Visibility = System.Windows.Visibility.Visible;
+                if(!IsReadOnly)
+                    spButtons.Visibility = System.Windows.Visibility.Visible;
             }
         }
 
@@ -118,16 +109,9 @@ namespace a7SqlTools.Controls.FilterEditor
             this.FilterExpr = null;
             if (!this.IsReadOnly)
             {
-                if (IsPopupMode)
-                {
-                    gStartPanel.Visibility = Visibility.Visible;
-                    MyBorder.Visibility = Visibility.Collapsed;
-                    spButtons.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    this.setProperty(TableExplorer.ColumnDefinition.GetEmpty());
-                }
+                gStartPanel.Visibility = Visibility.Visible;
+                MyBorder.Visibility = Visibility.Collapsed;
+                spButtons.Visibility = Visibility.Collapsed;
             }
          //   spButtons.Visibility = Visibility.Collapsed;
             if (withRefresh && UpdateFilterFunction!=null)
@@ -139,7 +123,7 @@ namespace a7SqlTools.Controls.FilterEditor
             if (!this.IsReadOnly)
             {
                 _backgroundIndex += BackgroundIndexStep;
-                var newFge = new FilterGroupEditor(_collection, true, this.IsReadOnly, this);
+                var newFge = new a7FilterGroupEditor(_entity, true, this.IsReadOnly, this);
                 mainGrid.Children.Remove(_rootGroup);
                 newFge.AddGroupSubFilter(_rootGroup);
                 newFge.SetBackground(_rootGroup.MyBackgroundIndex + BackgroundIndexStep);
@@ -153,36 +137,36 @@ namespace a7SqlTools.Controls.FilterEditor
                 UpdateFilterFunction(FilterExpr);
         }
 
-        //private void lbFields_MouseUp(object sender, MouseButtonEventArgs e)
-        //{
-        //     var selectedField = lbFields.SelectedItem as FilterElementDefinition;
-        //     if (selectedField != null)
-        //     {
-        //         gStartPanel.Visibility = Visibility.Collapsed;
-        //         MyBorder.Visibility = System.Windows.Visibility.Visible;
-        //         spButtons.Visibility = System.Windows.Visibility.Visible;
-        //         var fge = new FilterGroupEditor(_collection, false, this.IsReadOnly, this);
-        //         var fae = new FilterElementEditor(selectedField) { Margin = new Thickness(0, 0, 0, 0), IsReadOnly = this.IsReadOnly };
-        //         fae.EditorContext = this;
-        //         fge.SetAtomFilter(fae);
-        //         this.FilterExpr = fge.Filter;
-        //         SetRootGroup(fge);
-        //     }
-        //}
+        private void lbFields_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+             var selectedField = lbFields.SelectedItem as a7FilterElementDefinition;
+             if (selectedField != null)
+             {
+                 gStartPanel.Visibility = Visibility.Collapsed;
+                 MyBorder.Visibility = System.Windows.Visibility.Visible;
+                 spButtons.Visibility = System.Windows.Visibility.Visible;
+                 var fge = new a7FilterGroupEditor(_entity, false, this.IsReadOnly, this);
+                 var fae = new a7FilterElementEditor(selectedField) { Margin = new Thickness(0, 0, 0, 0), IsReadOnly = this.IsReadOnly };
+                 fae.EditorContext = this;
+                 fge.SetAtomFilter(fae);
+                 this.FilterExpr = fge.Filter;
+                 SetRootGroup(fge);
+             }
+        }
 
-        public void SetRootGroup(FilterGroupEditor fge)
+        public void SetRootGroup(a7FilterGroupEditor fge)
         {
             if (_rootGroup != null)
             {
                 var flt = _rootGroup.Filter; //setvalue, clear binding
-                BindingOperations.ClearBinding(_rootGroup, FilterGroupEditor.FilterProperty);
+                BindingOperations.ClearBinding(_rootGroup, a7FilterGroupEditor.FilterProperty);
                 _rootGroup.Filter = flt;
                 _rootGroup.AddedFirstElement -= fgeOnAddedFirstElement;
                 _rootGroup.Parent = fge;
                 mainGrid.Children.Remove(_rootGroup);
             }
             _rootGroup = fge;
-            this.SetBinding(FilterEditor.FilterExprProperty, new Binding("Filter") { Source = fge, Mode = BindingMode.TwoWay });
+            this.SetBinding(a7FilterEditor.FilterExprProperty, new Binding("Filter") { Source = fge, Mode = BindingMode.TwoWay });
       //      fge.Background = Brushes.White;
             fge.AddedFirstElement += fgeOnAddedFirstElement;
             fge.Parent = null;
@@ -220,10 +204,6 @@ namespace a7SqlTools.Controls.FilterEditor
                     }
                 }
             }
-            else if(e.Property == IsPopupModeProperty)
-            {
-                this.Reset();
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -233,27 +213,9 @@ namespace a7SqlTools.Controls.FilterEditor
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
 
-
-        private void propertySelector_SelectClicked(object sender, EventArgs e)
+        private void lbRelations_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var selectedProperty = propertySelector.SelectedProperty;
-            if (selectedProperty != null)
-            {
-                setProperty(selectedProperty);
-            }
-        }
 
-        private void setProperty(TableExplorer.ColumnDefinition selectedProperty)
-        {
-            gStartPanel.Visibility = Visibility.Collapsed;
-            MyBorder.Visibility = System.Windows.Visibility.Visible;
-            spButtons.Visibility = System.Windows.Visibility.Visible;
-            var fge = new FilterGroupEditor(_collection, false, this.IsReadOnly, this);
-            var fae = new FilterElementEditor(_collection, selectedProperty, this.IsPopupMode) { Margin = new Thickness(0, 0, 0, 0), IsReadOnly = this.IsReadOnly};
-            fae.EditorContext = this;
-            fge.SetAtomFilter(fae);
-            this.FilterExpr = fge.Filter;
-            SetRootGroup(fge);
         }
     }
 }
