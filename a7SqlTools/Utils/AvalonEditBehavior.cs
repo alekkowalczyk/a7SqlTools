@@ -50,24 +50,19 @@ namespace a7SqlTools.Utils
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var behavior = dependencyObject as AvalonEditBehaviour;
-            if (behavior.AssociatedObject != null)
+            var editor = behavior.AssociatedObject as TextEditor;
+            if (editor?.Document == null) return;
+            if (dependencyPropertyChangedEventArgs.NewValue != null)
             {
-                var editor = behavior.AssociatedObject as TextEditor;
-                if (editor.Document != null)
-                {
-                    if (dependencyPropertyChangedEventArgs.NewValue != null)
-                    {
-                        var caretOffset = editor.CaretOffset;
-                        editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-                        if (caretOffset > editor.Document.Text.Length)
-                            caretOffset = editor.Document.Text.Length - 1;
-                        editor.CaretOffset = caretOffset;
-                    }
-                    else
-                    {
-                        editor.Document.Text = "";
-                    }
-                }
+                var caretOffset = editor.CaretOffset;
+                editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
+                if (caretOffset > editor.Document.Text.Length)
+                    caretOffset = editor.Document.Text.Length - 1;
+                editor.CaretOffset = caretOffset;
+            }
+            else
+            {
+                editor.Document.Text = "";
             }
         }
     }

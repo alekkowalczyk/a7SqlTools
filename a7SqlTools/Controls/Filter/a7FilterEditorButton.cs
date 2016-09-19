@@ -108,13 +108,23 @@ namespace a7SqlTools.Controls.Filter
         void UpdateFilter(FilterExpressionData filter)
         {
             UpdateFilterFunction?.Invoke(filter);
+            RefreshButtonHighlight(filter);
+            _fePopup.IsOpen = false;
+        }
+
+        void RefreshButtonHighlight(FilterExpressionData filter)
+        {
             if (filter != null && filter.HasActiveFilter)
             {
-                this.ActiveBackground = Brushes.Red;
+                this.ActiveBackground = Brushes.MistyRose;
+                this.BorderThickness = new Thickness(1);
+                this.BorderBrush = Brushes.LightCoral;
             }
             else
             {
                 this.ActiveBackground = Brushes.Transparent;
+                this.BorderThickness = new Thickness(0);
+                this.BorderBrush = Brushes.Transparent;
             }
         }
 
@@ -176,16 +186,20 @@ namespace a7SqlTools.Controls.Filter
                     _table = e.NewValue as a7SingleTableExplorer;
                 }
             }
-            else if (e.Property == FilterExprProperty && this.FilterExpr != e.NewValue as FilterExpressionData)
+            else if (e.Property == FilterExprProperty)
             {
-                if (_fePopupControl != null && this._table !=null)
+                if (this.FilterExpr != e.NewValue as FilterExpressionData)
                 {
-                    _fePopupControl.SetFilter(this._table, e.NewValue as FilterExpressionData);
+                    if (_fePopupControl != null && this._table != null)
+                    {
+                        _fePopupControl.SetFilter(this._table, e.NewValue as FilterExpressionData);
+                    }
+                    else
+                    {
+                        this.FilterExpr = e.NewValue as FilterExpressionData;
+                    }
                 }
-                else
-                {
-                    this.FilterExpr = e.NewValue as FilterExpressionData;
-                }
+                RefreshButtonHighlight(e.NewValue as FilterExpressionData);
             }
             else if (e.Property == UpdateFilterFunctionProperty && this._fePopupControl != null)
             {

@@ -52,12 +52,12 @@
                     <TextBlock VerticalAlignment="Center">Commit changes</TextBlock>
                 </StackPanel>
             </Button>
-            <flt:a7FilterEditorButton Table="{Binding}"></flt:a7FilterEditorButton>
+            <flt:a7FilterEditorButton x:Name="filterEditorButton" Table="{Binding}" FilterExpr="{Binding AdvFilter, Mode=TwoWay}"></flt:a7FilterEditorButton>
         </WrapPanel>
         <avalonedit:TextEditor Grid.Row="1" Margin="3" BorderBrush="#CCC" BorderThickness="1" x:Name="sqlEditor" WordWrap="True"  
                                IsEnabled="{Binding IsSqlEditMode}" >
             <i:Interaction.Behaviors>
-                <utils:AvalonEditBehaviour GiveMeTheText="{Binding SQL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <utils:AvalonEditBehaviour GiveMeTheText="{Binding DisplayedSql, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </i:Interaction.Behaviors>
         </avalonedit:TextEditor>
         <dg:a7DataGrid Grid.Row="2" AutoGenerateColumns="True" VerticalAlignment="Stretch" TableExplorer="{Binding}" 

@@ -294,6 +294,7 @@
     <Compile Include="TableExplorer\Views\TableExplorer.xaml.cs">
       <DependentUpon>TableExplorer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TableExplorer\WhereClauseBuilder.cs" />
     <Compile Include="Utils\a7BindableColumnsBehaviour.cs" />
     <Compile Include="Utils\a7DbUtils.cs" />
     <Compile Include="Utils\a7LambdaCommand.cs" />

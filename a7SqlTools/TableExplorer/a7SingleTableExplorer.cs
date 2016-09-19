@@ -8,11 +8,13 @@ using System.Data.SqlClient;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
 using a7SqlTools.TableExplorer.Enums;
+using a7SqlTools.TableExplorer.Filter;
 using a7SqlTools.Utils;
 
 namespace a7SqlTools.TableExplorer
@@ -27,13 +29,28 @@ namespace a7SqlTools.TableExplorer
             private set { _data = value; OnPropertyChanged(nameof(Data)); }
         }
 
-        private SqlDataAdapter DataAdapter;
-        private string _combinedSql;
-
-        public string SQL
+        public FilterExpressionData AdvFilter
         {
-            get { return _sql; }
-            set { _sql = value; OnPropertyChanged(nameof(SQL)); }
+            get { return _advFilter; }
+            set
+            {
+                _advFilter = value;
+                if (value != null)
+                {
+                    IsSqlEditMode = false;
+                    ClearFieldFilters();
+                }
+                OnPropertyChanged(nameof(AdvFilter));
+            }
+        }
+
+        private SqlDataAdapter DataAdapter;
+        private string _sql;
+
+        public string DisplayedSql
+        {
+            get { return _displayedSql; }
+            set { _displayedSql = value; OnPropertyChanged(nameof(DisplayedSql)); }
         }
 
         private string _columnWhere;
@@ -44,8 +61,10 @@ namespace a7SqlTools.TableExplorer
             set
             {
                 IsSqlEditMode = false;
+                AdvFilter = null;
                 _filterFields = value;
-                Filter2Sql();
+                WhereClauseBuilder dummy;
+                Filter2Sql(out dummy);
             }
         }
 
@@ -75,6 +94,7 @@ namespace a7SqlTools.TableExplorer
                 if (value)
                 {
                     ClearFieldFilters();
+                    AdvFilter = null;
                 }
             }
         }
@@ -86,10 +106,12 @@ namespace a7SqlTools.TableExplorer
         private bool _isBusy;
         private DataTable _data;
         private bool _isSqlEditMode;
-        private string _sql;
         private Dictionary<string, string> _filterFields;
         private static object _syncLock = new object();
         private readonly string _sqlBase;
+        private FilterExpressionData _advFilter;
+        private string _displayedSql;
+
         public a7SingleTableExplorer(a7TableExplorer parentVm, string name, SqlConnection sqlConnection)
         {
             IsBusy = false;
@@ -97,8 +119,8 @@ namespace a7SqlTools.TableExplorer
             _sqlConnection = sqlConnection;
             this.TableName = name;
             this._sqlBase = "Select top 100 * from " + TableName;
-            this.SQL = _sqlBase;
-            this._combinedSql = this.SQL;
+            this._sql = _sqlBase;
+            this.DisplayedSql = _sql;
             this._columnWhere = "";
             SetAvailableColumns();
         }
@@ -131,15 +153,36 @@ namespace a7SqlTools.TableExplorer
             Dispatcher.CurrentDispatcher.Invoke(() => IsBusy = false);
         }
 
-        public void Refresh()
-        {
+        public void Refresh(bool withoutData = false)
+        {           
+            WhereClauseBuilder whereClauseBuilder = null;
+            if (!IsSqlEditMode)
+                Filter2Sql(out whereClauseBuilder);
+            else
+                this._sql = this.DisplayedSql;
+
+            if (withoutData)
+                return;
+
+            Dispatcher.CurrentDispatcher.Invoke(() => IsBusy = true);
+
             Data = new DataTable();
             var tmpData = new DataTable();
-            Dispatcher.CurrentDispatcher.Invoke(() => IsBusy = true);
-            if(!IsSqlEditMode)
-                Filter2Sql();
 
-            var columnsSelect = new SqlCommand(this.SQL, _sqlConnection);
+            var columnsSelect = new SqlCommand(this._sql, _sqlConnection);
+
+            if (AdvFilter != null && whereClauseBuilder != null)
+            {
+                foreach (var kv in whereClauseBuilder.Parameters)
+                {
+                    var sqlParam = new SqlParameter
+                    {
+                        ParameterName = kv.Key,
+                        Value = kv.Value
+                    };
+                    columnsSelect.Parameters.Add(sqlParam);
+                }
+            }
 
             DataAdapter = new SqlDataAdapter(columnsSelect);
             var sqlBuilder = new SqlCommandBuilder(DataAdapter);
@@ -182,14 +225,28 @@ namespace a7SqlTools.TableExplorer
 
         public void ClearFieldFilters()
         {
-            FilterFields.Clear();
+            FilterFields?.Clear();
             PleaseClearColumnFilters?.Invoke(this, null);
         }
 
-        public void Filter2Sql()
+        public void Filter2Sql(out WhereClauseBuilder whereBuilder)
         {
-
-            if (FilterFields != null)
+            whereBuilder = null;
+            if (AdvFilter != null)
+            {
+                whereBuilder = new WhereClauseBuilder(AdvFilter, this);
+                this._sql = this._sqlBase + whereBuilder.WhereClause;
+                DisplayedSql = whereBuilder.Parameters.Aggregate(_sql, (current, param) =>
+                {
+                    var strValue = param.Value?.ToString();
+                    if (param.Value is string || param.Value is DateTime)
+                    {
+                        strValue = $"'{strValue}'";
+                    }
+                    return current.Replace($"@{param.Key}", strValue);
+                });
+            }
+            else if (FilterFields != null)
             {
                 var where = "";
                 var isFirst = true;
@@ -199,36 +256,20 @@ namespace a7SqlTools.TableExplorer
                         isFirst = false;
                     else
                         where += " AND ";
-                    where += kv.Key + " LIKE ('%" + kv.Value + "%') ";
+                    var val = kv.Value.Replace("'", "''");
+                    where += kv.Key + " LIKE ('%" + val + "%') ";
                 }
 
                 if (string.IsNullOrWhiteSpace(where))
                 {
-                    this._combinedSql = this._sqlBase;
+                    this._sql = this._sqlBase;
                 }
                 else
                 {
-                    this._combinedSql = this._sqlBase + " WHERE " + where;
+                    this._sql = this._sqlBase + " WHERE " + where;
                 }
-                //else if (this.SQL.IndexOf("WHERE", StringComparison.CurrentCultureIgnoreCase) == -1)
-                //{
-                //    this._combinedSql = this.SQL.Replace(this.TableName, this.TableName + " WHERE " + where);
-                //}
-                //else
-                //{
-                //    var pos1 = this.SQL.IndexOf("WHERE", StringComparison.CurrentCultureIgnoreCase);
-                //    var pos2 = pos1 + "WHERE".Length;
-                //    var beforeWhere = this.SQL.Substring(0, pos2 + 1);
-                //    var afterWhere = this.SQL.Substring(pos2 + 1);
-                //    this._combinedSql = beforeWhere + " ( " + where + " ) AND ( " + afterWhere + " ) ";
-                //}
+                this.DisplayedSql = _sql;
             }
-            else
-            {
-                _combinedSql = this.SQL;
-            }
-            this.SQL = _combinedSql;
-            OnPropertyChanged("SQL");
         }
 
 

@@ -34,6 +34,11 @@ namespace a7SqlTools.TableExplorer.Views
         {
             InitializeComponent();
             this.Loaded += OnLoaded;
+            this.filterEditorButton.UpdateFilterFunction += data =>
+            {
+                ViewModel.AdvFilter = data;
+                ViewModel.Refresh(true);
+            };
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
