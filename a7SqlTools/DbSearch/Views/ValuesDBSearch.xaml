@@ -77,19 +77,19 @@
                         <ProgressBar x:Name="pbProgress" Height="18"></ProgressBar>
                         <TextBlock x:Name="tbProgress"></TextBlock>
                     </Grid>
-                    <StackPanel DockPanel.Dock="Bottom">
+                    <StackPanel DockPanel.Dock="Bottom" Margin="3" Background="#FFFFC5">
                         <TextBlock Margin="3,3,3,0" TextWrapping="Wrap">
                             If you want to search for more value at once, please use the 
-                            <TextBlock FontWeight="Black" Background="LightGray" MinWidth="10" TextAlignment="Center" Text="{Binding Seperator}"></TextBlock>
+                            <TextBlock FontWeight="Black" Background="LightGray" MinWidth="10" TextAlignment="Center" Padding="2,0" Text="{Binding Seperator}"></TextBlock>
                             char as a seperator.
                         </TextBlock>
                         <TextBlock Margin="3,0,3,3" TextWrapping="Wrap" Visibility="{Binding AndSeperator, Converter={StaticResource es2v}}">
-                            To search for rows which contain more than one specified value, please use the "and" seperator which is the
-                            <TextBlock FontWeight="Black"  Background="LightGray" MinWidth="10" TextAlignment="Center" Text="{Binding AndSeperator}"></TextBlock> character.
+                            To search for rows which contain more than one specified value, please use the <Run FontStyle="Italic" FontWeight="SemiBold">"and" seperator</Run> which is the
+                            <TextBlock FontWeight="Black"  Background="LightGray" MinWidth="10" TextAlignment="Center" Padding="2,0" Text="{Binding AndSeperator}"></TextBlock> character.
                         </TextBlock>
                         <TextBlock Margin="3,0,3,3" TextWrapping="Wrap" FontSize="10" Foreground="Gray" Visibility="{Binding AndSeperator, Converter={StaticResource es2v}, ConverterParameter=NEGATE}">
-                            No "and" seperator specified, if you want to search for rows which contain more than one specified value, please
-                            set the "and" seperator using the "Change seperator" option in menu above.
+                            No <Run FontStyle="Italic" FontWeight="SemiBold">"and" seperator</Run> specified, if you want to search for rows which contain more than one specified value, please
+                            set the <Run FontStyle="Italic" FontWeight="SemiBold">"and" seperator</Run> using the "Change seperator" option in menu above.
                         </TextBlock>
                     </StackPanel>
                     <TextBox AcceptsReturn="True" Margin="3" HorizontalAlignment="Stretch" x:Name="tbValuesToSearch"></TextBox>

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using a7SqlTools.TableExplorer.Enums;
 using a7SqlTools.TableExplorer.Filter;
@@ -85,6 +86,7 @@ namespace a7SqlTools.TableExplorer
             }
         }
 
+        public Brush EditorBackground { get; set; } = new SolidColorBrush(Colors.White);
         public bool IsSqlEditMode
         {
             get { return _isSqlEditMode; }
@@ -95,12 +97,21 @@ namespace a7SqlTools.TableExplorer
                 {
                     ClearFieldFilters();
                     AdvFilter = null;
+                    EditorBackground = new SolidColorBrush(Color.FromRgb(255, 255, 225));
                 }
+                else
+                {
+                    EditorBackground = new SolidColorBrush(Color.FromRgb(239, 239, 239));
+                }
+                OnPropertyChanged(nameof(EditorBackground));
             }
         }
 
         public ICommand Remove => new a7LambdaCommand((o) => _parentVm.OpenedTables.Remove(this));
 
+        private readonly PoorMansTSqlFormatterLib.Interfaces.ISqlTokenizer _tokenizer;
+        private readonly PoorMansTSqlFormatterLib.Interfaces.ISqlTreeFormatter _formatter;
+        private readonly PoorMansTSqlFormatterLib.Interfaces.ISqlTokenParser _parser;
         private readonly a7TableExplorer _parentVm;
         private readonly SqlConnection _sqlConnection;
         private bool _isBusy;
@@ -123,6 +134,23 @@ namespace a7SqlTools.TableExplorer
             this.DisplayedSql = _sql;
             this._columnWhere = "";
             SetAvailableColumns();
+
+            _tokenizer = new PoorMansTSqlFormatterLib.Tokenizers.TSqlStandardTokenizer();
+            _parser = new PoorMansTSqlFormatterLib.Parsers.TSqlStandardParser();
+            _formatter = new PoorMansTSqlFormatterLib.Formatters.TSqlStandardFormatter(
+                indentString: "\t",
+                spacesPerTab: 4,
+                maxLineWidth: 999,
+                expandCommaLists: true,
+                trailingCommas: false,
+                spaceAfterExpandedComma: false,
+                expandBooleanExpressions: true,
+                expandCaseStatements: true,
+                expandBetweenConditions: true,
+                breakJoinOnSections: false,
+                uppercaseKeywords: true,
+                htmlColoring: false,
+                keywordStandardization: false);
         }
 
         public void SetAvailableColumns()
@@ -236,7 +264,7 @@ namespace a7SqlTools.TableExplorer
             {
                 whereBuilder = new WhereClauseBuilder(AdvFilter, this);
                 this._sql = this._sqlBase + whereBuilder.WhereClause;
-                DisplayedSql = whereBuilder.Parameters.Aggregate(_sql, (current, param) =>
+                var generatedSql = whereBuilder.Parameters.Aggregate(_sql, (current, param) =>
                 {
                     var strValue = param.Value?.ToString();
                     if (param.Value is string || param.Value is DateTime)
@@ -245,6 +273,10 @@ namespace a7SqlTools.TableExplorer
                     }
                     return current.Replace($"@{param.Key}", strValue);
                 });
+                //var tokenized = _tokenizer.TokenizeSQL(generatedSql);
+                //var parsed = _parser.ParseSQL(tokenized);
+                //DisplayedSql = _formatter.FormatSQLTree(parsed);
+                DisplayedSql = generatedSql;
             }
             else if (FilterFields != null)
             {
@@ -268,10 +300,19 @@ namespace a7SqlTools.TableExplorer
                 {
                     this._sql = this._sqlBase + " WHERE " + where;
                 }
-                this.DisplayedSql = _sql;
+                //var tokenized = _tokenizer.TokenizeSQL(_sql);
+                //var parsed = _parser.ParseSQL(tokenized);
+                //DisplayedSql = _formatter.FormatSQLTree(parsed);
+                DisplayedSql = _sql;
             }
         }
 
+        public void FormatSql()
+        {
+            var tokenized = _tokenizer.TokenizeSQL(DisplayedSql);
+            var parsed = _parser.ParseSQL(tokenized);
+            DisplayedSql = _formatter.FormatSQLTree(parsed);
+        }
 
         #region INotifyPropertyChanged Members
 

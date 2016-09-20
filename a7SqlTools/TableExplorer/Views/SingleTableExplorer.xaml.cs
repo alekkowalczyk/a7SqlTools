@@ -57,15 +57,16 @@ namespace a7SqlTools.TableExplorer.Views
         private void bFilter_Click(object sender, RoutedEventArgs e) => 
             ViewModel?.Refresh();
 
-        private void bCommitChanges_Click(object sender, RoutedEventArgs e)
-        {
+        private void bCommitChanges_Click(object sender, RoutedEventArgs e) =>
             ViewModel.CommitChanges();
-        }
 
         private void BEditSql_OnClick(object sender, RoutedEventArgs e)
         {
             this.ViewModel.IsSqlEditMode = true;
             this.sqlEditor.Focus();
         }
+
+        private void BFormatSql_OnClick(object sender, RoutedEventArgs e) =>
+            this.ViewModel.FormatSql();
     }
 }

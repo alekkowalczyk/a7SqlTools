@@ -17,12 +17,13 @@
                 <Label>Seperator used to split values:</Label>
                 <TextBox Width="30" Margin="5" x:Name="tbSeperator"></TextBox>
             </StackPanel>
-            <TextBlock FontSize="8" HorizontalAlignment="Center">(empty string - no seperator, [enter] - new line as seperator)</TextBlock>
+            <TextBlock FontSize="8" HorizontalAlignment="Center">(empty string - no seperator, <TextBlock Background="LightGray" Padding="2,0,2,2">[enter]</TextBlock> - new line as seperator)</TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label>"And" Seperator:</Label>
                 <TextBox x:Name="tbAndSeperator" Text="{Binding AndSeperator}" Width="30" Margin="5"></TextBox>
             </StackPanel>
-            <TextBlock FontSize="8" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">(seperator for AND operator, example: if <Run FontWeight="Black"  Background="LightGray" FontStretch="ExtraExpanded" FontSize="8" >&#160;&#160;;&#160;&#160; </Run> set - "test1;test2" value will search rows that have both, test1 and test2 values)</TextBlock>
+            <TextBlock FontSize="8" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">(seperator for <Run FontStyle="Italic" FontWeight="SemiBold">AND operator</Run>, example: if  <TextBlock Background="LightGray" Padding="2,0,2,2" FontSize="8" FontWeight="Black">;</TextBlock> set - "test1<Run FontWeight="Black">;</Run>test2" value will search rows that have both, test1 <Run FontWeight="SemiBold">and</Run> test2 values)</TextBlock>
         </StackPanel>
     </DockPanel>
 </Window>
+

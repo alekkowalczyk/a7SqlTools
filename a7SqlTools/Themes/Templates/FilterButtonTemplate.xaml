@@ -23,7 +23,6 @@
                         Background="Transparent"
                         Height="{TemplateBinding Height}"
                         HorizontalAlignment="Stretch"
-                        Foreground="Gray"
                         Margin="{TemplateBinding Margin}"
                         >
                         <Border HorizontalAlignment="Right" x:Name="arrowBorder" Background="Transparent"  BorderBrush="{TemplateBinding BorderBrush}" 
