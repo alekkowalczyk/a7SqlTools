@@ -24,10 +24,12 @@ namespace a7SqlTools.DbComparer.Struct
         public a7DbTableFieldDifferent(Column colA, Column colB, Table tableA, Table tableB, Database dbA, Database dbB, a7DbStructureComparer comparer)
         {
             var aType = colA.DataType.ToString();
-            if (colA.DataType.SqlDataType == SqlDataType.VarChar)
+            if (colA.DataType.SqlDataType == SqlDataType.VarChar || colA.DataType.SqlDataType == SqlDataType.NVarChar
+                || colA.DataType.SqlDataType == SqlDataType.Char || colA.DataType.SqlDataType == SqlDataType.NChar)
                 aType += "(" + colA.DataType.MaximumLength + ")";
-            var bType = colA.DataType.ToString();
-            if (colB.DataType.SqlDataType == SqlDataType.VarChar)
+            var bType = colB.DataType.ToString();
+            if (colB.DataType.SqlDataType == SqlDataType.VarChar || colB.DataType.SqlDataType == SqlDataType.NVarChar
+                || colB.DataType.SqlDataType == SqlDataType.Char || colB.DataType.SqlDataType == SqlDataType.NChar)
                 bType += "(" + colB.DataType.MaximumLength + ")";
             Text = colA.Name + "(" + aType +","+bType+")";
             ButtonCaption = string.Format("Copy type from '{0}' to '{1}'", dbA.Name, dbB.Name);
