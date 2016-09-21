@@ -12,8 +12,8 @@ namespace a7SqlTools.DbComparer.Struct
     {
         string ButtonCaption { get; }
         string Text { get; }
-        ICommand ButtonClick { get; }
-        ICommand Button2Click { get; }
+        ICommand CopyTypeToA { get; }
+        ICommand CopyTypeToB { get; }
         Visibility Button2Visibility { get; }
         string Button2Caption { get; }
     }

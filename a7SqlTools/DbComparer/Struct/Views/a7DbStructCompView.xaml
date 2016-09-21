@@ -8,8 +8,33 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <cv:NullToCollapsedVisibility x:Key="NullToCollapsedVisibility"></cv:NullToCollapsedVisibility>
-        <cv:BoolToVisibility x:Key="BoolToVisibility"></cv:BoolToVisibility>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Themes/Templates/ListViewTemplate.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <cv:NullToCollapsedVisibility x:Key="NullToCollapsedVisibility"></cv:NullToCollapsedVisibility>
+            <cv:BoolToVisibility x:Key="BoolToVisibility"></cv:BoolToVisibility>
+            <Style TargetType="ListView">
+                <Setter Property="BorderThickness" Value="1.0001"></Setter>
+                <Setter Property="BorderBrush" Value="LightGray"></Setter>
+                <Setter Property="Focusable" Value="False"></Setter>
+            </Style>
+            <Style TargetType="{x:Type ListViewItem}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                            <Border
+                             BorderBrush="Transparent"
+                             BorderThickness="0"
+                             Background="{TemplateBinding Background}">
+                                <GridViewRowPresenter HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto" Margin="0" Content="{TemplateBinding Content}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <local:a7DbStructCompResultView

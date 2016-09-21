@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="Themes/TreeView.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="Themes/Templates/ButtonsTemplates.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <cv:BoolToVisibility x:Key="b2v"></cv:BoolToVisibility>
+            <cv:BoolToVisibilityReverse x:Key="b2vr"></cv:BoolToVisibilityReverse>
             <cv:NegateBool x:Key="nb"></cv:NegateBool>
             <cv:EmptyStringToVisibility x:Key="es2v"></cv:EmptyStringToVisibility>
         </ResourceDictionary>

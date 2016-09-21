@@ -255,9 +255,7 @@
     <Compile Include="DbComparer\Struct\a7DbTableFieldCopyTo.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableFieldDifferences.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableFieldDifferent.cs" />
-    <Compile Include="DbComparer\Struct\a7DbTableFieldRemove.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableOnlyIn.cs" />
-    <Compile Include="DbComparer\Struct\a7DbTableOnlyInRemove.cs" />
     <Compile Include="DbComparer\Struct\a7DbTableUtils.cs" />
     <Compile Include="DbComparer\Struct\a7IDbTableField.cs" />
     <Compile Include="DbComparer\Struct\Views\a7DbStructCompResultView.xaml.cs">
@@ -266,14 +264,11 @@
     <Compile Include="DbComparer\Struct\Views\a7DbStructCompView.xaml.cs">
       <DependentUpon>a7DbStructCompView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml.cs">
-      <DependentUpon>a7DbTableFieldDifferencesView.xaml</DependentUpon>
+    <Compile Include="DbComparer\Struct\Views\a7DbStructFieldsCompView.xaml.cs">
+      <DependentUpon>a7DbStructFieldsCompView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DbComparer\Struct\Views\a7DbTableOnlyInView.xaml.cs">
-      <DependentUpon>a7DbTableOnlyInView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DbComparer\Struct\Views\a7TableFieldDifferentView.xaml.cs">
-      <DependentUpon>a7TableFieldDifferentView.xaml</DependentUpon>
+    <Compile Include="DbComparer\Struct\Views\a7DbStructTablesCompView.xaml.cs">
+      <DependentUpon>a7DbStructTablesCompView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DbComparer\Views\a7DbDoubleSelection.xaml.cs">
       <DependentUpon>a7DbDoubleSelection.xaml</DependentUpon>
@@ -394,17 +389,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DbComparer\Struct\Views\a7DbTableFieldDifferencesView.xaml">
+    <Page Include="DbComparer\Struct\Views\a7DbStructFieldsCompView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DbComparer\Struct\Views\a7DbTableOnlyInView.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="DbComparer\Struct\Views\a7DbStructTablesCompView.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DbComparer\Struct\Views\a7TableFieldDifferentView.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="DbComparer\Views\a7DbDoubleSelection.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -479,9 +470,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Templates\ListBoxSimpleTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Templates\ListBoxTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Templates\ListViewTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Templates\Templates.xaml">
       <SubType>Designer</SubType>

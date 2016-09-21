@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace a7SqlTools.DbComparer.Struct.Views
 {
     /// <summary>
-    /// Interaction logic for a7TableFieldOnlyInView.xaml
+    /// Interaction logic for a7DbStructTablesCompView.xaml
     /// </summary>
-    public partial class a7TableFieldDifferentView : UserControl
+    public partial class a7DbStructTablesCompView : UserControl
     {
-        public a7TableFieldDifferentView()
+        public a7DbStructTablesCompView()
         {
             InitializeComponent();
         }

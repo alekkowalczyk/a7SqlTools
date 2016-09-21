@@ -10,53 +10,91 @@ using a7SqlTools.Utils;
 
 namespace a7SqlTools.DbComparer.Struct
 {
-    public class a7DbTableFieldDifferent : a7IDbDifference
+    public class a7DbTableFieldDifferent
     {
-        public string ButtonCaption { get; private set; }
-
         public string Text { get; private set; }
+        public string TypeInA { get; }
+        public string TypeInB { get; }
+        public string DbAName { get; }
+        public string DbBName { get; }
+        public ICommand CopyTypeToA { get; private set; }
+        public ICommand CopyTypeToB { get; private set; }
 
-        public System.Windows.Input.ICommand ButtonClick { get; private set; }
-        public ICommand Button2Click { get; private set; }
-        public Visibility Button2Visibility { get; private set; }
-        public string Button2Caption { get; private set; }
-
-        public a7DbTableFieldDifferent(Column colA, Column colB, Table tableA, Table tableB, Database dbA, Database dbB, a7DbStructureComparer comparer)
+        public a7DbTableFieldDifferent(Column colA, Column colB, Table tableA, Table tableB, Database dbA, Database dbB, a7DbStructureComparer comparer, a7DbTableFieldDifferences differences)
         {
-            var aType = colA.DataType.ToString();
+            DbAName = comparer.DbAName;
+            DbBName = comparer.DbBName;
+            TypeInA = colA.DataType.ToString();
             if (colA.DataType.SqlDataType == SqlDataType.VarChar || colA.DataType.SqlDataType == SqlDataType.NVarChar
                 || colA.DataType.SqlDataType == SqlDataType.Char || colA.DataType.SqlDataType == SqlDataType.NChar)
-                aType += "(" + colA.DataType.MaximumLength + ")";
-            var bType = colB.DataType.ToString();
+                TypeInA += "(" + colA.DataType.MaximumLength + ")";
+            TypeInB = colB.DataType.ToString();
             if (colB.DataType.SqlDataType == SqlDataType.VarChar || colB.DataType.SqlDataType == SqlDataType.NVarChar
                 || colB.DataType.SqlDataType == SqlDataType.Char || colB.DataType.SqlDataType == SqlDataType.NChar)
-                bType += "(" + colB.DataType.MaximumLength + ")";
-            Text = colA.Name + "(" + aType +","+bType+")";
-            ButtonCaption = string.Format("Copy type from '{0}' to '{1}'", dbA.Name, dbB.Name);
-            ButtonClick = new a7LambdaCommand((o) =>
+                TypeInB += "(" + colB.DataType.MaximumLength + ")";
+            Text = colA.Name;
+            CopyTypeToA = new a7LambdaCommand((o) =>
                 {
-                    if (colA.DataType.SqlDataType == SqlDataType.VarChar &&
-                        colB.DataType.SqlDataType == SqlDataType.VarChar)
+                    comparer.IsBusy = true;
+                    Task.Factory.StartNew(() =>
                     {
-                        colB.DataType.MaximumLength = colA.DataType.MaximumLength;
-                        tableB.Alter();
-                    }
-                    else
-                        MessageBox.Show("Not supported for non-varchars");
+                        if ((colA.DataType.SqlDataType == SqlDataType.VarChar &&
+                             colB.DataType.SqlDataType == SqlDataType.VarChar)
+                            || (colA.DataType.SqlDataType == SqlDataType.NVarChar &&
+                                colB.DataType.SqlDataType == SqlDataType.NVarChar))
+                        {
+                            colA.DataType.MaximumLength = colB.DataType.MaximumLength;
+                            tableA.Alter();
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                differences.TableFieldsDifferentType.Remove(this);
+                            });
+                        }
+                        else
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                MessageBox.Show("Not supported for non-varchar types");
+                            });
+                        }
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            comparer.IsBusy = false;
+                        });
+                    }).ContinueWith((t) =>
+                    {
+                        if (t.Exception != null)
+                        {
+                            throw t.Exception;
+                        }
+                    });
                 }
             );
-            Button2Caption = string.Format("Copy type from '{0}' to '{1}'", dbB.Name, dbA.Name);
-            Button2Visibility = Visibility.Visible;
-            Button2Click = new a7LambdaCommand((o) =>
+            CopyTypeToB = new a7LambdaCommand((o) =>
             {
-                if (colA.DataType.SqlDataType == SqlDataType.VarChar &&
-                        colB.DataType.SqlDataType == SqlDataType.VarChar)
+                if ((colA.DataType.SqlDataType == SqlDataType.VarChar &&
+                             colB.DataType.SqlDataType == SqlDataType.VarChar)
+                            || (colA.DataType.SqlDataType == SqlDataType.NVarChar &&
+                                colB.DataType.SqlDataType == SqlDataType.NVarChar))
                 {
-                    colA.DataType.MaximumLength = colB.DataType.MaximumLength;
-                    tableA.Alter();
+                    colB.DataType.MaximumLength = colA.DataType.MaximumLength;
+                    tableB.Alter();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        differences.TableFieldsDifferentType.Remove(this);
+                    });
                 }
                 else
-                    MessageBox.Show("Not supported for non-varchars");
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show("Not supported for non-varchar types");
+                    });
+                }
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    comparer.IsBusy = false;
+                });
             }
             );
         }

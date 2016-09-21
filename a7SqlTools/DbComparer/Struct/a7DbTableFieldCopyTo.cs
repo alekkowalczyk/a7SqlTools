@@ -10,37 +10,57 @@ using a7SqlTools.Utils;
 
 namespace a7SqlTools.DbComparer.Struct
 {
-    public class a7DbTableFieldCopyTo : a7IDbDifference
+    public class a7DbTableFieldCopyTo
     {
-        public string ButtonCaption { get; private set; }
-
         public string Text { get; private set; }
+        public ICommand AddToOtherCommand { get; }
+        public string AddToOtherDbName { get; }
+        public ICommand RemoveFromThisCommand { get; }
+        public string RemoveFromThisDbName { get; }
 
-        public System.Windows.Input.ICommand ButtonClick { get; private set; }
-        public ICommand Button2Click { get; private set; }
-        public Visibility Button2Visibility { get; private set; }
-        public string Button2Caption { get; private set; }
-
-        private a7DbTableFieldRemove tableRemoveItem;
-
-        public a7DbTableFieldCopyTo(string dbName, Column column, int colPos, Table tableExists, Table tableNotExists, Database isInDb, Database isNotIntDb, a7DbStructureComparer comparer, a7DbTableFieldDifferences tableFieldDifferencesExists, a7DbTableFieldDifferences tableFieldDifferencesNotExists)
+        public a7DbTableFieldCopyTo(string dbName, Column column, int colPos, Table tableExists, Table tableNotExists, Database isInDb, Database isNotIntDb, a7DbStructureComparer comparer, a7DbTableFieldDifferences tableFieldDifferencesExists)
         {
             Text = column.Name;
-            Button2Visibility = Visibility.Collapsed;
-            ButtonCaption = string.Format("Copy field to '{0}'", isNotIntDb.Name);
-            ButtonClick = new a7LambdaCommand((s) =>
+
+            AddToOtherDbName = isNotIntDb.Name;
+            AddToOtherCommand = new a7LambdaCommand((o) =>
+            {
+                comparer.IsBusy = true;
+                Task.Factory.StartNew(() =>
                 {
                     a7DbTableUtils.CopyColumn(column, tableExists, tableNotExists, new Server(dbName), colPos);
                     tableNotExists.Alter();
-                    tableFieldDifferencesExists.TableFieldDifferent.Remove(this);
-                    tableFieldDifferencesNotExists.TableFieldDifferent.Remove(tableRemoveItem);
-                }
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        tableFieldDifferencesExists.TableFieldsOnlyInA.Remove(this);
+                        tableFieldDifferencesExists.TableFieldsOnlyInB.Remove(this);
+                        comparer.IsBusy = false;
+                    });
+                }).ContinueWith((t) =>
+                {
+                    if (t.Exception != null)
+                    {
+                        throw t.Exception;
+                    }
+                });
+            }
             );
-        }
-
-        public void SetTableFieldRemoveItem(a7DbTableFieldRemove remove)
-        {
-            tableRemoveItem = remove;
+            RemoveFromThisDbName = isInDb.Name;
+            RemoveFromThisCommand = new a7LambdaCommand((o) =>
+            {
+                comparer.IsBusy = true;
+                Task.Factory.StartNew(() =>
+                {
+                    column.Drop();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        tableFieldDifferencesExists.TableFieldsOnlyInA.Remove(this);
+                        tableFieldDifferencesExists.TableFieldsOnlyInB.Remove(this);
+                        comparer.IsBusy = false;
+                    });
+                });
+            }
+            );
         }
     }
 }

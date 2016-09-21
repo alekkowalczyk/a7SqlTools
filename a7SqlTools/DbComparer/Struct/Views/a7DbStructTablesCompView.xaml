@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="a7SqlTools.DbComparer.Struct.Views.a7DbStructTablesCompView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:a7SqlTools.DbComparer.Struct.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4"></Setter>
+            <Setter Property="Padding" Value="4,2"></Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" FontWeight="SemiBold" Visibility="{Binding TablesAreInSync, Converter={StaticResource b2vr}}">Table differences</TextBlock>
+        <TextBlock Grid.Row="0" FontWeight="SemiBold" Visibility="{Binding TablesAreInSync, Converter={StaticResource b2v}}">Same tables in both databases</TextBlock>
+        <Rectangle Grid.Row="1" Fill="#999999" HorizontalAlignment="Stretch" Height="1.5"></Rectangle>
+        <Grid Grid.Row="2" Visibility="{Binding TablesAreInSync, Converter={StaticResource b2vr}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="5" Grid.Column="0" Visibility="{Binding TablesOnlyInAExist, Converter={StaticResource b2v}}">
+                <TextBlock Margin="0,0,0,3">Tables only in '<Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run>' database:</TextBlock>
+                <ListView Padding="5" ItemsSource="{Binding TablesOnlyInA}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Table Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TableName}" Padding="0,0,10,0"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Command="{Binding AddToOtherCommand}">
+                                                <TextBlock>Add to <Run FontWeight="SemiBold" Text="{Binding AddToOtherDbName, Mode=OneWay}"></Run></TextBlock>
+                                            </Button>
+                                            <Button Command="{Binding RemoveFromThisCommand}">
+                                                <TextBlock>Remove from <Run FontWeight="SemiBold" Text="{Binding RemoveFromThisDbName, Mode=OneWay}"></Run></TextBlock>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <TextBlock Margin="5"  Grid.Column="0" TextWrapping="Wrap" Visibility="{Binding TablesOnlyInAExist, Converter={StaticResource b2vr}}">
+            All tables from database <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run>
+            exist in database <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run>
+            </TextBlock>
+            <StackPanel Margin="5" Grid.Column="1" Visibility="{Binding TablesOnlyInBExist, Converter={StaticResource b2v}}">
+                <TextBlock  Margin="0,0,0,3">Tables only in '<Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run>' database:</TextBlock>
+                <ListView Padding="5" ItemsSource="{Binding TablesOnlyInB}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Table Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TableName}" Padding="0,0,10,0"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Command="{Binding AddToOtherCommand}">
+                                                <TextBlock>Add to <Run FontWeight="SemiBold" Text="{Binding AddToOtherDbName, Mode=OneWay}"></Run></TextBlock>
+                                            </Button>
+                                            <Button Command="{Binding RemoveFromThisCommand}">
+                                                <TextBlock>Remove from <Run FontWeight="SemiBold" Text="{Binding RemoveFromThisDbName, Mode=OneWay}"></Run></TextBlock>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+            <TextBlock Margin="5" Grid.Column="1" TextWrapping="Wrap" Visibility="{Binding TablesOnlyInBExist, Converter={StaticResource b2vr}}">
+            All tables from database <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run>
+            exist in database <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run>
+            </TextBlock>
+        </Grid>
+        
+    </Grid>
+</UserControl>
