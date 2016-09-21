@@ -112,7 +112,7 @@
                 Fields of table <Run Text="{Binding TableName, Mode=OneWay}"></Run> that exist in both databases, are of the same type
             </TextBlock>
             <StackPanel Margin="5" Grid.Row="1" Grid.ColumnSpan="2" Visibility="{Binding FieldTypeDifferencesExist, Converter={StaticResource b2v}}">
-                <TextBlock  Margin="0,0,0,3">in both databases, but with different column types</TextBlock>
+                <TextBlock  Margin="0,0,0,3">Columns that exist in the table in both databases, but with different column types</TextBlock>
                 <ListView Padding="5" ItemsSource="{Binding TableFieldsDifferentType}">
                     <ListView.View>
                         <GridView>
@@ -150,7 +150,7 @@
                                             <Button Command="{Binding CopyTypeToB}">
                                                 <TextBlock>Set type from <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run> in <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run></TextBlock>
                                             </Button>
-                                            <Button Command="{Binding CopyTypeToa}">
+                                            <Button Command="{Binding CopyTypeToA}">
                                                 <TextBlock>Set type from <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run> in <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run></TextBlock>
                                             </Button>
                                         </StackPanel>

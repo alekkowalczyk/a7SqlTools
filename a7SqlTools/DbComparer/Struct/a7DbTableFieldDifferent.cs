@@ -72,6 +72,7 @@ namespace a7SqlTools.DbComparer.Struct
             );
             CopyTypeToB = new a7LambdaCommand((o) =>
             {
+                comparer.IsBusy = true;
                 if ((colA.DataType.SqlDataType == SqlDataType.VarChar &&
                              colB.DataType.SqlDataType == SqlDataType.VarChar)
                             || (colA.DataType.SqlDataType == SqlDataType.NVarChar &&
