@@ -20,7 +20,7 @@ namespace a7SqlTools.Converters
                     if (isFirst)
                         isFirst = false;
                     else
-                        ret += ";";
+                        ret += "; ";
                     ret += v;
                 }
                 return ret;

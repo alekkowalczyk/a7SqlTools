@@ -165,6 +165,138 @@
 
     </Style>
 
+    <Style x:Key='ColumnHeaderStyleSimple' TargetType='{x:Type primitives:DataGridColumnHeader}'>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <!--<Setter Property="FontSize" Value="10.5" />-->
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="4,6,5,6"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="SeparatorBrush" Value="#FFC9CACA" />
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="{x:Type primitives:DataGridColumnHeader}">
+                    <Grid>
+                        <themes:DataGridHeaderBorder x:Name='HeaderBorder' 
+                                                  SortDirection="{TemplateBinding SortDirection}"
+                                                  IsHovered="{TemplateBinding IsMouseOver}"
+                                                  IsPressed="{TemplateBinding IsPressed}"
+                                                  IsClickable="{TemplateBinding CanUserSort}"
+                                                  BorderBrush="{StaticResource HeaderSeparator}"
+                                                  Background='White'
+                                                  BorderThickness="0,0,1,1"
+
+                                                  SeparatorVisibility="{TemplateBinding SeparatorVisibility}"
+                                                  SeparatorBrush="{StaticResource HeaderSeparator}">
+                            <Grid Background='Transparent' >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width='Auto' />
+                                    <ColumnDefinition Width='*' />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Rectangle x:Name="BackgroundRectangle" Grid.ColumnSpan="2" Grid.RowSpan="2" 
+                                   Fill="White" Opacity="1"
+                                   Stretch="Fill" 
+                                   />
+                                <Rectangle x:Name="HoverRectangle" 
+                                   Grid.ColumnSpan="2" Grid.RowSpan="2" Stretch="Fill" 
+                                   Fill="{StaticResource BtnOverFill}" 
+                                   Opacity="0" />
+                                <Rectangle x:Name="ShineRectangle" 
+                                   Fill="{StaticResource hoverGradient}" 
+                                   Stretch="Fill" 
+                                   Stroke="{StaticResource selectedStroke}" 
+                                   Opacity="0"
+                                   Grid.ColumnSpan="2" Grid.RowSpan="2"                                   
+                                           />
+                                <ContentPresenter Grid.Column='0' 
+                                                  Grid.ColumnSpan="2"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  Margin='{TemplateBinding Padding}'
+                                                  Cursor="{TemplateBinding Cursor}"
+                                                  />
+                                <Path   x:Name="SortArrow" Margin="0,2,0,0" Height="4" Width="7" 
+                                        Grid.ColumnSpan="2"
+                                        HorizontalAlignment="Center"
+                                        Fill="{StaticResource sortArrow}" 
+                                        Stretch="Uniform" Opacity="0" 
+                                        Data="F1 M -5.215,6.099L 5.215,6.099L 0,0L -5.215,6.099 Z "                                         
+                                        RenderTransformOrigin="0.5,0.5"
+                                        VerticalAlignment="Top" 
+                                        >
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                        </themes:DataGridHeaderBorder>
+                        <Thumb x:Name="PART_LeftHeaderGripper"
+                   HorizontalAlignment="Left"
+                   Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                        <Thumb x:Name="PART_RightHeaderGripper"
+                   HorizontalAlignment="Right"
+                   Style="{StaticResource ColumnHeaderGripperStyle}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SortDirection" Value="Ascending">
+                            <Setter TargetName="SortArrow" Property="Opacity" Value="1" />
+                            <Setter TargetName="SortArrow" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="ShineRectangle" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Descending">
+                            <Setter TargetName="SortArrow" Property="Opacity" Value="1" />
+                            <Setter TargetName="ShineRectangle" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property='IsMouseOver' Value='True'>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation BeginTime="00:00:00" 
+                                                         Duration="00:00:00.20000"
+                                                         Storyboard.TargetName="HoverRectangle" 
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)" 
+                                                         To='1.0'                                                         
+                                                         />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation BeginTime="00:00:00" 
+                                                         Duration="00:00:00.20000"
+                                                         Storyboard.TargetName="HoverRectangle" 
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)" 
+                                                         To='0'                                                         
+                                                         />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+    </Style>
+
     <!--Cell-->
     <Style x:Key='CellStyle' TargetType="{x:Type controls:DataGridCell}" >
         <Setter Property="Foreground" Value="{StaticResource ThemeForegroundBrush}" />

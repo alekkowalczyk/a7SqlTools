@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using a7SqlTools.DbComparer.Data.Views;
 using a7SqlTools.Utils;
@@ -95,7 +96,13 @@ namespace a7SqlTools.DbComparer.Data
                             }
                         }
                     }
-                    new a7GeneratedQueryWindow(sb.ToString()).Show();
+                    var str = sb.ToString();
+                    if (string.IsNullOrWhiteSpace(str))
+                    {
+                        MessageBox.Show(
+                            "Empty query, please select some at least one difference selector (like A>B or B>A) on a row, table or database level.");
+                    }
+                    new a7GeneratedQueryWindow(str).Show();
                 }
             );
 

@@ -348,7 +348,7 @@ namespace a7SqlTools.DbComparer.Data
             Columns = new ObservableCollection<DataGridColumn>();
 
             Columns.Add(new a7ComparisonRowHeaderColumn() { Width = 8 });
-            Columns.Add(new a7CompMergeButtonsColumn() { Width = 60 });
+            Columns.Add(new a7CompMergeButtonsColumn() { Width = 80 });
 
             foreach (var inBoth in ColumnsInBothTables)
                 Columns.Add(new a7ComparisonFieldColumn() { Binding = new Binding("[" + inBoth + "]"), Header = inBoth, ColumnName = inBoth });

@@ -28,13 +28,13 @@
                     <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Top"></Label>
                     <Button Command="{Binding AnalyzeTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource nb2v}}"   
-                            >Analyze Table</Button>
+                            >Analyze Rows</Button>
                 <Button Command="{Binding ShowTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                         Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
-                        >Show Table</Button>
+                        >Show Rows</Button>
                 <Button Command="{Binding HideTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
-                                >Hide table</Button>
+                                >Hide Rows</Button>
                     <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"    ></Label>
                     <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
@@ -42,7 +42,7 @@
                     <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
                     <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
-                              ToolTip="Merge with delete of records that don't exist in source">With delete</CheckBox>
+                              ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
                     <Expander IsExpanded="False" Header="Structure" Visibility="{Binding IsDifferentStructure, Converter={StaticResource b2v}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal"  Visibility="{Binding ColumnsOnlyInA, Converter={StaticResource c2v}}">
@@ -61,8 +61,9 @@
         <Rectangle DockPanel.Dock="Bottom"  Fill="Black" HorizontalAlignment="Stretch" Height="1"></Rectangle>
                 <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
                                   ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
-                              VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                          VirtualizingPanel.IsVirtualizing="False"
+                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                  VirtualizingPanel.IsVirtualizing="False"
+                                  ColumnHeaderStyle="{StaticResource ColumnHeaderStyleSimple}"
                                   IsReadOnly="True"
                                   >
 

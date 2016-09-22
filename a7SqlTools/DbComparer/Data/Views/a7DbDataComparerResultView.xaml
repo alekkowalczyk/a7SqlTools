@@ -10,19 +10,25 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                
+                <ResourceDictionary Source="../../../Themes/Templates/ListBoxSimpleTemplate.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
             <conv:CollectionToStringConverter x:Key="c2s"></conv:CollectionToStringConverter>
             <conv:CollectionZeroToVisibility x:Key="c2v"></conv:CollectionZeroToVisibility>
             <conv:NegateBoolToVisibilityConverter x:Key="nb2v"></conv:NegateBoolToVisibilityConverter>
             <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel>
+    <DockPanel Margin="5">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Command="{Binding ShowGeneratedQuery}" Margin="2">Show generated query</Button>
-            <TextBlock Background="LightBlue" Margin="2" FontWeight="Bold">
+            <Button Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show generated query</Button>
+            <TextBlock Background="LightBlue" Margin="5" Padding="5" FontWeight="Bold">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="A:{0}, B:{1}">
                         <Binding Path="DbAName"></Binding>
@@ -36,20 +42,24 @@
             <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
             <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
-                              ToolTip="Merge with delete of records that don't exist in source">With delete</CheckBox>
+                              ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}">
-                    <TextBlock Text="{Binding DbAName, StringFormat=Tables only in db {0}:}"></TextBlock>
-                    <TextBox Text="{Binding TableNamesOnlyInA, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding TableNamesOnlyInB, Converter={StaticResource c2v}}">
-                    <TextBlock Text="{Binding DbBName, StringFormat=Tables only in db {0}:}"></TextBlock>
-                    <TextBox Text="{Binding TableNamesOnlyInB, Converter={StaticResource c2s}, Mode=OneWay}" IsReadOnly="True"></TextBox>
-                </StackPanel>
+                <TextBlock Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}" TextWrapping="Wrap">
+                    <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay, StringFormat=Tables only in database {0}:}"></Run>
+                    <Run Text="{Binding TableNamesOnlyInA, Converter={StaticResource c2s}, Mode=OneWay}" ></Run>
+                </TextBlock>
+                <TextBlock Visibility="{Binding TableNamesOnlyInB, Converter={StaticResource c2v}}" TextWrapping="Wrap">
+                    <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay, StringFormat=Tables only in database {0}:}"></Run>
+                    <Run Text="{Binding TableNamesOnlyInB, Converter={StaticResource c2s}, Mode=OneWay}" ></Run>
+                </TextBlock>
                 <ListBox ItemsSource="{Binding Tables}" 
+                         BorderBrush="Transparent"
+                         BorderThickness="1.0001"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         Template="{StaticResource ListBoxSimpleTemplate}"
+                         ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
                      MaxWidth="{Binding ActualWidth, ElementName=me}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

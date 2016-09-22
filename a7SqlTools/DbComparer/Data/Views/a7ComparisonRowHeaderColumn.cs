@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using a7SqlTools.DbComparer.Data;
 
 namespace a7SqlTools.DbComparer.Data.Views
@@ -22,9 +23,9 @@ namespace a7SqlTools.DbComparer.Data.Views
             if (row != null)
             {
                 if(row.IsDifferent)
-                    return new TextBox() {  Background = new SolidColorBrush(Colors.Red), Width=30 };
+                    return new Rectangle() {  Fill = new SolidColorBrush(Colors.Red), Width=30 };
                 else
-                    return new TextBox() {  Background = new SolidColorBrush(Colors.White), Width = 30 };
+                    return new Rectangle() {  Fill = new SolidColorBrush(Colors.White), Width = 30 };
             }
             return new TextBox() { Text = dataItem?.ToString(), Background = new SolidColorBrush(Colors.LightPink) };
         }
