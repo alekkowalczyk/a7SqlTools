@@ -13,8 +13,15 @@ using a7SqlTools.Utils;
 
 namespace a7SqlTools.DbComparer.Data
 {
-    public class a7DbDataComparer : INotifyPropertyChanged
+    public class a7DbDataComparer : ViewModelBase
     {
+        private bool _isLegendVisible = false;
+
+        public bool IsLegendVisible
+        {
+            get { return _isLegendVisible; }
+            set { _isLegendVisible = value; OnPropertyChanged(); }
+        }
         public ObservableCollection<a7DbTableComparer> Tables { get; private set; }
         public Database DbA { get; private set; }
         public Database DbB { get; private set; }
@@ -42,7 +49,7 @@ namespace a7SqlTools.DbComparer.Data
                     }
                 }
                 _mergeWithDelete = value;
-                OnPropChanged("MergerWithDelete");
+                OnPropertyChanged(nameof(MergeWithDelete));
             }
         }
 
@@ -173,15 +180,8 @@ namespace a7SqlTools.DbComparer.Data
                         table.SetMergeDirection(direction, true);
                 }
             }
-            OnPropChanged("MergeDirection");
+            OnPropertyChanged(nameof(MergeDirection));
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropChanged(string prop)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
+        
     }
 }

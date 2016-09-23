@@ -20,10 +20,10 @@
             <StackPanel Margin="5">
                 <u:a7DbStructTablesCompView Margin="2"></u:a7DbStructTablesCompView>
                 <ListBox ItemsSource="{Binding TableFieldDifferences}" Template="{StaticResource ListBoxSimpleTemplate}" 
-                       ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
-                         Visibility="{Binding TableFieldsInSync, Converter={StaticResource b2vr}}"
-                         HorizontalContentAlignment="Stretch"
-                         Margin="0">
+                           ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
+                             Visibility="{Binding TableFieldsInSync, Converter={StaticResource b2vr}}"
+                             HorizontalContentAlignment="Stretch"
+                             Margin="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <u:a7DbStructFieldsCompView HorizontalAlignment="Stretch"></u:a7DbStructFieldsCompView>
@@ -31,20 +31,20 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <TextBlock Grid.Row="2" TextWrapping="Wrap" Visibility="{Binding TableFieldsInSync, Converter={StaticResource b2v}}">
-                    Fields of tables that exist in both databases, are of the same in the equivalent tables
+                        Fields of tables that exist in both databases, are of the same in the equivalent tables
                 </TextBlock>
             </StackPanel>
             <Grid Grid.RowSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-              Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource b2v}}">
+                  Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource b2v}}">
                 <Rectangle Fill="#333" Opacity="0.6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Rectangle>
                 <Border
-                BorderThickness="1"
-                BorderBrush="Black"
-                Background="#CCC"
-                Padding="25"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                >
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    Background="#CCC"
+                    Padding="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    >
                     <StackPanel Orientation="Horizontal">
                         <controls:a7WaitSpinner Height="20" Spin="True"></controls:a7WaitSpinner>
                         <TextBlock Margin="10,0,0,0">Please wait...</TextBlock>

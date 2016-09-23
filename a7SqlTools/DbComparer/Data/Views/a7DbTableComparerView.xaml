@@ -19,30 +19,38 @@
             <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
         </ResourceDictionary>
     </UserControl.Resources>
-        <DockPanel VerticalAlignment="Stretch">
-            <TextBlock DockPanel.Dock="Top" x:Name="tbError" Visibility="{Binding IsOK, Converter={StaticResource nb2v}}" Margin="3,0,5,0"
-                           Text="{Binding ErrorText}" FontWeight="Bold" Foreground="Red"></TextBlock>
-            <StackPanel DockPanel.Dock="Top" x:Name="spComparison" Visibility="{Binding IsOK, Converter={StaticResource b2v}}" >
-                <StackPanel Orientation="Horizontal">
-                     <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5"></CheckBox>
+    <DockPanel VerticalAlignment="Stretch">
+        <TextBlock DockPanel.Dock="Top" x:Name="tbError" Visibility="{Binding IsOK, Converter={StaticResource nb2v}}" Margin="3,0,5,0"
+                            Text="{Binding ErrorText}" FontWeight="Bold" Foreground="Red"></TextBlock>
+        <StackPanel DockPanel.Dock="Top" x:Name="spComparison" Visibility="{Binding IsOK, Converter={StaticResource b2v}}" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5"></CheckBox>
                     <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Top"></Label>
                     <Button Command="{Binding AnalyzeTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource nb2v}}"   
                             >Analyze Rows</Button>
-                <Button Command="{Binding ShowTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
-                        Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
-                        >Show Rows</Button>
-                <Button Command="{Binding HideTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
-                            Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
-                                >Hide Rows</Button>
-                    <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"    ></Label>
+                    <Button Command="{Binding ShowTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                            Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
+                            >Show Rows</Button>
+                    <Button Command="{Binding HideTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                                Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
+                                    >Hide Rows</Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"></Label>
+                    <TextBlock Margin="5">Set migration query for all rows:</TextBlock>
                     <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
                     </Button>
                     <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
                     <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
-                              ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
+                                ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
                     <Expander IsExpanded="False" Header="Structure" Visibility="{Binding IsDifferentStructure, Converter={StaticResource b2v}}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal"  Visibility="{Binding ColumnsOnlyInA, Converter={StaticResource c2v}}">
@@ -55,21 +63,17 @@
                             </StackPanel>
                         </StackPanel>
                     </Expander>
-
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </StackPanel>
         <Rectangle DockPanel.Dock="Bottom"  Fill="Black" HorizontalAlignment="Stretch" Height="1"></Rectangle>
-                <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
-                                  ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
-                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                                  VirtualizingPanel.IsVirtualizing="False"
-                                  ColumnHeaderStyle="{StaticResource ColumnHeaderStyleSimple}"
-                                  IsReadOnly="True"
-                                  >
-
-                </DataGrid>
-
-            
+        <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
+                                        ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
+                                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                        VirtualizingPanel.IsVirtualizing="False"
+                                        ColumnHeaderStyle="{StaticResource ColumnHeaderStyleSimple}"
+                                        IsReadOnly="True"
+                                        >
+        </DataGrid>
     </DockPanel>
-
 </UserControl>

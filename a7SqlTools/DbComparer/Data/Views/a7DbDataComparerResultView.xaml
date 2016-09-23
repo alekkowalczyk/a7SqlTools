@@ -3,13 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:u="clr-namespace:a7SqlTools.DbComparer.Data.Views"
         xmlns:conv="clr-namespace:a7SqlTools.Converters"
-                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ut="clr-namespace:a7SqlTools.Utils"
-        x:Name="me">
+             xmlns:data="clr-namespace:a7SqlTools.DbComparer.Data"
+             x:Name="me" d:DataContext="{d:DesignInstance data:a7DbDataComparer}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Themes/Templates/ButtonsTemplates.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="../../../Themes/Templates/ListBoxSimpleTemplate.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
@@ -26,24 +28,51 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel Margin="5">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show generated query</Button>
-            <TextBlock Background="LightBlue" Margin="5" Padding="5" FontWeight="Bold">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="A:{0}, B:{1}">
-                        <Binding Path="DbAName"></Binding>
-                        <Binding Path="DbBName"></Binding>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
-            <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
-                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
-            </Button>
-            <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
-                                Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
-            <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
-                              ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
-        </StackPanel>
+        <Border BorderThickness="1" DockPanel.Dock="Bottom" Background="#FFFFAA">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <ToggleButton HorizontalAlignment="Center"
+                                  BorderBrush="Transparent"
+                                  Background="Transparent"
+                                  Template="{StaticResource ToggleButtonTemplate}"
+                                  IsChecked="{Binding IsLegendVisible, Mode=TwoWay}">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2v}}">
+                                <Image Source="../../../Images/dropDownClose.png"></Image>
+                                <TextBlock>Show legend</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
+                                <Image Source="../../../Images/dropDownOpen.png"></Image>
+                                <TextBlock>Hide legend</TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </ToggleButton>
+                </StackPanel>
+                <Grid Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
+                    <TextBlock Margin="5" Padding="5" FontWeight="Bold">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="A:{0}, B:{1}">
+                                <Binding Path="DbAName"></Binding>
+                                <Binding Path="DbBName"></Binding>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
+            </DockPanel>
+        </Border>
+        <Grid DockPanel.Dock="Top">
+            <Button HorizontalAlignment="Left" Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show generated query</Button>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <TextBlock Margin="5">Set migration query for all selected tables:</TextBlock>
+                <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
+                                    Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
+                </Button>
+                <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
+                                    Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
+                <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
+                                  ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
+            </StackPanel>
+        </Grid>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
             <StackPanel>
                 <TextBlock Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}" TextWrapping="Wrap">
@@ -57,7 +86,7 @@
                 <ListBox ItemsSource="{Binding Tables}" 
                          BorderBrush="Transparent"
                          BorderThickness="1.0001"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                          Template="{StaticResource ListBoxSimpleTemplate}"
                          ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
                      MaxWidth="{Binding ActualWidth, ElementName=me}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
