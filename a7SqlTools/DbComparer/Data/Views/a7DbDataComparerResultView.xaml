@@ -49,27 +49,51 @@
                     </ToggleButton>
                 </StackPanel>
                 <Grid Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
-                    <TextBlock Margin="5" Padding="5" FontWeight="Bold">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="A:{0}, B:{1}">
-                                <Binding Path="DbAName"></Binding>
-                                <Binding Path="DbBName"></Binding>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock FontStyle="Italic" HorizontalAlignment="Center">General:</TextBlock>
+                        <TextBlock Grid.Row="0" Margin="5" TextWrapping="Wrap">
+                        Compared databases: <Run FontWeight="Black">A</Run>=<Run FontWeight="Bold" Text="{Binding DbAName, Mode=OneWay}"></Run>
+                                , <Run FontWeight="Black">B</Run>=<Run FontWeight="Bold" Text="{Binding DbBName, Mode=OneWay}"></Run>
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
+                            <InlineUIContainer BaselineAlignment="Center">
+                                <Button IsHitTestVisible="False" Margin="0" Padding="2">Show merge query</Button>
+                            </InlineUIContainer>
+                            <Run>Shows the generated merge query based on selected merge actions</Run>
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
+                            <InlineUIContainer BaselineAlignment="Center">
+                                <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
+                            </InlineUIContainer>
+                            <Run>Includes merging data from database </Run><Run FontWeight="Bold">A</Run>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock FontStyle="Italic" HorizontalAlignment="Center">On rows:</TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+
+                    </StackPanel>
                 </Grid>
             </DockPanel>
         </Border>
         <Grid DockPanel.Dock="Top">
-            <Button HorizontalAlignment="Left" Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show generated query</Button>
+            <Button HorizontalAlignment="Left" Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show merge query</Button>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock Margin="5">Set migration query for all selected tables:</TextBlock>
-                <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
+                <TextBlock Margin="5" VerticalAlignment="Center" >Merge action for all selected tables:</TextBlock>
+                <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="35" Height="24"          
                                     Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
                 </Button>
-                <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
+                <Button x:Name="bBtoA" Margin="2,0,0,0" Command="{Binding MergeBtoA}" Content="B>A"  Width="35" Height="24"
                                     Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
-                <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
+                <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource"
+                          VerticalAlignment="Center"
+                          Margin="5" IsChecked="{Binding MergeWithDelete}" 
                                   ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
             </StackPanel>
         </Grid>

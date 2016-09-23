@@ -104,7 +104,7 @@ namespace a7SqlTools.DbComparer.Data
                 object valB = null;
                 if (rowB != null)
                     valB = rowB[colName];
-                Fields.Add(colName, new a7ComparisonField(valA, valB, colName, this._comparer));
+                Fields.Add(colName, new a7ComparisonField(valA, valB, rowA != null, rowB != null, colName, this._comparer));
                 if (valA?.ToString() != valB?.ToString() &&
                     colName != "dbVersion" && colName != "dbTimestamp" && colName != "dbUser")
                     IsDifferent = true;
@@ -116,7 +116,7 @@ namespace a7SqlTools.DbComparer.Data
                 object valA = null;
                 if(rowA!=null)
                     valA = rowA[colName];
-                Fields.Add(colName, new a7ComparisonField(valA, null, colName, this._comparer));
+                Fields.Add(colName, new a7ComparisonField(valA, null, true, false, colName, this._comparer));
                 IsDifferent = true;
             }
 
@@ -126,7 +126,7 @@ namespace a7SqlTools.DbComparer.Data
                 object valB = null;
                 if(rowB!=null)
                     valB = rowB[colName];
-                Fields.Add(colName, new a7ComparisonField(null, valB, colName, this._comparer));
+                Fields.Add(colName, new a7ComparisonField(null, valB, false, true, colName, this._comparer));
                 IsDifferent = true;
             }
             

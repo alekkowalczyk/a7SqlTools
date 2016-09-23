@@ -8,10 +8,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*" />
-            <ColumnDefinition Width="50*" />
+            <ColumnDefinition Width="50*" x:Name="columnA" />
+            <ColumnDefinition Width="50*" x:Name="columnB" />
         </Grid.ColumnDefinitions>
-        <TextBox Height="22" Background="Transparent" MinWidth="30"  IsReadOnly="true" Grid.Column="0" x:Name="tbA" />
-        <TextBox Height="22" Background="Transparent" MinWidth="30" IsReadOnly="true" Grid.Column="1" x:Name="tbB" />
+        <TextBox Height="22" Background="Transparent" MinWidth="30" VerticalContentAlignment="Center" Padding="5,0"  IsReadOnly="true" Grid.Column="0" x:Name="tbA" />
+        <TextBox Height="22" Background="Transparent" MinWidth="30" VerticalContentAlignment="Center" Padding="5,0" IsReadOnly="true" Grid.Column="1" x:Name="tbB" />
     </Grid>
 </UserControl>

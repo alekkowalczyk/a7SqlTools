@@ -22,34 +22,34 @@
     <DockPanel VerticalAlignment="Stretch">
         <TextBlock DockPanel.Dock="Top" x:Name="tbError" Visibility="{Binding IsOK, Converter={StaticResource nb2v}}" Margin="3,0,5,0"
                             Text="{Binding ErrorText}" FontWeight="Bold" Foreground="Red"></TextBlock>
-        <StackPanel DockPanel.Dock="Top" x:Name="spComparison" Visibility="{Binding IsOK, Converter={StaticResource b2v}}" >
+        <StackPanel DockPanel.Dock="Top" x:Name="spComparison" Margin="4" Visibility="{Binding IsOK, Converter={StaticResource b2v}}" >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5"></CheckBox>
-                    <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Top"></Label>
-                    <Button Command="{Binding AnalyzeTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5" VerticalAlignment="Center"></CheckBox>
+                    <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Center"></Label>
+                    <Button Command="{Binding AnalyzeTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource nb2v}}"   
                             >Analyze Rows</Button>
-                    <Button Command="{Binding ShowTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <Button Command="{Binding ShowTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
                             >Show Rows</Button>
-                    <Button Command="{Binding HideTable}" Width="80" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <Button Command="{Binding HideTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                                 Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
                                     >Hide Rows</Button>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"></Label>
-                    <TextBlock Margin="5">Set migration query for all rows:</TextBlock>
-                    <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="30" Height="20"            
+                    <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="35" Height="24"       
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
                     </Button>
-                    <Button x:Name="bBtoA" Command="{Binding MergeBtoA}" Content="B>A"  Width="30" Height="20"
+                    <Button x:Name="bBtoA" Margin="2,0,0,0" Command="{Binding MergeBtoA}" Content="B>A"  Width="35" Height="24"
                                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
                     <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource" Margin="5" IsChecked="{Binding MergeWithDelete}" 
+                              VerticalAlignment="Center"
                                 ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
                     <Expander IsExpanded="False" Header="Structure" Visibility="{Binding IsDifferentStructure, Converter={StaticResource b2v}}">
                         <StackPanel>

@@ -108,6 +108,7 @@ namespace a7SqlTools.DbComparer.Data
                     {
                         MessageBox.Show(
                             "Empty query, please select some at least one difference selector (like A>B or B>A) on a row, table or database level.");
+                        return;
                     }
                     new a7GeneratedQueryWindow(str).Show();
                 }

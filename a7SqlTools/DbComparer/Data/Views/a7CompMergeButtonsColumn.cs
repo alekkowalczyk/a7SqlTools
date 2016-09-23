@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace a7SqlTools.DbComparer.Data.Views
 {
@@ -16,7 +18,15 @@ namespace a7SqlTools.DbComparer.Data.Views
 
         protected override System.Windows.FrameworkElement GenerateElement(DataGridCell cell, object dataItem)
         {
-            return new a7CompMergeButtonsControl() { DataContext = dataItem, Width=60 };
+            this.Header = new TextBlock()
+            {
+                Text = "Merge actions",
+                FontWeight = FontWeights.Light,
+                FontSize = 12.0,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            return new a7CompMergeButtonsControl() { DataContext = dataItem, HorizontalAlignment = HorizontalAlignment.Center};
         }
     }
 }

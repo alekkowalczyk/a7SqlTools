@@ -8,17 +8,21 @@ namespace a7SqlTools.DbComparer.Data
 {
     public class a7ComparisonField
     {
-        public object ValueA { get; private set; }
-        public object ValueB { get; private set; }
-        public string Name { get; private set; }
+        public object ValueA { get; }
+        public object ValueB { get; }
+        public bool RowAExists { get; }
+        public bool RowBExists { get;  }
+        public string Name { get; }
         public bool AisB => ValueA?.ToString() == ValueB?.ToString(); 
 
         private a7DbDataComparer _comparer;
 
-        public a7ComparisonField(object valA, object valB, string name, a7DbDataComparer comparer)
+        public a7ComparisonField(object valA, object valB, bool rowAExists, bool rowBExists, string name, a7DbDataComparer comparer)
         {
             ValueA = valA;
             ValueB = valB;
+            RowAExists = rowAExists;
+            RowBExists = rowBExists;
             Name = name;
             _comparer = comparer;
         }

@@ -30,21 +30,28 @@ namespace a7SqlTools.DbComparer.Data.Views
                 if (field.AisB)
                 {
                     tbB.Visibility = System.Windows.Visibility.Collapsed;
+                    columnB.Width = new GridLength(0.0);
                 }
                 else
-                {
+                { 
                     tbB.Text = field.ValueB?.ToString();
-                    tbB.Background = new SolidColorBrush(Colors.Yellow);
-                    tbA.Background = new SolidColorBrush(Colors.Yellow);
-                    this.Background = new SolidColorBrush(Colors.LightYellow);
-
-                    if (field.ValueA.IsEmpty())
+                    if (field.RowAExists && field.RowBExists)
                     {
-                        tbA.Background = new SolidColorBrush(Colors.Lime);
+                        tbB.Background = new SolidColorBrush(Colors.Yellow);
+                        tbA.Background = new SolidColorBrush(Colors.Yellow);
+                        this.Background = new SolidColorBrush(Colors.LightYellow);
                     }
-                    if (field.ValueB.IsEmpty())
+                    if (!field.RowAExists)
                     {
-                        tbB.Background = new SolidColorBrush(Colors.Lime);
+                        //tbA.Background = new SolidColorBrush(Colors.Lime);
+                        tbA.Visibility = Visibility.Collapsed;
+                        columnA.Width = new GridLength(0.0);
+                    }
+                    if (!field.RowBExists)
+                    {
+                        //tbB.Background = new SolidColorBrush(Colors.Lime);
+                        tbB.Visibility = Visibility.Collapsed;
+                        columnB.Width = new GridLength(0.0);
                     }
                 }
                 tbA.MouseUp += (s, e) =>
