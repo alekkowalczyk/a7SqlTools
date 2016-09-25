@@ -39,47 +39,77 @@
                         <Grid>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2v}}">
                                 <Image Source="../../../Images/dropDownClose.png"></Image>
-                                <TextBlock>Show legend</TextBlock>
+                                <TextBlock>Show help</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
                                 <Image Source="../../../Images/dropDownOpen.png"></Image>
-                                <TextBlock>Hide legend</TextBlock>
+                                <TextBlock>Hide help</TextBlock>
                             </StackPanel>
                         </Grid>
                     </ToggleButton>
                 </StackPanel>
-                <Grid Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <TextBlock FontStyle="Italic" HorizontalAlignment="Center">General:</TextBlock>
-                        <TextBlock Grid.Row="0" Margin="5" TextWrapping="Wrap">
-                        Compared databases: <Run FontWeight="Black">A</Run>=<Run FontWeight="Bold" Text="{Binding DbAName, Mode=OneWay}"></Run>
-                                , <Run FontWeight="Black">B</Run>=<Run FontWeight="Bold" Text="{Binding DbBName, Mode=OneWay}"></Run>
-                        </TextBlock>
-                        <TextBlock Margin="5" TextWrapping="Wrap">
-                            <InlineUIContainer BaselineAlignment="Center">
-                                <Button IsHitTestVisible="False" Margin="0" Padding="2">Show merge query</Button>
-                            </InlineUIContainer>
-                            <Run>Shows the generated merge query based on selected merge actions</Run>
-                        </TextBlock>
-                        <TextBlock Margin="5" TextWrapping="Wrap">
-                            <InlineUIContainer BaselineAlignment="Center">
-                                <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
-                            </InlineUIContainer>
-                            <Run>Includes merging data from database </Run><Run FontWeight="Bold">A</Run>
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <TextBlock FontStyle="Italic" HorizontalAlignment="Center">On rows:</TextBlock>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-
-                    </StackPanel>
-                </Grid>
+                <StackPanel Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}"
+                            Margin="10">
+                    <TextBlock Grid.Row="0" Margin="5" TextWrapping="Wrap">
+                    Compared databases: <Run FontWeight="Black">A</Run>=<Run FontWeight="Bold" Text="{Binding DbAName, Mode=OneWay}"></Run>
+                            , <Run FontWeight="Black">B</Run>=<Run FontWeight="Bold" Text="{Binding DbBName, Mode=OneWay}"></Run>
+                    </TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Margin="0" Padding="2">Show merge query</Button>
+                        </InlineUIContainer>
+                        <Run>Shows the generated merge query based on selected merge actions</Run>
+                    </TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Margin="0" Padding="2">Analyze Rows</Button>
+                        </InlineUIContainer>
+                        <Run>Analyzing the differences in rows of a table. Shows the difference afterwards. 
+                        Selecting a merge action on a table like e.g. </Run> <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
+                        </InlineUIContainer> automatically runs the rows analysis.
+                    </TextBlock>
+                    <TextBlock Margin="5" FontStyle="Italic">Merge actions:</TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
+                        </InlineUIContainer> ,
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Content="B>A"  Width="30" Height="20" Background="White" />
+                        </InlineUIContainer>
+                        <Run>Include the data migration in the merge query for a whole table or a single row.
+                            Respectively from database </Run> <Run FontWeight="SemiBold"> A </Run> <Run> to database </Run> <Run FontWeight="SemiBold">B</Run>
+                            <Run> or vice versa.</Run>
+                    </TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Border Background="#FFFFFE" Padding="2,3,5,2">
+                                <CheckBox IsHitTestVisible="False" 
+                                        VerticalAlignment="Center">With delete</CheckBox>
+                            </Border>
+                        </InlineUIContainer>
+                        <Run>Include DELETE statements in the merge query for records that doesn't exist in source database. </Run>
+	                    <Run FontStyle="Italic">(Which is</Run> <Run FontWeight="SemiBold" FontStyle="Italic"> A</Run> <Run FontStyle="Italic"> for</Run>
+                        <Run FontWeight="SemiBold">A>B</Run> <Run FontStyle="Italic">and</Run> <Run FontWeight="SemiBold" FontStyle="Italic"> B</Run>
+                        <Run FontStyle="Italic">for</Run> 
+                            <Run FontWeight="SemiBold">B>A</Run> 
+                        <Run FontStyle="Italic">)</Run> <Run FontStyle="Italic" FontWeight="SemiBold">(only for tables)</Run>
+                    </TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Content="A>X"  Width="30" Height="20" Background="White" />
+                        </InlineUIContainer>
+                        <Run>Include in query DELETE of this row from database A, because it doesn't exist in database B</Run>
+                        <Run FontWeight="SemiBold" FontStyle="Italic">(only for rows)</Run>
+                    </TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Button IsHitTestVisible="False" Content="B>X"  Width="30" Height="20" Background="White" />
+                        </InlineUIContainer>
+                        <Run>Include in query DELETE of this row from database B, because it doesn't exist in database A</Run>
+                        <Run FontWeight="SemiBold" FontStyle="Italic">(only for rows)</Run>
+                    </TextBlock>
+                </StackPanel>
             </DockPanel>
         </Border>
         <Grid DockPanel.Dock="Top">

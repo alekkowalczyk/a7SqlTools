@@ -68,6 +68,7 @@
         </StackPanel>
         <Rectangle DockPanel.Dock="Bottom"  Fill="Black" HorizontalAlignment="Stretch" Height="1"></Rectangle>
         <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
+                  RowHeaderWidth="0"
                                         ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
                                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                                         VirtualizingPanel.IsVirtualizing="False"
