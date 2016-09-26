@@ -241,6 +241,9 @@
     <Compile Include="DbComparer\Data\Views\a7DbDataComparerView.xaml.cs">
       <DependentUpon>a7DbDataComparerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DbComparer\Data\Views\a7DbTableComparerRowsWindow.xaml.cs">
+      <DependentUpon>a7DbTableComparerRowsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DbComparer\Data\Views\a7DbTableComparerView.xaml.cs">
       <DependentUpon>a7DbTableComparerView.xaml</DependentUpon>
     </Compile>
@@ -366,6 +369,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DbComparer\Data\Views\a7DbDataComparerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DbComparer\Data\Views\a7DbTableComparerRowsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

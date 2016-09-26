@@ -23,6 +23,7 @@
                            ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
                              Visibility="{Binding TableFieldsInSync, Converter={StaticResource b2vr}}"
                              HorizontalContentAlignment="Stretch"
+                         Background="Transparent"
                              Margin="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

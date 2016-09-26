@@ -10,7 +10,7 @@
         <conv:a7MergeDirectionToColor x:Key="md2c"></conv:a7MergeDirectionToColor>
         <conv:BoolToVisibility x:Key="b2v"></conv:BoolToVisibility>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
         <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="{Binding AtoBCaption}"  Width="35" Height="24"
                 Visibility="{Binding IsDifferent, Converter={StaticResource b2v}}"                
                 Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">

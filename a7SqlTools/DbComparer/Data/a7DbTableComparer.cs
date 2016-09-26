@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -19,13 +20,13 @@ namespace a7SqlTools.DbComparer.Data
     {
         public bool IsDifferentData { get; private set; }
 
-        private bool _isTableVisible;
+        //private bool _isTableVisible;
 
-        public bool IsTableVisible
-        {
-            get { return _isTableVisible; }
-            set { _isTableVisible = value; OnPropChanged("IsTableVisible"); }
-        }
+        //public bool IsTableVisible
+        //{
+        //    get { return _isTableVisible; }
+        //    set { _isTableVisible = value; OnPropChanged("IsTableVisible"); }
+        //}
         
 
         private bool _isAnalyzedRows;
@@ -62,9 +63,9 @@ namespace a7SqlTools.DbComparer.Data
         public ObservableCollection<string> ColumnsOnlyInA { get; private set; }
         public ObservableCollection<string> ColumnsOnlyInB { get; private set; }
         public ObservableCollection<string> ColumnsInBothTables { get; private set; }
-        public ICommand AnalyzeTable { get; private set; }
-        public ICommand HideTable { get; private set; }
-        public ICommand ShowTable { get; private set; }
+        public ICommand AnalyzeTableCommand { get; private set; }
+        //public ICommand HideTable { get; private set; }
+        public ICommand ShowTableCommand { get; private set; }
 
         private ObservableCollection<a7ComparisonRow> _rows;
         public ObservableCollection<a7ComparisonRow> Rows
@@ -73,16 +74,17 @@ namespace a7SqlTools.DbComparer.Data
             private set { _rows = value; OnPropChanged("Rows"); }
         }
 
-        private ObservableCollection<DataGridColumn> _columns;
-        public ObservableCollection<DataGridColumn> Columns
-        {
-            get { return _columns; }
-            private set
-            {
-                _columns = value;
-                OnPropChanged("Columns");
-            }
-        }
+        //private ObservableCollection<DataGridColumn> _columns;
+        //public ObservableCollection<DataGridColumn> Columns
+        //{
+        //    get { return _columns; }
+        //    private set
+        //    {
+        //        _columns = value;
+        //        Application.Current.Dispatcher.Invoke(() =>
+        //                OnPropChanged("Columns"));
+        //    }
+        //}
 
         public a7DbComparerDirection MergeDirection { get; private set; }
 
@@ -102,12 +104,11 @@ namespace a7SqlTools.DbComparer.Data
             }
         }
 
-        private a7DbDataComparer _comparer;
+        private readonly a7DbDataComparer _comparer;
         private Server _srv;
 
         public a7DbTableComparer(Table tableA, Table tableB, a7DbDataComparer dataComparer)
         {
-            IsTableVisible = false;
             IsSelected = true;
             PrimaryKeyColumnsA = new List<string>();
             PrimaryKeyColumnsB = new List<string>();
@@ -116,27 +117,31 @@ namespace a7SqlTools.DbComparer.Data
 
             _mergeWithDelete = false;
             MergeDirection = a7DbComparerDirection.None;
-            MergeAtoB = new a7LambdaCommand((o) =>
+            MergeAtoB = new a7LambdaCommand(async (o) =>
             {
                 if (MergeDirection != a7DbComparerDirection.AtoB)
-                    SetMergeDirection(a7DbComparerDirection.AtoB);
+                    await SetMergeDirection(a7DbComparerDirection.AtoB);
                 else
-                    SetMergeDirection(a7DbComparerDirection.None);
+                    await SetMergeDirection(a7DbComparerDirection.None);
             }
             );
-            MergeBtoA = new a7LambdaCommand((o) =>
+            MergeBtoA = new a7LambdaCommand(async (o) =>
             {
                 if (MergeDirection != a7DbComparerDirection.BtoA)
-                    SetMergeDirection(a7DbComparerDirection.BtoA);
+                    await SetMergeDirection(a7DbComparerDirection.BtoA);
                 else
-                    SetMergeDirection(a7DbComparerDirection.None);
+                    await SetMergeDirection(a7DbComparerDirection.None);
             }
             );
 
-            AnalyzeTable = new a7LambdaCommand((o) =>
-                { analyzeTable(); IsTableVisible = true; });
-            HideTable = new a7LambdaCommand((o) => IsTableVisible = false);
-            ShowTable = new a7LambdaCommand((o) => IsTableVisible = true);
+            //AnalyzeTableCommand = new a7LambdaCommand((o) =>
+            //    { AnalyzeTable().ContinueWith(t =>IsTableVisible = true); });
+            //HideTable = new a7LambdaCommand((o) => IsTableVisible = false);
+            //ShowTableCommand = new a7LambdaCommand((o) => IsTableVisible = true);
+            AnalyzeTableCommand = new a7LambdaCommand((o) =>
+            { AnalyzeTable().ContinueWith(t => this.ShowTable()); });
+            ShowTableCommand = new a7LambdaCommand((o) => this.ShowTable());
+
             dataComparer.Log("Testing for differences - '" + tableA.Name + "'");
             _comparer = dataComparer;
             _srv = dataComparer.Srv;
@@ -318,67 +323,143 @@ namespace a7SqlTools.DbComparer.Data
             }
         }
 
-        private void analyzeTable()
+        private void ShowTable()
         {
-            Rows = new ObservableCollection<a7ComparisonRow>();
-
-            var alreadyComparedRowsFromB = new List<DataRow>();
-            var pkA = DataTableA.PrimaryKey;
-            var pkB = DataTableB.PrimaryKey;
-            //compare the row data
-            foreach (var rwA in DataTableA.Rows)
-            {//foreach row in dtA
-                var rowA = rwA as DataRow;
-                var pkValues = new List<object>();
-                foreach (var pk in pkA)
+            Task.Run(async () =>
                 {
-                    pkValues.Add(rowA[pk.ColumnName]);
-                }
-                //get the row in dtB
-                var rowB = DataTableB.Rows.Find(pkValues.ToArray());
-                var cr = new a7ComparisonRow(rowA, rowB, this, this._comparer);
-                if (cr.IsDifferent)
+                    _comparer.IsBusy = true;
+                    await Task.Delay(20);
+                    return GetColumns();
+                })
+                .ContinueWith(t =>
                 {
-                    Rows.Add(cr);
-                }
-                if (rowB != null)
-                    alreadyComparedRowsFromB.Add(rowB);
-            }
-
-            Columns = new ObservableCollection<DataGridColumn>();
-
-            Columns.Add(new a7ComparisonRowHeaderColumn() { Width = new DataGridLength(0.0, DataGridLengthUnitType.Auto) });
-            Columns.Add(new a7CompMergeButtonsColumn() { Width = new DataGridLength(0.0, DataGridLengthUnitType.Auto) });
-
-            foreach (var inBoth in ColumnsInBothTables)
-                Columns.Add(new a7ComparisonFieldColumn() { Binding = new Binding("[" + inBoth + "]"), Header = inBoth, ColumnName = inBoth });
-
-            foreach (var inAOnly in ColumnsOnlyInA)
-                Columns.Add(new a7ComparisonFieldColumn() { Binding = new Binding("[" + inAOnly + "]"), Header = inAOnly, ColumnName = inAOnly });
-
-            foreach (var inBOnly in ColumnsOnlyInB)
-                Columns.Add(new a7ComparisonFieldColumn() { Binding = new Binding("[" + inBOnly + "]"), Header = inBOnly, ColumnName = inBOnly });
-
-            foreach (var rwB in DataTableB.Rows)
-            {
-                var rowB = rwB as DataRow;
-                if (!alreadyComparedRowsFromB.Contains(rowB))
-                {
-                    var cr = new a7ComparisonRow(null, rowB, this, this._comparer);
-                    Rows.Add(cr);
-                }
-            }
-
-            IsAnalyzedRows = true;
+                    _comparer.IsBusy = false;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var window = new a7DbTableComparerRowsWindow(t.Result)
+                        {
+                            Title = TableName,
+                            DataContext = this
+                        };
+                        window.Show();
+                    });
+                });
         }
 
-        public void SetMergeDirection(a7DbComparerDirection direction, bool isFromDbComparer = false)
+        private async Task AnalyzeTable()
+        {
+            await Task.Run(() =>
+                {
+                    _comparer.IsBusy = true;
+                    Rows = new ObservableCollection<a7ComparisonRow>();
+
+                    var alreadyComparedRowsFromB = new List<DataRow>();
+                    var pkA = DataTableA.PrimaryKey;
+                    var pkB = DataTableB.PrimaryKey;
+                    //compare the row data
+                    foreach (var rwA in DataTableA.Rows)
+                    {
+                        //foreach row in dtA
+                        var rowA = rwA as DataRow;
+                        var pkValues = new List<object>();
+                        foreach (var pk in pkA)
+                        {
+                            pkValues.Add(rowA[pk.ColumnName]);
+                        }
+                        //get the row in dtB
+                        var rowB = DataTableB.Rows.Find(pkValues.ToArray());
+                        var cr = new a7ComparisonRow(rowA, rowB, this, this._comparer);
+                        if (cr.IsDifferent)
+                        {
+                            Rows.Add(cr);
+                        }
+                        if (rowB != null)
+                            alreadyComparedRowsFromB.Add(rowB);
+                    }
+
+
+                    foreach (var rwB in DataTableB.Rows)
+                    {
+                        var rowB = rwB as DataRow;
+                        if (!alreadyComparedRowsFromB.Contains(rowB))
+                        {
+                            var cr = new a7ComparisonRow(null, rowB, this, this._comparer);
+                            Rows.Add(cr);
+                        }
+                    }
+                    IsAnalyzedRows = true;
+                })
+                .ContinueWith(t =>
+                {
+                    if (t.Exception != null)
+                        throw t.Exception;
+                    _comparer.IsBusy = false;
+                }, TaskScheduler.Current);
+        }
+
+        public ObservableCollection<DataGridColumn> GetColumns()
+        {
+            ObservableCollection<DataGridColumn> columns = null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                columns = new ObservableCollection<DataGridColumn>
+                {
+                    new a7ComparisonRowHeaderColumn()
+                    {
+                        Width = new DataGridLength(0.0, DataGridLengthUnitType.Auto)
+                    },
+                    new a7CompMergeButtonsColumn()
+                    {
+                        Width = new DataGridLength(0.0, DataGridLengthUnitType.Auto)
+                    }
+                };
+            });
+
+
+            foreach (var inBoth in ColumnsInBothTables)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    columns.Add(new a7ComparisonFieldColumn()
+                    {
+                        Binding = new Binding("[" + inBoth + "]"),
+                        Header = inBoth,
+                        ColumnName = inBoth
+                    });
+                });
+
+            foreach (var inAOnly in ColumnsOnlyInA)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    columns.Add(new a7ComparisonFieldColumn()
+                    {
+                        Binding = new Binding("[" + inAOnly + "]"),
+                        Header = inAOnly,
+                        ColumnName = inAOnly
+                    });
+                });
+
+            foreach (var inBOnly in ColumnsOnlyInB)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    columns.Add(new a7ComparisonFieldColumn()
+                    {
+                        Binding = new Binding("[" + inBOnly + "]"),
+                        Header = inBOnly,
+                        ColumnName = inBOnly
+                    });
+                });
+            }
+            return columns;
+        }
+
+        public async Task SetMergeDirection(a7DbComparerDirection direction, bool isFromDbComparer = false)
         {
             if (this.Rows == null)
-                analyzeTable();
+                await AnalyzeTable();
 
             if(!isFromDbComparer)
-                _comparer.SetMergeDirection(a7DbComparerDirection.Partial);
+                await _comparer.SetMergeDirection(a7DbComparerDirection.Partial);
             MergeDirection = direction;
             if (direction != a7DbComparerDirection.Partial)
             {
@@ -386,23 +467,23 @@ namespace a7SqlTools.DbComparer.Data
                 {
                     if (direction == a7DbComparerDirection.None)
                     {
-                        row.SetMergeDirection(direction,true);
+                        await row.SetMergeDirection(direction,true);
                     }
                     else if (direction == a7DbComparerDirection.AtoB)
                     {
                         if (row.IsOnlyInB && !MergeWithDelete)
                         {
-                            row.SetMergeDirection(a7DbComparerDirection.None, true);
+                            await row.SetMergeDirection(a7DbComparerDirection.None, true);
                         }
                         else
-                            row.SetMergeDirection(direction, true);
+                            await row.SetMergeDirection(direction, true);
                     }
                     else if (direction == a7DbComparerDirection.BtoA)
                     {
                         if (row.IsOnlyInA && !MergeWithDelete)
-                            row.SetMergeDirection(a7DbComparerDirection.None, true);
+                            await row.SetMergeDirection(a7DbComparerDirection.None, true);
                         else
-                            row.SetMergeDirection(direction, true);
+                            await row.SetMergeDirection(direction, true);
                     }
                 }
             }

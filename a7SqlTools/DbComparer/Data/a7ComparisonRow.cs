@@ -47,20 +47,20 @@ namespace a7SqlTools.DbComparer.Data
         public a7ComparisonRow(DataRow rowA, DataRow rowB, a7DbTableComparer tableComparer, a7DbDataComparer comparer)
         {
             MergeDirection = a7DbComparerDirection.None;
-            MergeAtoB = new a7LambdaCommand((o) =>
+            MergeAtoB = new a7LambdaCommand(async (o) =>
                 {
                     if (MergeDirection != a7DbComparerDirection.AtoB)
-                        SetMergeDirection(a7DbComparerDirection.AtoB, false);
+                        await SetMergeDirection(a7DbComparerDirection.AtoB, false);
                     else
-                        SetMergeDirection(a7DbComparerDirection.None, false);
+                        await SetMergeDirection(a7DbComparerDirection.None, false);
                 }
             );
-            MergeBtoA = new a7LambdaCommand((o) =>
+            MergeBtoA = new a7LambdaCommand(async (o) =>
                 {
                     if (MergeDirection != a7DbComparerDirection.BtoA)
-                        SetMergeDirection(a7DbComparerDirection.BtoA, false);
+                        await SetMergeDirection(a7DbComparerDirection.BtoA, false);
                     else
-                        SetMergeDirection(a7DbComparerDirection.None, false);
+                        await SetMergeDirection(a7DbComparerDirection.None, false);
                 }
             );
 
@@ -132,10 +132,10 @@ namespace a7SqlTools.DbComparer.Data
             
         }
 
-        public void SetMergeDirection(a7DbComparerDirection direction, bool fromTableComparer)
+        public async Task SetMergeDirection(a7DbComparerDirection direction, bool fromTableComparer)
         {
             if (!fromTableComparer)
-                _tblComparer.SetMergeDirection(a7DbComparerDirection.Partial);
+                await _tblComparer.SetMergeDirection(a7DbComparerDirection.Partial);
             if (!IsDifferent)
             {
                 MergeDirection = a7DbComparerDirection.None;

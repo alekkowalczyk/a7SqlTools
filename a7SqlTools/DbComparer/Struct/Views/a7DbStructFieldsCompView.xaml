@@ -42,7 +42,12 @@
                 </TextBlock>
                 <StackPanel Margin="5" Grid.Column="0" Visibility="{Binding FieldsOnlyInAExist, Converter={StaticResource b2v}}">
                     <TextBlock Margin="0,0,0,3">Columns only in table in '<Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay}"></Run>' database:</TextBlock>
-                    <ListView Padding="5" ItemsSource="{Binding TableFieldsOnlyInA}">
+                    <ListView Padding="5" ItemsSource="{Binding TableFieldsOnlyInA}"
+                              ScrollViewer.CanContentScroll="False" 
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              Background="Transparent"
+                              PreviewMouseWheel="UIElement_OnPreviewMouseWheel"
+                              >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Column Name">
@@ -76,7 +81,9 @@
                 </TextBlock>
                 <StackPanel Margin="5" Grid.Column="1" Visibility="{Binding FieldsOnlyInBExist, Converter={StaticResource b2v}}">
                     <TextBlock  Margin="0,0,0,3">Columns only in table in '<Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay}"></Run>' database:</TextBlock>
-                    <ListView Padding="5" ItemsSource="{Binding TableFieldsOnlyInB}">
+                    <ListView Padding="5" ItemsSource="{Binding TableFieldsOnlyInB}"
+                              PreviewMouseWheel="UIElement_OnPreviewMouseWheel"
+                              >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Column Name">
@@ -113,7 +120,10 @@
             </TextBlock>
             <StackPanel Margin="5" Grid.Row="1" Grid.ColumnSpan="2" Visibility="{Binding FieldTypeDifferencesExist, Converter={StaticResource b2v}}">
                 <TextBlock  Margin="0,0,0,3">Columns that exist in the table in both databases, but with different column types</TextBlock>
-                <ListView Padding="5" ItemsSource="{Binding TableFieldsDifferentType}">
+                <ListView Padding="5" ItemsSource="{Binding TableFieldsDifferentType}"
+                          PreviewMouseWheel="UIElement_OnPreviewMouseWheel"
+                           ScrollViewer.CanContentScroll="False" 
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Column Name">

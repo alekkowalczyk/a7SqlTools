@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:conv="clr-namespace:a7SqlTools.Converters"
              xmlns:ut="clr-namespace:a7SqlTools.Utils"
+             xmlns:data="clr-namespace:a7SqlTools.DbComparer.Data"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="500">
+             d:DesignHeight="300" d:DesignWidth="500" d:DataContext="{d:DesignInstance data:a7DbTableComparer}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -31,15 +32,15 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <CheckBox IsChecked="{Binding IsSelected}" Margin="1,5,1,5" VerticalAlignment="Center"></CheckBox>
                     <Label Content="{Binding TableName}" FontWeight="Bold" Height="20" Padding="2" Margin="2" VerticalAlignment="Center"></Label>
-                    <Button Command="{Binding AnalyzeTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <Button Command="{Binding AnalyzeTableCommand}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource nb2v}}"   
                             >Analyze Rows</Button>
-                    <Button Command="{Binding ShowTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <Button Command="{Binding ShowTableCommand}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                             Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"   
                             >Show Rows</Button>
-                    <Button Command="{Binding HideTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
+                    <!--<Button Command="{Binding HideTable}" Width="80" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2"
                                 Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}"    
-                                    >Hide Rows</Button>
+                                    >Hide Rows</Button>-->
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Width="10" Visibility="{Binding IsAnalyzedRows, Converter={StaticResource b2v}}"></Label>
@@ -67,7 +68,7 @@
             </Grid>
         </StackPanel>
         <Rectangle DockPanel.Dock="Bottom"  Fill="Black" HorizontalAlignment="Stretch" Height="1"></Rectangle>
-        <DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
+        <!--<DataGrid Visibility="{Binding IsTableVisible, Converter={StaticResource b2v}}" ItemsSource="{Binding Rows}"
                   RowHeaderWidth="0"
                                         ut:DataGridColumnsBehavior.BindableColumns="{Binding Columns}"
                                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
@@ -75,6 +76,6 @@
                                         ColumnHeaderStyle="{StaticResource ColumnHeaderStyleSimple}"
                                         IsReadOnly="True"
                                         >
-        </DataGrid>
+        </DataGrid>-->
     </DockPanel>
 </UserControl>

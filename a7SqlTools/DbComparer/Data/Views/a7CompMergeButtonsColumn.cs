@@ -26,7 +26,13 @@ namespace a7SqlTools.DbComparer.Data.Views
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            return new a7CompMergeButtonsControl() { DataContext = dataItem, HorizontalAlignment = HorizontalAlignment.Center};
+            return new a7CompMergeButtonsControl()
+            {
+                DataContext = dataItem,
+                Width = 95,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
         }
     }
 }

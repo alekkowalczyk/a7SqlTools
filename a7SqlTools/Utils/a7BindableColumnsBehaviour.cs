@@ -64,6 +64,7 @@ namespace a7SqlTools.Utils
                     dataGrid.Columns[ne.NewStartingIndex] = ne.NewItems[0] as DataGridColumn;
                 }
             };
+
         }
         public static void SetBindableColumns(DependencyObject element, ObservableCollection<DataGridColumn> value)
         {

@@ -7,6 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ut="clr-namespace:a7SqlTools.Utils"
              xmlns:data="clr-namespace:a7SqlTools.DbComparer.Data"
+             xmlns:controls="clr-namespace:a7SqlTools.Controls"
              x:Name="me" d:DataContext="{d:DesignInstance data:a7DbDataComparer}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -27,40 +28,41 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel Margin="5">
-        <Border BorderThickness="1" DockPanel.Dock="Bottom" Background="#FFFFAA">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Top">
-                    <ToggleButton HorizontalAlignment="Center"
+    <Grid>
+        <DockPanel Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border BorderThickness="1" DockPanel.Dock="Bottom" Background="#FFFFAA">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <ToggleButton HorizontalAlignment="Center"
                                   BorderBrush="Transparent"
                                   Background="Transparent"
                                   Template="{StaticResource ToggleButtonTemplate}"
                                   IsChecked="{Binding IsLegendVisible, Mode=TwoWay}">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2v}}">
-                                <Image Source="../../../Images/dropDownClose.png"></Image>
-                                <TextBlock>Show help</TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
-                                <Image Source="../../../Images/dropDownOpen.png"></Image>
-                                <TextBlock>Hide help</TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </ToggleButton>
-                </StackPanel>
-                <StackPanel Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}"
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2vr}}">
+                                    <Image Source="../../../Images/dropDownClose.png"></Image>
+                                    <TextBlock>Show help</TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding IsLegendVisible, Converter={StaticResource b2v}}">
+                                    <Image Source="../../../Images/dropDownOpen.png"></Image>
+                                    <TextBlock>Hide help</TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </ToggleButton>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding IsLegendVisible, Converter={StaticResource b2v}}"
                             Margin="10">
-                    <TextBlock Grid.Row="0" Margin="5" TextWrapping="Wrap">
+                        <TextBlock Grid.Row="0" Margin="5" TextWrapping="Wrap">
                     Compared databases: <Run FontWeight="Black">A</Run>=<Run FontWeight="Bold" Text="{Binding DbAName, Mode=OneWay}"></Run>
                             , <Run FontWeight="Black">B</Run>=<Run FontWeight="Bold" Text="{Binding DbBName, Mode=OneWay}"></Run>
-                    </TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Margin="0" Padding="2">Show merge query</Button>
                         </InlineUIContainer>
                         <Run>Shows the generated merge query based on selected merge actions</Run>
-                    </TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Margin="0" Padding="2">Analyze Rows</Button>
                         </InlineUIContainer>
@@ -68,9 +70,9 @@
                         Selecting a merge action on a table like e.g. </Run> <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
                         </InlineUIContainer> automatically runs the rows analysis.
-                    </TextBlock>
-                    <TextBlock Margin="5" FontStyle="Italic">Merge actions:</TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" FontStyle="Italic">Merge actions:</TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Content="A>B"  Width="30" Height="20" Background="White" />
                         </InlineUIContainer> ,
@@ -80,8 +82,8 @@
                         <Run>Include the data migration in the merge query for a whole table or a single row.
                             Respectively from database </Run> <Run FontWeight="SemiBold"> A </Run> <Run> to database </Run> <Run FontWeight="SemiBold">B</Run>
                             <Run> or vice versa.</Run>
-                    </TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Border Background="#FFFFFE" Padding="2,3,5,2">
                                 <CheckBox IsHitTestVisible="False" 
@@ -94,64 +96,81 @@
                         <Run FontStyle="Italic">for</Run> 
                             <Run FontWeight="SemiBold">B>A</Run> 
                         <Run FontStyle="Italic">)</Run> <Run FontStyle="Italic" FontWeight="SemiBold">(only for tables)</Run>
-                    </TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Content="A>X"  Width="30" Height="20" Background="White" />
                         </InlineUIContainer>
                         <Run>Include in query DELETE of this row from database A, because it doesn't exist in database B</Run>
                         <Run FontWeight="SemiBold" FontStyle="Italic">(only for rows)</Run>
-                    </TextBlock>
-                    <TextBlock Margin="5" TextWrapping="Wrap">
+                        </TextBlock>
+                        <TextBlock Margin="5" TextWrapping="Wrap">
                         <InlineUIContainer BaselineAlignment="Center">
                             <Button IsHitTestVisible="False" Content="B>X"  Width="30" Height="20" Background="White" />
                         </InlineUIContainer>
                         <Run>Include in query DELETE of this row from database B, because it doesn't exist in database A</Run>
                         <Run FontWeight="SemiBold" FontStyle="Italic">(only for rows)</Run>
-                    </TextBlock>
-                </StackPanel>
-            </DockPanel>
-        </Border>
-        <Grid DockPanel.Dock="Top">
-            <Button HorizontalAlignment="Left" Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show merge query</Button>
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock Margin="5" VerticalAlignment="Center" >Merge action for all selected tables:</TextBlock>
-                <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="35" Height="24"          
+                        </TextBlock>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Grid DockPanel.Dock="Top">
+                <Button HorizontalAlignment="Left" Command="{Binding ShowGeneratedQuery}" Margin="5" Padding="5,5">Show merge query</Button>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock Margin="5" VerticalAlignment="Center" >Merge action for all selected tables:</TextBlock>
+                    <Button x:Name="bAtoB" Command="{Binding MergeAtoB}" Content="A>B"  Width="35" Height="24"          
                                     Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=AtoB}">
-                </Button>
-                <Button x:Name="bBtoA" Margin="2,0,0,0" Command="{Binding MergeBtoA}" Content="B>A"  Width="35" Height="24"
+                    </Button>
+                    <Button x:Name="bBtoA" Margin="2,0,0,0" Command="{Binding MergeBtoA}" Content="B>A"  Width="35" Height="24"
                                     Background="{Binding MergeDirection, Converter={StaticResource md2c}, ConverterParameter=BtoA}"></Button>
-                <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource"
+                    <CheckBox x:Name="cbMergeWithDeleteOfNonExistentInSource"
                           VerticalAlignment="Center"
                           Margin="5" IsChecked="{Binding MergeWithDelete}" 
                                   ToolTip="Include DELETE statements in generated query for records that doesn't exist in source database.">With delete</CheckBox>
-            </StackPanel>
-        </Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-            <StackPanel>
-                <TextBlock Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}" TextWrapping="Wrap">
+                </StackPanel>
+            </Grid>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <TextBlock Visibility="{Binding TableNamesOnlyInA, Converter={StaticResource c2v}}" TextWrapping="Wrap">
                     <Run FontWeight="SemiBold" Text="{Binding DbAName, Mode=OneWay, StringFormat=Tables only in database {0}:}"></Run>
                     <Run Text="{Binding TableNamesOnlyInA, Converter={StaticResource c2s}, Mode=OneWay}" ></Run>
-                </TextBlock>
-                <TextBlock Visibility="{Binding TableNamesOnlyInB, Converter={StaticResource c2v}}" TextWrapping="Wrap">
+                    </TextBlock>
+                    <TextBlock Visibility="{Binding TableNamesOnlyInB, Converter={StaticResource c2v}}" TextWrapping="Wrap">
                     <Run FontWeight="SemiBold" Text="{Binding DbBName, Mode=OneWay, StringFormat=Tables only in database {0}:}"></Run>
                     <Run Text="{Binding TableNamesOnlyInB, Converter={StaticResource c2s}, Mode=OneWay}" ></Run>
-                </TextBlock>
-                <ListBox ItemsSource="{Binding Tables}" 
+                    </TextBlock>
+                    <ListBox ItemsSource="{Binding Tables}" 
                          BorderBrush="Transparent"
                          BorderThickness="1.0001"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                          Template="{StaticResource ListBoxSimpleTemplate}"
                          ItemContainerStyle="{StaticResource ListBoxSimpleItemContainerStyle}"
                      MaxWidth="{Binding ActualWidth, ElementName=me}" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <u:a7DbTableComparerView MaxHeight="600" Margin="0" Padding="0"  Visibility="{Binding IsDifferentData, Converter={StaticResource b2v}}" VerticalAlignment="Stretch"
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <u:a7DbTableComparerView MaxHeight="600" Margin="0" Padding="0"  Visibility="{Binding IsDifferentData, Converter={StaticResource b2v}}" VerticalAlignment="Stretch"
                                                  VerticalContentAlignment="Stretch"></u:a7DbTableComparerView>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-        </ScrollViewer>
-    </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource b2v}}">
+            <Rectangle Fill="#333" Opacity="0.6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Rectangle>
+            <Border
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    Background="#CCC"
+                    Padding="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="10,0,0,0">Please wait...</TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
 </UserControl>

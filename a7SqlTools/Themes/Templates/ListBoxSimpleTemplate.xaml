@@ -13,11 +13,12 @@
           BorderThickness="0"
             Margin="{TemplateBinding Margin}"
           Padding="0">
-            <ScrollViewer 
+            <!--<ScrollViewer 
             Margin="0"
-            Focusable="false">
+                VerticalScrollBarVisibility="Disabled"
+            Focusable="false">-->
                 <StackPanel Margin="2" IsItemsHost="True" />
-            </ScrollViewer>
+            <!--</ScrollViewer>-->
         </Border>
         <ControlTemplate.Triggers>
             <!--<Trigger Property="IsEnabled" Value="false">

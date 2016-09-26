@@ -19,6 +19,7 @@ namespace a7SqlTools.DbComparer.Data.Views
 
         protected override System.Windows.FrameworkElement GenerateElement(DataGridCell cell, object dataItem)
         {
+            this.MaxWidth = 450;
             var row = dataItem as a7ComparisonRow;
             if (row != null)
             {

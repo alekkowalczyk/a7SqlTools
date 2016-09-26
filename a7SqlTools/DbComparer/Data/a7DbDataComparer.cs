@@ -15,8 +15,17 @@ namespace a7SqlTools.DbComparer.Data
 {
     public class a7DbDataComparer : ViewModelBase
     {
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                Application.Current.Dispatcher.Invoke(() => OnPropertyChanged(nameof(IsBusy)));
+            }
+        }
         private bool _isLegendVisible = false;
-
         public bool IsLegendVisible
         {
             get { return _isLegendVisible; }
@@ -70,20 +79,20 @@ namespace a7SqlTools.DbComparer.Data
             DbB = Srv.Databases[dbB];
 
             MergeDirection = a7DbComparerDirection.None;
-            MergeAtoB = new a7LambdaCommand((o) =>
+            MergeAtoB = new a7LambdaCommand(async (o) =>
             {
                 if (MergeDirection != a7DbComparerDirection.AtoB)
-                    SetMergeDirection(a7DbComparerDirection.AtoB);
+                    await SetMergeDirection(a7DbComparerDirection.AtoB);
                 else
-                    SetMergeDirection(a7DbComparerDirection.None);
+                    await SetMergeDirection(a7DbComparerDirection.None);
             }
             );
-            MergeBtoA = new a7LambdaCommand((o) =>
+            MergeBtoA = new a7LambdaCommand(async (o) =>
             {
                 if (MergeDirection != a7DbComparerDirection.BtoA)
-                    SetMergeDirection(a7DbComparerDirection.BtoA);
+                    await SetMergeDirection(a7DbComparerDirection.BtoA);
                 else
-                    SetMergeDirection(a7DbComparerDirection.None);
+                    await SetMergeDirection(a7DbComparerDirection.None);
             }
             );
 
@@ -167,7 +176,7 @@ namespace a7SqlTools.DbComparer.Data
                 _log(s);
         }
 
-        public void SetMergeDirection(a7DbComparerDirection direction)
+        public async Task SetMergeDirection(a7DbComparerDirection direction)
         {
             if (this.Tables == null)
                 return;
@@ -175,11 +184,8 @@ namespace a7SqlTools.DbComparer.Data
             MergeDirection = direction;
             if (direction != a7DbComparerDirection.Partial)
             {
-                foreach (var table in Tables)
-                {
-                    if(table.IsOK)
-                        table.SetMergeDirection(direction, true);
-                }
+                await Task.WhenAll(Tables.Where(t => t.IsOK)
+                    .Select(t => t.SetMergeDirection(direction, true)));
             }
             OnPropertyChanged(nameof(MergeDirection));
         }
