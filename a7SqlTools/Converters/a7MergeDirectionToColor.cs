@@ -27,7 +27,7 @@ namespace a7SqlTools.Converters
                     else if (direction == a7DbComparerDirection.BtoA)
                         return new SolidColorBrush(Colors.White);
                     else if (direction == a7DbComparerDirection.Partial)
-                        return new SolidColorBrush(Colors.LightCoral);
+                        return new SolidColorBrush(Color.FromRgb(0xED, 0xF2, 0xAF));
                 }
                 else if (type.ToUpper() == "BTOA")
                 {
@@ -36,7 +36,7 @@ namespace a7SqlTools.Converters
                     else if (direction == a7DbComparerDirection.BtoA)
                         return new SolidColorBrush(Colors.GreenYellow);
                     else if (direction == a7DbComparerDirection.Partial)
-                        return new SolidColorBrush(Colors.LightCoral);
+                        return new SolidColorBrush(Color.FromRgb(0xED, 0xF2, 0xAF));
                 }
             }
             return null;

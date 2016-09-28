@@ -40,7 +40,12 @@ namespace a7SqlTools.DbComparer.Data
         public ObservableCollection<string> TableNamesOnlyInB { get; private set; }
         public ObservableCollection<string> TableNamesInBothDb { get; private set; }
 
-        public a7DbComparerDirection MergeDirection { get; private set; }
+        public a7DbComparerDirection MergeDirection
+        {
+            get { return _mergeDirection; }
+            private set { _mergeDirection = value; }
+        }
+
         private bool? _mergeWithDelete;
         /// <summary>
         /// if set, on setting merge of whole table - the records that don't exist in the source, will be deleted in the destination
@@ -69,6 +74,7 @@ namespace a7SqlTools.DbComparer.Data
         public Server Srv { get; private set; }
 
         private Action<string> _log;
+        private a7DbComparerDirection _mergeDirection;
 
         public a7DbDataComparer(string dbName, string dbA, string dbB, Action<string> log)
         {
@@ -189,6 +195,58 @@ namespace a7SqlTools.DbComparer.Data
             }
             OnPropertyChanged(nameof(MergeDirection));
         }
-        
+
+        public void RefreshMergeDirection()
+        {
+            var aToBExists = false;
+            var bToAExists = false;
+            var noneExists = false;
+            var partialExists = false;
+            var allAreWithDelete = true;
+            var allAreWithoutDelete = true;
+            foreach (var table in Tables.Where(t => t.IsOK))
+            {
+                if (table.MergeWithDelete)
+                    allAreWithoutDelete = false;
+                else
+                    allAreWithDelete = false;
+                switch (table.MergeDirection)
+                {
+                    case a7DbComparerDirection.AtoB:
+                        aToBExists = true;
+                        break;
+                    case a7DbComparerDirection.BtoA:
+                        bToAExists = true;
+                        break;
+                    case a7DbComparerDirection.None:
+                        noneExists = true;
+                        break;
+                    case a7DbComparerDirection.Partial:
+                        partialExists = true;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            if(!noneExists && !partialExists && !bToAExists 
+                && aToBExists)
+                MergeDirection = a7DbComparerDirection.AtoB;
+            else if (!noneExists && !partialExists && bToAExists
+                && !aToBExists)
+                MergeDirection = a7DbComparerDirection.BtoA;
+            else if (noneExists && !partialExists && !bToAExists
+                && !aToBExists)
+                MergeDirection = a7DbComparerDirection.None;
+            else
+                MergeDirection = a7DbComparerDirection.Partial;
+            if (allAreWithDelete)
+                _mergeWithDelete = true;
+            else if (allAreWithoutDelete)
+                _mergeWithDelete = false;
+            else
+                _mergeWithDelete = null;
+            OnPropertyChanged(nameof(MergeDirection));
+            OnPropertyChanged(nameof(MergeWithDelete));
+        }
     }
 }

@@ -16,7 +16,7 @@ using a7SqlTools.Utils;
 
 namespace a7SqlTools.DbComparer.Data
 {
-    public class a7DbTableComparer : INotifyPropertyChanged
+    public class a7DbTableComparer : ViewModelBase
     {
         public bool IsDifferentData { get; private set; }
 
@@ -35,7 +35,7 @@ namespace a7SqlTools.DbComparer.Data
             private set
             {
                 _isAnalyzedRows = value;
-                OnPropChanged("IsAnalyzedRows");
+                OnPropertyChanged();
             }
         }
 
@@ -71,7 +71,7 @@ namespace a7SqlTools.DbComparer.Data
         public ObservableCollection<a7ComparisonRow> Rows
         {
             get { return _rows; }
-            private set { _rows = value; OnPropChanged("Rows"); }
+            private set { _rows = value; OnPropertyChanged();}
         }
 
         //private ObservableCollection<DataGridColumn> _columns;
@@ -98,9 +98,12 @@ namespace a7SqlTools.DbComparer.Data
             set
             {
                 _mergeWithDelete = value;
-                if(MergeDirection!= a7DbComparerDirection.None)
-                    SetMergeDirection(MergeDirection);
-                _comparer.MergeWithDelete = null;
+                Task.Run(async () =>
+                {
+                    if (MergeDirection != a7DbComparerDirection.None)
+                        await SetMergeDirection(MergeDirection);
+                    _comparer.RefreshMergeDirection();
+                });
             }
         }
 
@@ -458,43 +461,124 @@ namespace a7SqlTools.DbComparer.Data
             if (this.Rows == null)
                 await AnalyzeTable();
 
-            if(!isFromDbComparer)
-                await _comparer.SetMergeDirection(a7DbComparerDirection.Partial);
             MergeDirection = direction;
+            if (!isFromDbComparer)
+                _comparer.RefreshMergeDirection();
             if (direction != a7DbComparerDirection.Partial)
             {
                 foreach (var row in Rows)
                 {
                     if (direction == a7DbComparerDirection.None)
                     {
-                        await row.SetMergeDirection(direction,true);
+                        row.SetMergeDirection(direction,true);
                     }
                     else if (direction == a7DbComparerDirection.AtoB)
                     {
                         if (row.IsOnlyInB && !MergeWithDelete)
                         {
-                            await row.SetMergeDirection(a7DbComparerDirection.None, true);
+                            row.SetMergeDirection(a7DbComparerDirection.None, true);
                         }
                         else
-                            await row.SetMergeDirection(direction, true);
+                            row.SetMergeDirection(direction, true);
                     }
                     else if (direction == a7DbComparerDirection.BtoA)
                     {
                         if (row.IsOnlyInA && !MergeWithDelete)
-                            await row.SetMergeDirection(a7DbComparerDirection.None, true);
+                            row.SetMergeDirection(a7DbComparerDirection.None, true);
                         else
-                            await row.SetMergeDirection(direction, true);
+                            row.SetMergeDirection(direction, true);
                     }
                 }
             }
-            OnPropChanged("MergeDirection");
+            OnPropertyChanged(nameof(MergeDirection));
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropChanged(string prop)
+
+        public void RefreshMergeDirection()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            // If you want to refactoring something here, save time and write it from scratch...
+            var aToBExists = false;
+            var aToXExists = false;
+            var bToAExists = false;
+            var bToXExists = false;
+            var noneExistsOnRowInBothDB = false;
+            var noneExistsOnOnlyInA = false;
+            var noneExistsOnOnlyInB = false;
+            var partialExists = false;
+            foreach (var row in Rows)
+            {
+                switch (row.MergeDirection)
+                {
+                    case a7DbComparerDirection.AtoB:
+                        if (!row.IsOnlyInB)
+                            aToBExists = true;
+                        else
+                            bToXExists = true;
+                        break;
+                    case a7DbComparerDirection.BtoA:
+                        if (!row.IsOnlyInA)
+                            bToAExists = true;
+                        else
+                            aToXExists = true;
+                        break;
+                    case a7DbComparerDirection.None:
+                        if (row.IsInBothDB)
+                            noneExistsOnRowInBothDB = true;
+                        else if (row.IsOnlyInA)
+                            noneExistsOnOnlyInA = true;
+                        else if (row.IsOnlyInB)
+                            noneExistsOnOnlyInB = true;
+                        break;
+                    case a7DbComparerDirection.Partial:
+                        partialExists = true;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            if (!noneExistsOnRowInBothDB && !partialExists && !noneExistsOnOnlyInA && !aToXExists && !bToXExists
+                && !bToAExists
+                && aToBExists)
+            {
+                MergeDirection = a7DbComparerDirection.AtoB;
+                _mergeWithDelete = false;
+            }
+            else if (!noneExistsOnRowInBothDB && !noneExistsOnOnlyInB && !noneExistsOnOnlyInA && !partialExists && !bToAExists && !aToXExists
+                && aToBExists && bToXExists)
+            {
+                MergeDirection = a7DbComparerDirection.AtoB;
+                _mergeWithDelete = true;
+            }
+            else if (!noneExistsOnRowInBothDB && !partialExists && !noneExistsOnOnlyInB && !bToXExists && !aToXExists
+                && !aToBExists
+               && bToAExists)
+            {
+                MergeDirection = a7DbComparerDirection.BtoA;
+                _mergeWithDelete = false;
+            }
+            else if (!noneExistsOnRowInBothDB && !noneExistsOnOnlyInA && !noneExistsOnOnlyInB && !partialExists && !aToBExists && !bToXExists
+                && bToAExists && aToXExists)
+            {
+                MergeDirection = a7DbComparerDirection.BtoA;
+                _mergeWithDelete = true;
+            }
+            else if (!partialExists && !bToAExists && !bToXExists && !aToXExists
+                     && !aToBExists)
+            {
+                MergeDirection = a7DbComparerDirection.None;
+                _mergeWithDelete = false;
+            }
+            else
+            {
+                MergeDirection = a7DbComparerDirection.Partial;
+                if (aToXExists || bToXExists)
+                    _mergeWithDelete = true;
+                else
+                    _mergeWithDelete = false;
+            }
+            OnPropertyChanged(nameof(MergeDirection));
+            OnPropertyChanged(nameof(MergeWithDelete));
+            _comparer.RefreshMergeDirection();
         }
     }
 }

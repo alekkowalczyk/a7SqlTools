@@ -47,20 +47,20 @@ namespace a7SqlTools.DbComparer.Data
         public a7ComparisonRow(DataRow rowA, DataRow rowB, a7DbTableComparer tableComparer, a7DbDataComparer comparer)
         {
             MergeDirection = a7DbComparerDirection.None;
-            MergeAtoB = new a7LambdaCommand(async (o) =>
+            MergeAtoB = new a7LambdaCommand((o) =>
                 {
                     if (MergeDirection != a7DbComparerDirection.AtoB)
-                        await SetMergeDirection(a7DbComparerDirection.AtoB, false);
+                        SetMergeDirection(a7DbComparerDirection.AtoB, false);
                     else
-                        await SetMergeDirection(a7DbComparerDirection.None, false);
+                        SetMergeDirection(a7DbComparerDirection.None, false);
                 }
             );
-            MergeBtoA = new a7LambdaCommand(async (o) =>
+            MergeBtoA = new a7LambdaCommand((o) =>
                 {
                     if (MergeDirection != a7DbComparerDirection.BtoA)
-                        await SetMergeDirection(a7DbComparerDirection.BtoA, false);
+                        SetMergeDirection(a7DbComparerDirection.BtoA, false);
                     else
-                        await SetMergeDirection(a7DbComparerDirection.None, false);
+                        SetMergeDirection(a7DbComparerDirection.None, false);
                 }
             );
 
@@ -132,10 +132,8 @@ namespace a7SqlTools.DbComparer.Data
             
         }
 
-        public async Task SetMergeDirection(a7DbComparerDirection direction, bool fromTableComparer)
+        public void SetMergeDirection(a7DbComparerDirection direction, bool fromTableComparer)
         {
-            if (!fromTableComparer)
-                await _tblComparer.SetMergeDirection(a7DbComparerDirection.Partial);
             if (!IsDifferent)
             {
                 MergeDirection = a7DbComparerDirection.None;
@@ -145,6 +143,8 @@ namespace a7SqlTools.DbComparer.Data
             }
 
             MergeDirection = direction;
+            if (!fromTableComparer)
+                _tblComparer.RefreshMergeDirection();
             if (direction == a7DbComparerDirection.None)
             {
                 SQL = "";
