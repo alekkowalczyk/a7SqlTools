@@ -9,24 +9,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
         <StackPanel>
-        <Image
+            <Image
             Width="350"
-            Height="85"
-            Source="../Images/logo350.png" 
+            Height="145"
+            Source="../Images/logo_long.png" 
             Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
-            <controls:a7ComboBox Height="20">
-                <controls:a7ComboBox.Items>
-                    <ComboBoxItem>1</ComboBoxItem>
-                    <ComboBoxItem>12</ComboBoxItem>
-                </controls:a7ComboBox.Items>
-            </controls:a7ComboBox>
-            <TextBlock>-------</TextBlock>
-            <ComboBox>
-                <ComboBox.Items>
-                    <ComboBoxItem>1</ComboBoxItem>
-                    <ComboBoxItem>12</ComboBoxItem>
-                </ComboBox.Items>
-            </ComboBox>
         </StackPanel>
     </Grid>
 </UserControl>

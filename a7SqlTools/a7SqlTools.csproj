@@ -47,7 +47,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo32.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=2.0.1.61, Culture=neutral, PublicKeyToken=f08b075e934b7045, processorArchitecture=MSIL">
@@ -600,6 +600,8 @@
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlEnum.dll" />
     <Content Include="ExtLibs\NSQLFormatter.dll" />
     <Content Include="ExtLibs\PoorMansTSqlFormatterLib35.dll" />
+    <Resource Include="icon.ico" />
+    <Resource Include="Images\logo_long.png" />
     <Resource Include="Images\format.png" />
     <Resource Include="Images\small_ok.png" />
     <Resource Include="Images\small_left.png" />
