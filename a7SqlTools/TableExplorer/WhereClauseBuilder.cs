@@ -186,7 +186,13 @@ namespace a7SqlTools.TableExplorer
             }
             else
             {
-                fld = $"{collName}.{fld}";
+                // fld = $"{collName}.{fld}";
+                if (collName.IsNotEmpty())
+                {
+                    _whereStringBuilder.Append(collName);
+                    _whereStringBuilder.Append(".");
+                }
+                _whereStringBuilder.Append(fld);
             }
 
             _whereStringBuilder.Append(" ");

@@ -39,7 +39,7 @@ namespace a7SqlTools.TableExplorer
             {
                 var oldValue = _selectedTableName;
                 _selectedTableName = value;
-                if (oldValue != value)
+                if (oldValue != value && _selectedTableName != null)
                 {
                     var existing = OpenedTables.FirstOrDefault(tb => tb.TableName == value);
                     if (existing != null)
