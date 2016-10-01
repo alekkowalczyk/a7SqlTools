@@ -45,7 +45,12 @@
                  Visibility="{Binding Comparer, Converter={StaticResource NullToCollapsedVisibility}, ConverterParameter=NEGATE}"
                  Text="{Binding Log}" VerticalScrollBarVisibility="Auto"></TextBox>
         <Grid Background="White" Visibility="{Binding PleaseClickCompare, Converter={StaticResource BoolToVisibility}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">No comparison performed, please click "Compare structure" in the menu.</Label>
+            <TextBlock FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+                <Run>No comparison performed, please click</Run>
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../../../Images/structure128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run> "Compare structure again" in the menu.</Run></TextBlock>
         </Grid>
     </Grid>
 </UserControl>

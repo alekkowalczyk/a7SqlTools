@@ -6,14 +6,58 @@
              xmlns:local="clr-namespace:a7SqlTools.MainViews"
              xmlns:controls="clr-namespace:a7SqlTools.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="White">
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid Background="White" Margin="10,20">
         <StackPanel>
             <Image
             Width="350"
             Height="145"
             Source="../Images/logo_long.png" 
             Margin="15" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+            <TextBlock Margin="15" TextWrapping="Wrap" LineHeight="32">
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../Images/connect128.png" Height="24"></Image>
+                </InlineUIContainer>
+                <Run>Connect to a database server to be able to </Run>
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../Images/dbSearch128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run>search, </Run>
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../Images/table_explorer128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run>explore and compare </Run> 
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../Images/structure128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run>structure and </Run>
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../Images/data128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run>data of databases.</Run>
+            </TextBlock>
+            <Grid Margin="55,15,0,0" HorizontalAlignment="Left" >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="0,0,15,6"></Setter>
+                    </Style>
+                </Grid.Resources>
+                <TextBlock Grid.Row="0" Grid.Column="0">Version:</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1">0.9.0 - beta</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0">Homepage:</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1"><Hyperlink NavigateUri="http://sqltools.a7.plus" RequestNavigate="Hyperlink_OnRequestNavigate">sqltools.a7.plus</Hyperlink></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0">Contact:</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1"><Hyperlink NavigateUri="mailto:contact@a7.plus" RequestNavigate="Hyperlink_OnRequestNavigate">contact@a7.plus</Hyperlink></TextBlock>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

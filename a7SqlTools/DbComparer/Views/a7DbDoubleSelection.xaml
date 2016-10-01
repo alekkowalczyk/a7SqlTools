@@ -2,11 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Name="me"
-        Title="a7DbDoubleSelection" Height="150" Width="300">
+        Title="Select databases to compare" Height="150" Width="300">
   <DockPanel>
     <WrapPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-      <Button x:Name="bOk" Margin="5" Padding="5" Width="80" HorizontalAlignment="Right" Click="bOk_Click">OK</Button>
+      <Button x:Name="bOk" Margin="5" Padding="5" Width="80" IsEnabled="{Binding IsOkEnabled, ElementName=me}" HorizontalAlignment="Right" Click="bOk_Click">OK</Button>
     </WrapPanel>
+      <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,15,0,0">
+          Please select databases you want to compare.
+      </TextBlock>
     <StackPanel Orientation="Horizontal">
             <Label Height="25">A:</Label>
                 <ComboBox Height="25" Width="100" Margin="5" x:Name="cbDb1" SelectedItem="{Binding Db1, ElementName=me}" ItemsSource="{Binding DbList, ElementName=me}"></ComboBox>

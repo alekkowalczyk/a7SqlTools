@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:a7SqlTools.DbComparer.Data.Views"
              xmlns:cv="clr-namespace:a7SqlTools.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.Resources>
         <cv:NullToCollapsedVisibility x:Key="NullToCollapsedVisibility"></cv:NullToCollapsedVisibility>
         <cv:BoolToVisibility x:Key="BoolToVisibility"></cv:BoolToVisibility>
@@ -20,7 +20,12 @@
                  Visibility="{Binding Comparer, Converter={StaticResource NullToCollapsedVisibility}, ConverterParameter=NEGATE}"
                  Text="{Binding Log}" VerticalScrollBarVisibility="Auto"></TextBox>
         <Grid Background="White" Visibility="{Binding PleaseClickCompare, Converter={StaticResource BoolToVisibility}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Label FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">No comparison performed, please click "Compare data" in the menu.</Label>
+            <TextBlock FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+                <Run>No comparison performed, please click</Run>
+                <InlineUIContainer BaselineAlignment="Center">
+                    <Image Source="../../../Images/data128.png" Height="20"></Image>
+                </InlineUIContainer>
+                <Run> "Compare data again" in the menu.</Run></TextBlock>
         </Grid>
     </Grid>
 </UserControl>

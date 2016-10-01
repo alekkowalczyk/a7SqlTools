@@ -4,9 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:a7SqlTools.Connection.Views"
+             xmlns:fluent="urn:fluent-ribbon"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Label>Connection view</Label>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel>
+            <TextBlock Margin="10" HorizontalAlignment="Center">
+                <Run>Connected to database </Run> 
+                <Run FontWeight="SemiBold" Text="{Binding Name, Mode=OneWay}"></Run>
+            </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="fluent:Button">
+                        <Setter Property="Margin" Value="10"></Setter>
+                    </Style>
+                </StackPanel.Resources>
+                <fluent:Button
+                            Icon="../../Images/table_explorer128.png"
+                            LargeIcon="../../Images/table_explorer128.png"
+                            Command="{Binding TableExplorer}" Header="Explore tables"></fluent:Button>
+                <fluent:Button
+                            Icon="../../Images/dbsearch128.png"
+                            LargeIcon="../../Images/dbsearch128.png"
+                            Command="{Binding SearchDb}" Header="Search database"></fluent:Button>
+                <fluent:Button
+                            Icon="../../Images/structure128.png"
+                            LargeIcon="../../Images/structure128.png"
+                            Command="{Binding CompareStructure}" Header="Compare structure"></fluent:Button>
+                <fluent:Button
+                            Icon="../../Images/data128.png"
+                            LargeIcon="../../Images/data128.png"
+                            Command="{Binding CompareData}" Header="Compare data"></fluent:Button>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

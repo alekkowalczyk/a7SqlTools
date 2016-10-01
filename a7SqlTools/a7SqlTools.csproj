@@ -600,6 +600,8 @@
     <Content Include="bin\Debug\Microsoft.SqlServer.SqlEnum.dll" />
     <Content Include="ExtLibs\NSQLFormatter.dll" />
     <Content Include="ExtLibs\PoorMansTSqlFormatterLib35.dll" />
+    <Resource Include="Images\logo_short_small.png" />
+    <Resource Include="Images\logo_short.png" />
     <Resource Include="icon.ico" />
     <Resource Include="Images\logo_long.png" />
     <Resource Include="Images\format.png" />

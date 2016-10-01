@@ -38,8 +38,8 @@
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox Header="">
                     <Fluent:Button
-                        Icon="Images/logo64.png"
-                        LargeIcon="Images/logo64.png"
+                        Icon="Images/logo_short_small.png"
+                        LargeIcon="Images/logo_short_small.png"
                         Command="{Binding GoToHome}" Header="Home"></Fluent:Button>
                     <Fluent:Button
                         Icon="Images/connect128.png"
