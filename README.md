@@ -1,10 +1,12 @@
 # a7SqlTools
-Initial version of tool that I wrote for myself to:
 
--search trough various tables in a ms sql database for given values.
+More on: http://sqltools.a7.plus
 
--explore tables
+A Windows Desktop tool suite for MS SQL databases with the functionality to:
 
--compare database structures
-
--compare database tables rows
+ - Compare database structure
+ - Compare database contents/data
+ - Search through a database
+ - Generate queries and explore tables
+ 
+ 
